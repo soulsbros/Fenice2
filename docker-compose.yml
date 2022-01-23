@@ -1,0 +1,27 @@
+version: '3.7'
+services:
+  react-boilerplate-frontend:
+    container_name: react-boilerplate-frontend
+    restart: always
+    builds: ./client # change to image for prod
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_BACKEND_HOSTNAME=react-boilerplate-backend
+      - REACT_APP_BACKEND_PORT=4000
+      - REACT_APP_PROD=true # set this for deployment
+    links:
+      - react-boilerplate-backend
+    depends_on: 
+      - react-boilerplate-backend
+  react-boilerplate-backend:
+    container_name: react-boilerplate-backend
+    restart: always
+    builds: ./server # change to image for prod
+    ports:
+        - "4000:4000"
+    environment: 
+      - REACT_APP_BACKEND_PORT=4000
+networks:
+  default:
+    name: react-boilerplate
