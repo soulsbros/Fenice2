@@ -22,7 +22,7 @@ function App() {
   return (
     <>
       <img className="inlb vaMid" alt="favicon" src="img/favicon-32x32.png" />
-      <span className="title vaMid"> react-boilerplate</span>
+      <span className="title vaMid"> La Compagnia della Fenice</span>
       {socket ? (
         <SocketContext.Provider value={socket}>
           <div className="container">

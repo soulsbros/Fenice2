@@ -1,21 +1,21 @@
 version: '3.7'
 services:
-  react-boilerplate-frontend:
-    container_name: react-boilerplate-frontend
+  fenice2.0-frontend:
+    container_name: fenice2.0-frontend
     restart: always
     builds: ./client # change to image for prod
     ports:
       - "3000:3000"
     environment:
-      - REACT_APP_BACKEND_HOSTNAME=react-boilerplate-backend
+      - REACT_APP_BACKEND_HOSTNAME=fenice2.0-backend
       - REACT_APP_BACKEND_PORT=4000
       - REACT_APP_PROD=true # set this for deployment
     links:
-      - react-boilerplate-backend
+      - fenice2.0-backend
     depends_on: 
-      - react-boilerplate-backend
-  react-boilerplate-backend:
-    container_name: react-boilerplate-backend
+      - fenice2.0-backend
+  fenice2.0-backend:
+    container_name: fenice2.0-backend
     restart: always
     builds: ./server # change to image for prod
     ports:
@@ -24,4 +24,4 @@ services:
       - REACT_APP_BACKEND_PORT=4000
 networks:
   default:
-    name: react-boilerplate
+    name: fenice2.0
