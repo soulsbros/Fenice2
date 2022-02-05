@@ -1,39 +1,42 @@
+import { AppBar, CssBaseline, Toolbar } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import React, { useEffect, useState } from 'react';
-import io from 'socket.io-client';
-import SocketContext from './SocketContext';
+import { Box } from '@mui/system';
+import React from 'react';
+import Body from './Body';
+import Sidebar from './Sidebar';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-const isProd = process.env.REACT_APP_PROD;
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#b90009',
+    },
+    secondary: {
+      main: '#44403e',
+    },
+  },
+});
 
-function App() {
-  const [socket, setSocket] = useState(null);
-
-  useEffect(() => {
-    console.info('Connecting to ' + (isProd ? 'prod' : 'dev'));
-    const newSocket = isProd
-      ? io.connect({ path: '/socket.io' })
-      : io.connect(`http://${window.location.hostname}:4000`, {
-          path: '/socket.io',
-        });
-    setSocket(newSocket);
-    return () => newSocket.close();
-  }, [setSocket]);
-
+const App = () => {
   return (
-    <>
-      <img className="inlb vaMid" alt="favicon" src="img/favicon-32x32.png" />
-      <span className="title vaMid"> La Compagnia della Fenice</span>
-      {socket ? (
-        <SocketContext.Provider value={socket}>
-          <div className="container">
-            <Typography>Work in progress</Typography>
-          </div>
-        </SocketContext.Provider>
-      ) : (
-        <div>Loading...</div>
-      )}
-    </>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Box sx={{ display: 'flex' }}>
+        <AppBar position="fixed" sx={{ zIndex: (th) => th.zIndex.drawer + 1 }} color="primary">
+          <Toolbar>
+            <img alt="favicon" src="img/favicon-32x32.png" />
+            <Typography ml={2} variant="h6" noWrap component="div">
+              La Compagnia della Fenice
+            </Typography>
+          </Toolbar>
+        </AppBar>
+
+        <Sidebar />
+
+        <Body />
+      </Box>
+    </ThemeProvider>
   );
-}
+};
 
 export default App;
