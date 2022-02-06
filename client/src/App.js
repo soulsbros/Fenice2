@@ -1,23 +1,33 @@
 import { AppBar, CssBaseline, Toolbar } from '@mui/material';
 import Typography from '@mui/material/Typography';
+import { useSelector } from 'react-redux';
 import { Box } from '@mui/system';
 import React from 'react';
-import Body from './Body';
-import Sidebar from './Sidebar';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#b90009',
-    },
-    secondary: {
-      main: '#44403e',
-    },
-  },
-});
+import Home from './components/Home';
+import Sidebar from './components/Sidebar';
+import { ThemeProvider } from '@mui/material/styles';
+import Alignment from './components/Alignment';
+import Documents from './components/Documents';
+import Tracker from './components/Tracker';
+import theme from './Theme';
 
 const App = () => {
+  const page = useSelector((st) => st.generalReducer.page);
+  const renderBody = () => {
+    switch (page) {
+      case 'home':
+        return <Home />;
+      case 'alignment':
+        return <Alignment />;
+      case 'documents':
+        return <Documents />;
+      case 'combattracker':
+        return <Tracker />;
+      default:
+        return <Home />;
+    }
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -33,7 +43,7 @@ const App = () => {
 
         <Sidebar />
 
-        <Body />
+        {renderBody()}
       </Box>
     </ThemeProvider>
   );

@@ -2,10 +2,14 @@ import { Toolbar, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
 
-const Body = () => {
+const Home = () => {
   return (
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <Toolbar />
+      <img src="img/sfondoHeader.jpg" alt="logo" style={{ maxWidth: '100%' }} />
+      <Typography variant="h6" mb={2} mt={2}>
+        Home
+      </Typography>
       <Typography paragraph>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
         labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent elementum facilisis leo
@@ -33,4 +37,4 @@ const Body = () => {
   );
 };
 
-export default Body;
+export default Home;
