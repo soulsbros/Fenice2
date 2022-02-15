@@ -8,7 +8,7 @@ const Alignment = () => {
       <Toolbar />
       <iframe
         title="alignment"
-        style={{ width: '100%', height: '100vh' }}
+        style={{ width: '100%', height: 'calc(100vh - 120px)', border: 'none' }}
         src="https://alignment.lafenice.soulsbros.ch"
       />
     </Box>

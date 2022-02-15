@@ -1,4 +1,4 @@
-import { Toolbar, Typography } from '@mui/material';
+import { Toolbar } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
 
@@ -6,11 +6,11 @@ const Tracker = () => {
   return (
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <Toolbar />
-      <Typography variant="h6" mb={2}>
-        Combat tracker
-      </Typography>
-      <Typography paragraph>An interactive combat tracker</Typography>
-      <Typography paragraph>Coming soon!</Typography>
+      <iframe
+        title="tracker"
+        style={{ width: '100%', height: 'calc(100vh - 120px)', border: 'none' }}
+        src="https://tracker.soulsbros.ch"
+      />
     </Box>
   );
 };
