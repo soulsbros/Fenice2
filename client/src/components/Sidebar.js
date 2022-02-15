@@ -1,19 +1,25 @@
 import { Drawer, List, ListItem, ListItemIcon, ListItemText, Toolbar } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Home from '@mui/icons-material/Home';
-import { AllInclusive, ArrowBack, Timer, Topic } from '@mui/icons-material/';
+import { AllInclusive, ArrowBack, Login, Timer, Topic } from '@mui/icons-material/';
 
 const drawerWidth = 240;
 
 const Sidebar = () => {
+  const username = useSelector((st) => st.generalReducer.username);
   const dispatch = useDispatch();
   const setPage = (page) => {
     dispatch({
       type: 'SET_PAGE',
       payload: page,
     });
+  };
+
+  const doLogin = () => {
+    window.location.href =
+      'https://login.soulsbros.ch?p=login&location=https://v2.lafenice.soulsbros.ch';
   };
 
   return (
@@ -40,24 +46,35 @@ const Sidebar = () => {
             </ListItemIcon>
             <ListItemText primary="Home" />
           </ListItem>
-          <ListItem button onClick={() => setPage('documents')}>
-            <ListItemIcon>
-              <Topic />
-            </ListItemIcon>
-            <ListItemText primary="Documents" />
-          </ListItem>
-          <ListItem button onClick={() => setPage('alignment')}>
-            <ListItemIcon>
-              <AllInclusive />
-            </ListItemIcon>
-            <ListItemText primary="Alignment" />
-          </ListItem>
-          <ListItem button onClick={() => setPage('combattracker')}>
-            <ListItemIcon>
-              <Timer />
-            </ListItemIcon>
-            <ListItemText primary="Combat tracker" />
-          </ListItem>
+          {username ? (
+            <>
+              <ListItem button onClick={() => setPage('alignment')}>
+                <ListItemIcon>
+                  <AllInclusive />
+                </ListItemIcon>
+                <ListItemText primary="Alignment" />
+              </ListItem>
+              <ListItem button onClick={() => setPage('combattracker')}>
+                <ListItemIcon>
+                  <Timer />
+                </ListItemIcon>
+                <ListItemText primary="Combat tracker" />
+              </ListItem>
+              <ListItem button onClick={() => setPage('documents')}>
+                <ListItemIcon>
+                  <Topic />
+                </ListItemIcon>
+                <ListItemText primary="Documents" />
+              </ListItem>
+            </>
+          ) : (
+            <ListItem button onClick={doLogin}>
+              <ListItemIcon>
+                <Login />
+              </ListItemIcon>
+              <ListItemText primary="Login" />
+            </ListItem>
+          )}
         </List>
       </Box>
     </Drawer>

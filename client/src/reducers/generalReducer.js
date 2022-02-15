@@ -1,5 +1,6 @@
 const initialState = {
   page: 'home',
+  username: null,
 };
 
 const generalReducer = (state = initialState, { type, payload }) => {
@@ -8,6 +9,11 @@ const generalReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         page: payload,
+      };
+    case 'SET_USERNAME':
+      return {
+        ...state,
+        username: payload,
       };
     default:
       return state;

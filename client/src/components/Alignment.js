@@ -1,4 +1,4 @@
-import { Toolbar, Typography } from '@mui/material';
+import { Toolbar } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
 
@@ -6,13 +6,11 @@ const Alignment = () => {
   return (
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <Toolbar />
-      <Typography variant="h6" mb={2}>
-        Alignment
-      </Typography>
-      <Typography paragraph>
-        A tool to track our alignment changes (hopefully not too many!)
-      </Typography>
-      <Typography paragraph>Coming soon!</Typography>
+      <iframe
+        title="alignment"
+        style={{ width: '100%', height: '100vh' }}
+        src="https://alignment.lafenice.soulsbros.ch"
+      />
     </Box>
   );
 };

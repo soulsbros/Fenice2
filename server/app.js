@@ -3,11 +3,13 @@ const http = require('http');
 const cors = require('cors');
 
 const serverPort = process.env.REACT_APP_BACKEND_PORT || 4000;
+const auth = require('./routes/auth');
 const system = require('./routes/system');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use('/api/auth', auth);
 app.use('/api/system', system);
 app.use('/api/health', (req, res) => res.send('Ok'));
 
