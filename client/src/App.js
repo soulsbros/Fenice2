@@ -13,6 +13,7 @@ import theme from './Theme';
 import { validateCookie } from './api';
 import { AccountCircle } from '@mui/icons-material';
 import Profile from './components/Profile';
+import Skills from './components/Skills';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -30,6 +31,8 @@ const App = () => {
         return <Tracker />;
       case 'profile':
         return <Profile />;
+      case 'skills':
+        return <Skills />;
       default:
         return <Home />;
     }
@@ -70,8 +73,8 @@ const App = () => {
         const result = await validateCookie(username, token);
         if (result.data.valid) {
           dispatch({
-            type: 'SET_USERNAME',
-            payload: result.data.username,
+            type: 'SET_LOGIN_DATA',
+            payload: { username: result.data.username, dm: result.data.dm },
           });
         } else {
           // unset borked cookie

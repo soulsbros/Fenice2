@@ -10,13 +10,12 @@ router.post('/validateCookie', async (req, res) => {
   const response = await fetch(
     `https://login.soulsbros.ch/api/checkCookie.php?username=${req.body.username}&token=${req.body.token}`,
   );
-  const body = await response.text();
+  const body = await response.json();
 
-  if (body === 'true') {
-    // TODO return JSON from API duh
-    res.status(200).send({ valid: true, username: req.body.username });
+  if (body.valid) {
+    res.status(200).send(body);
   } else {
-    res.status(401).send({ valid: false, username: null });
+    res.status(401).send(body);
   }
 });
 

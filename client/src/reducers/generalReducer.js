@@ -1,6 +1,7 @@
 const initialState = {
   page: 'home',
   username: null,
+  dm: false,
 };
 
 const generalReducer = (state = initialState, { type, payload }) => {
@@ -14,6 +15,12 @@ const generalReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         username: payload,
+      };
+    case 'SET_LOGIN_DATA':
+      return {
+        ...state,
+        username: payload.username,
+        dm: payload.dm,
       };
     default:
       return state;
