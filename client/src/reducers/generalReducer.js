@@ -2,6 +2,7 @@ const initialState = {
   page: 'home',
   username: null,
   dm: false,
+  admin: false,
 };
 
 const generalReducer = (state = initialState, { type, payload }) => {
@@ -21,6 +22,7 @@ const generalReducer = (state = initialState, { type, payload }) => {
         ...state,
         username: payload.username,
         dm: payload.dm,
+        admin: payload.admin,
       };
     default:
       return state;

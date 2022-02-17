@@ -38,17 +38,20 @@ const App = () => {
     }
   };
 
+  const setPage = (p) => {
+    dispatch({
+      type: 'SET_PAGE',
+      payload: p,
+    });
+  };
+
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleMenu = (event) => {
+  const handleOpenMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
-    dispatch({
-      type: 'SET_PAGE',
-      payload: 'profile',
-    });
+  const handleCloseMenu = () => {
     setAnchorEl(null);
   };
 
@@ -68,13 +71,17 @@ const App = () => {
     const checkLogin = async () => {
       const cookie = getCookie('remembermeSoulsbros');
       if (cookie) {
-        const username = cookie.split('%3A')[0];
+        const user = cookie.split('%3A')[0];
         const token = cookie.split('%3A')[1];
-        const result = await validateCookie(username, token);
+        const result = await validateCookie(user, token);
         if (result.data.valid) {
           dispatch({
             type: 'SET_LOGIN_DATA',
-            payload: { username: result.data.username, dm: result.data.dm },
+            payload: {
+              username: result.data.username,
+              dm: result.data.dm,
+              admin: result.data.admin,
+            },
           });
         } else {
           // unset borked cookie
@@ -91,14 +98,24 @@ const App = () => {
       <Box sx={{ display: 'flex' }}>
         <AppBar position="fixed" sx={{ zIndex: (th) => th.zIndex.drawer + 1 }} color="primary">
           <Toolbar sx={{ justifyContent: 'space-between' }}>
-            <img alt="favicon" src="img/favicon-32x32.png" />
-            <Typography ml={2} variant="h6" noWrap component="div">
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              onClick={() => setPage('home')}
+              sx={{ cursor: 'pointer' }}
+            >
+              <img
+                alt="favicon"
+                src="img/favicon-32x32.png"
+                style={{ verticalAlign: 'bottom', marginRight: 5 }}
+              />
               La Compagnia della Fenice
             </Typography>
             {username ? (
               <div>
                 {username}
-                <IconButton size="large" onClick={handleMenu} color="inherit">
+                <IconButton size="large" onClick={handleOpenMenu} color="inherit">
                   <AccountCircle />
                 </IconButton>
                 <Menu
@@ -113,9 +130,9 @@ const App = () => {
                     horizontal: 'right',
                   }}
                   open={Boolean(anchorEl)}
-                  onClose={handleClose}
+                  onClose={handleCloseMenu}
                 >
-                  <MenuItem onClick={handleClose}>Profile</MenuItem>
+                  <MenuItem onClick={() => setPage('profile')}>Profile</MenuItem>
                   <MenuItem onClick={handleLogOut}>Log out</MenuItem>
                 </Menu>
               </div>

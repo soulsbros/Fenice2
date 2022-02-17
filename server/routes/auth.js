@@ -7,15 +7,20 @@ const router = express.Router();
  * Returns { valid, username }
  */
 router.post('/validateCookie', async (req, res) => {
-  const response = await fetch(
-    `https://login.soulsbros.ch/api/checkCookie.php?username=${req.body.username}&token=${req.body.token}`,
-  );
-  const body = await response.json();
+  try {
+    const response = await fetch(
+      `https://login.soulsbros.ch/api/checkCookie.php?username=${req.body.username}&token=${req.body.token}`,
+    );
+    const body = await response.json();
 
-  if (body.valid) {
-    res.status(200).send(body);
-  } else {
-    res.status(401).send(body);
+    if (body.valid) {
+      res.status(200).send(body);
+    } else {
+      res.status(401).send(body);
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({});
   }
 });
 
