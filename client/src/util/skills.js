@@ -45,16 +45,19 @@ const skills = [
     name: 'Handle animal',
   },
   {
+    name: 'Heal',
+  },
+  {
     name: 'Hide',
+  },
+  {
+    name: 'Intimidate',
   },
   {
     name: 'Jump',
   },
   {
     name: 'Knowledge',
-  },
-  {
-    name: 'Intimidate',
   },
   {
     name: 'Listen',
@@ -72,6 +75,9 @@ const skills = [
     name: 'Profession',
   },
   {
+    name: 'Psicraft',
+  },
+  {
     name: 'Ride',
   },
   {
@@ -82,9 +88,6 @@ const skills = [
   },
   {
     name: 'Sleight of hand',
-  },
-  {
-    name: 'Speak languages',
   },
   {
     name: 'Spellcraft',
@@ -105,10 +108,10 @@ const skills = [
     name: 'Use magic device',
   },
   {
-    name: 'Use rope',
+    name: 'Use psionic device',
   },
   {
-    name: 'Use psionic device',
+    name: 'Use rope',
   },
 ];
 

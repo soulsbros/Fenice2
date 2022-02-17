@@ -57,7 +57,7 @@ const App = () => {
 
   const handleLogOut = () => {
     location.href =
-      'https://login.soulsbros.ch/?p=closeSession&location=https://v2.lafenice.soulsbros.ch';
+      'https://login.soulsbros.ch/?p=closeSession&location=https://fenice2.soulsbros.ch';
   };
 
   const getCookie = (name) => {

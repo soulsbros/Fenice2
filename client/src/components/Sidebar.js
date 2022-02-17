@@ -19,7 +19,7 @@ const Sidebar = () => {
 
   const doLogin = () => {
     window.location.href =
-      'https://login.soulsbros.ch?p=login&location=https://v2.lafenice.soulsbros.ch';
+      'https://login.soulsbros.ch?p=login&location=https://fenice2.soulsbros.ch';
   };
 
   return (

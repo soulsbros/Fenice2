@@ -1,11 +1,13 @@
 import { Autocomplete, TextField, Toolbar, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { getAllCampaigns } from '../api';
 import skills from '../util/skills';
 
 const Skills = () => {
   const [campaign, setCampaign] = useState('');
   const [skill, setSkill] = useState('');
+  const [campaignOptions, setCampaignOptions] = useState([]);
 
   const handleCampaignChange = (event) => {
     setCampaign(event.target.innerText);
@@ -15,12 +17,15 @@ const Skills = () => {
     setSkill(event.target.innerText);
   };
 
-  // TODO dynamically load campaigns with an useEffect
+  useEffect(() => {
+    let mapCampaigns = async () => {
+      let result = await getAllCampaigns();
+      setCampaignOptions(result.data.map((el) => el.name));
+    };
+    mapCampaigns();
+  }, []);
 
-  const campaignOptions = ['Campaign 1', 'Campaign 2'];
-  const skillOptions = skills.map((el) => {
-    return el.name;
-  });
+  const skillOptions = skills.map((el) => el.name);
 
   return (
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
@@ -39,7 +44,7 @@ const Skills = () => {
         disablePortal
         options={skillOptions}
         onChange={handleSkillChange}
-        sx={{ width: 300, display: 'inline-block', marginBottom: 2, marginLeft: 2 }}
+        sx={{ width: 300, display: 'inline-block', margin: 2 }}
         renderInput={(params) => <TextField {...params} color="secondary" label="Skill" />}
       />
       {skill && campaign && (
