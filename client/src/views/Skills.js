@@ -1,16 +1,21 @@
 import { Autocomplete, TextField, Toolbar, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { getAllCampaigns } from '../api';
 import skills from '../util/skills';
 
 const Skills = () => {
-  const [campaign, setCampaign] = useState('');
+  const dispatch = useDispatch();
+  const campaign = useSelector((st) => st.generalReducer.selectedCampaign);
   const [skill, setSkill] = useState('');
   const [campaignOptions, setCampaignOptions] = useState([]);
 
   const handleCampaignChange = (event) => {
-    setCampaign(event.target.innerText);
+    dispatch({
+      type: 'SET_CAMPAIGN',
+      payload: event.target.innerText,
+    });
   };
   const handleSkillChange = (event) => {
     // TODO API request to calculate best character
@@ -34,6 +39,7 @@ const Skills = () => {
         Skill checks
       </Typography>
       <Autocomplete
+        value={campaign}
         disablePortal
         options={campaignOptions}
         onChange={handleCampaignChange}

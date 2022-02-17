@@ -8,8 +8,9 @@ import { AllInclusive, ArrowBack, Casino, Login, Timer, Topic } from '@mui/icons
 const drawerWidth = 240;
 
 const Sidebar = () => {
-  const username = useSelector((st) => st.generalReducer.username);
+  const username = useSelector((st) => st.userReducer.username);
   const dispatch = useDispatch();
+
   const setPage = (page) => {
     dispatch({
       type: 'SET_PAGE',

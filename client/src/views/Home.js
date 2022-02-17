@@ -4,7 +4,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 const Home = () => {
-  const username = useSelector((st) => st.generalReducer.username);
+  const username = useSelector((st) => st.userReducer.username);
   const printWelcomeText = () => (username ? `Welcome back, ${username}!` : 'Welcome!');
   return (
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>

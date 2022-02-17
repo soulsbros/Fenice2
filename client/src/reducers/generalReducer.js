@@ -1,8 +1,6 @@
 const initialState = {
   page: 'home',
-  username: null,
-  dm: false,
-  admin: false,
+  selectedCampaign: null,
 };
 
 const generalReducer = (state = initialState, { type, payload }) => {
@@ -12,17 +10,10 @@ const generalReducer = (state = initialState, { type, payload }) => {
         ...state,
         page: payload,
       };
-    case 'SET_USERNAME':
+    case 'SET_CAMPAIGN':
       return {
         ...state,
-        username: payload,
-      };
-    case 'SET_LOGIN_DATA':
-      return {
-        ...state,
-        username: payload.username,
-        dm: payload.dm,
-        admin: payload.admin,
+        selectedCampaign: payload,
       };
     default:
       return state;

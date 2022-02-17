@@ -4,7 +4,7 @@ const router = express.Router();
 
 /**
  * Checks if a given token is valid or not.
- * Returns { valid, username }
+ * Returns { valid, username, dm, admin }
  */
 router.post('/validateCookie', async (req, res) => {
   try {

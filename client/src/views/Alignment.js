@@ -4,7 +4,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 const Alignment = () => {
-  const { dm, admin } = useSelector((st) => st.generalReducer);
+  const { dm, admin } = useSelector((st) => st.userReducer);
   return (
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <Toolbar />

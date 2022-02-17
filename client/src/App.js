@@ -1,24 +1,23 @@
-import { AppBar, CssBaseline, IconButton, Menu, MenuItem, Toolbar } from '@mui/material';
-import Typography from '@mui/material/Typography';
+import { CssBaseline } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box } from '@mui/system';
-import React, { useEffect, useState } from 'react';
-import Home from './components/Home';
+import React, { useEffect } from 'react';
+import Home from './views/Home';
 import Sidebar from './components/Sidebar';
 import { ThemeProvider } from '@mui/material/styles';
-import Alignment from './components/Alignment';
-import Documents from './components/Documents';
-import Tracker from './components/Tracker';
+import Alignment from './views/Alignment';
+import Documents from './views/Documents';
+import Tracker from './views/Tracker';
 import theme from './Theme';
 import { validateCookie } from './api';
-import { AccountCircle } from '@mui/icons-material';
-import Profile from './components/Profile';
-import Skills from './components/Skills';
+import Profile from './views/Profile';
+import Skills from './views/Skills';
+import TopBar from './components/TopBar';
 
 const App = () => {
   const dispatch = useDispatch();
   const page = useSelector((st) => st.generalReducer.page);
-  const username = useSelector((st) => st.generalReducer.username);
+
   const renderBody = () => {
     switch (page) {
       case 'home':
@@ -36,28 +35,6 @@ const App = () => {
       default:
         return <Home />;
     }
-  };
-
-  const setPage = (p) => {
-    dispatch({
-      type: 'SET_PAGE',
-      payload: p,
-    });
-  };
-
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleOpenMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleCloseMenu = () => {
-    setAnchorEl(null);
-  };
-
-  const handleLogOut = () => {
-    location.href =
-      'https://login.soulsbros.ch/?p=closeSession&location=https://fenice2.soulsbros.ch';
   };
 
   const getCookie = (name) => {
@@ -96,51 +73,7 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Box sx={{ display: 'flex' }}>
-        <AppBar position="fixed" sx={{ zIndex: (th) => th.zIndex.drawer + 1 }} color="primary">
-          <Toolbar sx={{ justifyContent: 'space-between' }}>
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              onClick={() => setPage('home')}
-              sx={{ cursor: 'pointer' }}
-            >
-              <img
-                alt="favicon"
-                src="img/favicon-32x32.png"
-                style={{ verticalAlign: 'bottom', marginRight: 5 }}
-              />
-              La Compagnia della Fenice
-            </Typography>
-            {username ? (
-              <div>
-                {username}
-                <IconButton size="large" onClick={handleOpenMenu} color="inherit">
-                  <AccountCircle />
-                </IconButton>
-                <Menu
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'right',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  open={Boolean(anchorEl)}
-                  onClose={handleCloseMenu}
-                >
-                  <MenuItem onClick={() => setPage('profile')}>Profile</MenuItem>
-                  <MenuItem onClick={handleLogOut}>Log out</MenuItem>
-                </Menu>
-              </div>
-            ) : (
-              <div></div>
-            )}
-          </Toolbar>
-        </AppBar>
+        <TopBar />
 
         <Sidebar />
 
