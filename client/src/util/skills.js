@@ -1,3 +1,5 @@
+const findSkill = (str) => skills.filter((el) => el.name.toLowerCase() === str.toLowerCase())[0];
+
 const skills = [
   {
     name: 'Appraise',
@@ -229,4 +231,4 @@ const skills = [
   },
 ];
 
-export default skills;
+export { skills, findSkill };

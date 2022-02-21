@@ -10,17 +10,18 @@ import {
   Typography,
 } from '@mui/material';
 import { Box } from '@mui/system';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getAllCampaigns } from '../api';
-import skills from '../util/skills';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { findSkill, skills } from '../util/skills';
 import Close from '@mui/icons-material/Close';
+import Warning from '@mui/icons-material/Warning';
+import School from '@mui/icons-material/School';
+import CampaignSelector from '../components/CampaignSelector';
 
 const Skills = () => {
-  const dispatch = useDispatch();
   const campaign = useSelector((st) => st.generalReducer.selectedCampaign);
   const [skill, setSkill] = useState('');
-  const [campaignOptions, setCampaignOptions] = useState([]);
+
   const [open, setOpen] = useState(false);
   const [wikiURL, setWikiURL] = useState('');
 
@@ -43,25 +44,10 @@ const Skills = () => {
     setOpen(false);
   };
 
-  const handleCampaignChange = (event) => {
-    dispatch({
-      type: 'SET_CAMPAIGN',
-      payload: event.target.innerText,
-    });
-  };
-
   const handleSkillChange = (event) => {
     // TODO API request to calculate best character
     setSkill(event.target.innerText);
   };
-
-  useEffect(() => {
-    let mapCampaigns = async () => {
-      let result = await getAllCampaigns();
-      setCampaignOptions(result.data.map((el) => el.name));
-    };
-    mapCampaigns();
-  }, []);
 
   const skillOptions = skills.map((el) => el.name);
 
@@ -71,14 +57,7 @@ const Skills = () => {
       <Typography variant="h6" gutterBottom>
         Skill checks
       </Typography>
-      <Autocomplete
-        value={campaign}
-        disablePortal
-        options={campaignOptions}
-        onChange={handleCampaignChange}
-        sx={{ width: 300, display: 'inline-block' }}
-        renderInput={(params) => <TextField {...params} color="secondary" label="Campaign" />}
-      />
+      <CampaignSelector />
       <Autocomplete
         disablePortal
         options={skillOptions}
@@ -92,7 +71,19 @@ const Skills = () => {
         </Typography>
       )}
       {skill && (
-        <Typography>
+        <Typography component="div">
+          {findSkill(skill).armorPenalty && (
+            <Typography gutterBottom>
+              <Warning />
+              <span style={{ verticalAlign: 'super', marginLeft: 5 }}>Armor penalty applies</span>
+            </Typography>
+          )}
+          {findSkill(skill).requiresTraining && (
+            <Typography gutterBottom>
+              <School />
+              <span style={{ verticalAlign: 'super', marginLeft: 5 }}> Requires training</span>
+            </Typography>
+          )}
           <Button onClick={handleDialogOpen} variant="outlined">
             Open wiki page
           </Button>

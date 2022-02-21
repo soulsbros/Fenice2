@@ -13,6 +13,7 @@ import { validateCookie } from './api';
 import Profile from './views/Profile';
 import Skills from './views/Skills';
 import TopBar from './components/TopBar';
+import Characters from './views/Characters';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -24,10 +25,12 @@ const App = () => {
         return <Home />;
       case 'alignment':
         return <Alignment />;
-      case 'documents':
-        return <Documents />;
+      case 'characters':
+        return <Characters />;
       case 'combattracker':
         return <Tracker />;
+      case 'documents':
+        return <Documents />;
       case 'profile':
         return <Profile />;
       case 'skills':

@@ -3,7 +3,7 @@ import { Box } from '@mui/system';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Home from '@mui/icons-material/Home';
-import { AllInclusive, ArrowBack, Casino, Login, Timer, Topic } from '@mui/icons-material/';
+import { AllInclusive, ArrowBack, Casino, Login, Person, Timer } from '@mui/icons-material/';
 
 const drawerWidth = 240;
 
@@ -55,18 +55,24 @@ const Sidebar = () => {
                 </ListItemIcon>
                 <ListItemText primary="Alignment" />
               </ListItem>
+              <ListItem button onClick={() => setPage('characters')}>
+                <ListItemIcon>
+                  <Person />
+                </ListItemIcon>
+                <ListItemText primary="Characters" />
+              </ListItem>
               <ListItem button onClick={() => setPage('combattracker')}>
                 <ListItemIcon>
                   <Timer />
                 </ListItemIcon>
                 <ListItemText primary="Combat tracker" />
               </ListItem>
-              <ListItem button onClick={() => setPage('documents')}>
+              {/* <ListItem button onClick={() => setPage('documents')}>
                 <ListItemIcon>
                   <Topic />
                 </ListItemIcon>
                 <ListItemText primary="Documents" />
-              </ListItem>
+              </ListItem> */}
               <ListItem button onClick={() => setPage('skills')}>
                 <ListItemIcon>
                   <Casino />
