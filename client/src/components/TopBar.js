@@ -46,10 +46,13 @@ const TopBar = () => {
         </Typography>
         {username ? (
           <div>
-            {username}
-            <IconButton size="large" onClick={handleOpenMenu} color="inherit">
-              <AccountCircle />
-            </IconButton>
+            <Typography onClick={handleOpenMenu} sx={{ cursor: 'pointer' }}>
+              {username}
+              <IconButton size="large" color="inherit">
+                <AccountCircle />
+              </IconButton>
+            </Typography>
+
             <Menu
               anchorEl={anchorEl}
               anchorOrigin={{

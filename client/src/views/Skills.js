@@ -18,16 +18,16 @@ import Warning from '@mui/icons-material/Warning';
 import School from '@mui/icons-material/School';
 import CampaignSelector from '../components/CampaignSelector';
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 const Skills = () => {
   const campaign = useSelector((st) => st.generalReducer.selectedCampaign);
   const [skill, setSkill] = useState('');
 
   const [open, setOpen] = useState(false);
   const [wikiURL, setWikiURL] = useState('');
-
-  const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-  });
 
   const handleDialogOpen = () => {
     const skillName = skill

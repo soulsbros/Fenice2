@@ -1,4 +1,4 @@
-import { Toolbar, Typography } from '@mui/material';
+import { Paper, Toolbar, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -23,9 +23,11 @@ const Characters = () => {
       <Typography variant="h6" mb={2}>
         Characters
       </Typography>
-      <CampaignSelector sx={{ marginBottom: 2 }} />
+      <CampaignSelector sx={{ marginBottom: 4 }} />
       {characters.map((el) => (
-        <Typography paragraph key={el._id}>{`${el.name} ${el.lastname}`}</Typography>
+        <Paper key={el._id} sx={{ padding: 2, marginBottom: 2 }}>
+          <Typography>{`${el.name} ${el.lastname} - ${el.actualAlignment}`}</Typography>
+        </Paper>
       ))}
     </Box>
   );

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllCampaigns } from '../api';
 
-const CampaignSelector = () => {
+const CampaignSelector = ({ sx }) => {
   const dispatch = useDispatch();
   const campaign = useSelector((st) => st.generalReducer.selectedCampaign);
   const [campaignOptions, setCampaignOptions] = useState([]);
@@ -28,7 +28,7 @@ const CampaignSelector = () => {
       disablePortal
       options={campaignOptions}
       onChange={handleCampaignChange}
-      sx={{ width: 300, display: 'inline-block' }}
+      sx={{ width: 300, display: 'inline-block', ...sx }}
       renderInput={(params) => <TextField {...params} color="secondary" label="Campaign" />}
     />
   );

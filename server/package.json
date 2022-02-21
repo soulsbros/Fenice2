@@ -18,6 +18,6 @@
     "start": "forever app.js",
     "stop": "forever stop app.js",
     "dev": "nodemon app.js",
-    "lint": "eslint ./ --ext .js --fix"
+    "lint": "eslint ./ --ext .js --fix --max-warnings=0"
   }
 }
