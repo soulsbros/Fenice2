@@ -1,19 +1,23 @@
 import { CssBaseline } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
-import { Box } from '@mui/system';
-import React, { useEffect } from 'react';
-import Home from './views/Home';
-import Sidebar from './components/Sidebar';
 import { ThemeProvider } from '@mui/material/styles';
-import Alignment from './views/Alignment';
-import Documents from './views/Documents';
-import Tracker from './views/Tracker';
-import theme from './Theme';
+import { Box } from '@mui/system';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import io from 'socket.io-client';
 import { validateCookie } from './api';
+import Sidebar from './components/Sidebar';
+import TopBar from './components/TopBar';
+import { SocketContext } from './SocketContext';
+import theme from './Theme';
+import Alignment from './views/Alignment';
+import Characters from './views/Characters';
+import Documents from './views/Documents';
+import Home from './views/Home';
 import Profile from './views/Profile';
 import Skills from './views/Skills';
-import TopBar from './components/TopBar';
-import Characters from './views/Characters';
+import Tracker from './views/Tracker';
+
+const isProd = process.env.REACT_APP_PROD || false;
 
 const App = () => {
   const dispatch = useDispatch();
@@ -46,6 +50,8 @@ const App = () => {
     if (parts.length === 2) return parts.pop().split(';').shift();
   };
 
+  const [socket, setSocket] = useState(null);
+
   useEffect(() => {
     // on load, check cookie
     const checkLogin = async () => {
@@ -70,18 +76,29 @@ const App = () => {
       }
     };
     checkLogin();
-  }, [dispatch]);
+    // Setup socket connection
+    console.info('Connecting to ' + (isProd ? 'prod' : 'dev'));
+    const newSocket = isProd
+      ? io.connect({ path: '/socket.io' })
+      : io.connect(`http://${window.location.hostname}:4000`, {
+          path: '/socket.io',
+        });
+    setSocket(newSocket);
+    return () => newSocket.close();
+  }, [dispatch, setSocket]);
 
   return (
     <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Box sx={{ display: 'flex' }}>
-        <TopBar />
+      <SocketContext.Provider value={socket}>
+        <CssBaseline />
+        <Box sx={{ display: 'flex' }}>
+          <TopBar />
 
-        <Sidebar />
+          <Sidebar />
 
-        {renderBody()}
-      </Box>
+          {renderBody()}
+        </Box>
+      </SocketContext.Provider>
     </ThemeProvider>
   );
 };

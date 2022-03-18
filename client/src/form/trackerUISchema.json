@@ -1,0 +1,35 @@
+{
+  "type": "VerticalLayout",
+  "elements": [
+    {
+      "type": "Control",
+      "scope": "#/properties/name"
+    },
+    {
+      "type": "HorizontalLayout",
+      "elements": [
+        {
+          "type": "Control",
+          "scope": "#/properties/initiative"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/ac"
+        }
+      ]
+    },
+    {
+      "type": "HorizontalLayout",
+      "elements": [
+        {
+          "type": "Control",
+          "scope": "#/properties/currentHp"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/hp"
+        }
+      ]
+    }
+  ]
+}
