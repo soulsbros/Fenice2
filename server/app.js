@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 app.use('/api/auth', auth);
 app.use('/api/alignment', alignment);
-app.use('/api/health', (req, res) => res.send('Ok'));
+app.use('/api/health', (req, res) => res.send('Ok fenice2'));
 
 const server = http.createServer(app);
 
