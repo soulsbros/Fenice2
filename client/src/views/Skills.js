@@ -10,7 +10,7 @@ import {
   Slide,
   TextField,
   Toolbar,
-  Typography
+  Typography,
 } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useState } from 'react';
