@@ -3,6 +3,7 @@ const initialState = {
   actionWeight: 1,
   campaign: null,
   reasonInput: '',
+  selectedChars: [],
 };
 
 const alignmentReducer = (state = initialState, { type, payload }) => {
@@ -26,6 +27,11 @@ const alignmentReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         reasonInput: payload,
+      };
+    case 'ADD_SELECTED_CHAR':
+      return {
+        ...state,
+        selectedChars: [...state.selectedChars, payload],
       };
     default:
       return state;

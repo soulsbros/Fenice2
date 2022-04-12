@@ -6,7 +6,7 @@ const TopBar = () => {
   return (
     <>
       <Typography variant="h6" mb={2}>
-        D&D Alignment
+        Alignment
       </Typography>
       <CampaignSelector sx={{ marginBottom: 4 }} />
     </>

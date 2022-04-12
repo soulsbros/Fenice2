@@ -1,4 +1,4 @@
-import { call, put } from 'redux-saga/effects';
+import { all, call, put } from 'redux-saga/effects';
 import { setAllCharacters } from '../actions';
 import { addAction, getAllCharacters, getCharactersByCampaign } from '../api/alignment';
 
@@ -22,9 +22,11 @@ export function* getCharsByCampaign({ payload }) {
   }
 }
 
-export function* addCharacterAction({ payload }) {
+export function* addCharactersAction({ payload }) {
   try {
-    const res = yield call(addAction, payload);
+    const res = yield all(
+      payload.charsId.map((charId) => call(addAction, { charId: charId, action: payload.action })),
+    );
 
     if (res) {
       const { data } = yield call(getCharactersByCampaign, payload.campaign);
