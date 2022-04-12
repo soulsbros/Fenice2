@@ -1,22 +1,50 @@
-import { Toolbar, Typography } from '@mui/material';
-import { Box } from '@mui/system';
-import React from 'react';
-import { useSelector } from 'react-redux';
+import { Box, Grid, Toolbar } from '@mui/material';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import * as actions from '../actions';
+import ActionWeight from '../components/Alignment/ActionWeight';
+import Canvas from '../components/Alignment/Canvas';
+import CharacterAction from '../components/Alignment/CharacterAction';
+import ReasonInput from '../components/Alignment/ReasonInput';
+import TopBar from '../components/Alignment/TopBar';
 
 const Alignment = () => {
-  const { dm, admin } = useSelector((st) => st.userReducer);
+  const dispatch = useDispatch();
+
+  const characters = useSelector((st) => st.alignmentReducer.characters);
+  const campaign = useSelector((st) => st.generalReducer.selectedCampaign);
+
+  useEffect(() => {
+    if (campaign && campaign.label !== null) {
+      dispatch(actions.getCharactersByCampaign(campaign.id));
+    }
+  }, [campaign, dispatch]);
+
   return (
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <Toolbar />
-      {dm || admin ? (
-        <iframe
-          title="alignment"
-          style={{ width: '100%', height: 'calc(100vh - 120px)', border: 'none' }}
-          src="https://alignment.lafenice.soulsbros.ch"
-        />
-      ) : (
-        <Typography>DM use only (for now)</Typography>
-      )}
+      <TopBar />
+      {campaign && campaign.label !== null ? <Canvas /> : null}
+      <Box sx={{ flexGrow: 1 }}>
+        <Grid container spacing={2}>
+          <Grid item xs={4}>
+            <ActionWeight />
+            <ReasonInput />
+          </Grid>
+          <Grid item xs={8}>
+            {campaign && campaign.label !== null ? (
+              <>
+                {characters &&
+                  characters
+                    .sort((a, b) => {
+                      return a.name.localeCompare(b.name);
+                    })
+                    .map((char) => <CharacterAction key={char.name} character={char} />)}
+              </>
+            ) : null}
+          </Grid>
+        </Grid>
+      </Box>
     </Box>
   );
 };

@@ -9,11 +9,11 @@ import {
   drawGoodTiles,
   drawNeutralTiles,
   drawSideCircle,
-} from '../utils/drawUtils';
+} from '../../util/drawUtils';
 
 const Canvas = () => {
-  const width = window.innerWidth > 600 ? 800 : window.innerWidth;
-  const height = window.innerHeight > 600 ? 800 : window.innerHeight;
+  const width = window.innerWidth > 600 ? 600 : window.innerWidth;
+  const height = window.innerHeight > 600 ? 600 : window.innerHeight;
 
   const { characters } = useSelector((st) => st.alignmentReducer);
   const canvasRef = useRef(null);
@@ -22,7 +22,7 @@ const Canvas = () => {
     const a = Math.PI / 4;
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
-    const r = canvas.width / 3;
+    const r = canvas.width / 2.5;
 
     let angles = drawEctagon(ctx, centerX, centerY, r, a);
 
@@ -94,7 +94,7 @@ const Canvas = () => {
   }, [characters, height, width]);
 
   return (
-    <div style={{ width: '800px', height: '800px' }}>
+    <div style={{ width: '600px', height: '600px', margin: 'auto' }}>
       <canvas width="400px" height="400px" ref={canvasRef} />
     </div>
   );

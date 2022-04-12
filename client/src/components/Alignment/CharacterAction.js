@@ -1,6 +1,8 @@
+import { Button, Grid, Typography } from '@mui/material';
+import { Box } from '@mui/system';
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import * as actions from '../store/actions';
+import * as actions from '../../actions';
 
 const CharacterAction = ({ character }) => {
   const dispatch = useDispatch();
@@ -37,7 +39,7 @@ const CharacterAction = ({ character }) => {
         reason: reasonInput,
         value: val,
       },
-      campaign: campaign._id,
+      campaign: campaign.id,
     };
 
     addAction(action);
@@ -45,17 +47,33 @@ const CharacterAction = ({ character }) => {
   };
 
   return (
-    <div id="charContainer">
-      <div>{`${character.name.toUpperCase()} ${character.lastname.toUpperCase()}`}</div>
-      <div style={{ display: 'flex' }}>
-        <button onClick={() => handleClick('Lawful')}>Lawful action</button>
-        <button onClick={() => handleClick('Chaotic')}>Chaotic action</button>
-      </div>
-      <div style={{ display: 'flex' }}>
-        <button onClick={() => handleClick('Good')}>Good action</button>
-        <button onClick={() => handleClick('Evil')}>Evil action</button>
-      </div>
-    </div>
+    <Box sx={{ flexGrow: 1 }}>
+      <Typography>
+        {`${character.name.toUpperCase()} ${character.lastname.toUpperCase()}`}
+      </Typography>
+      <Grid container spacing={2}>
+        <Grid item xs={6}>
+          <Button variant="contained" onClick={() => handleClick('Lawful')}>
+            Lawful action
+          </Button>
+        </Grid>
+        <Grid item xs={6}>
+          <Button variant="contained" onClick={() => handleClick('Chaotic')}>
+            Chaotic action
+          </Button>
+        </Grid>
+        <Grid item xs={6}>
+          <Button variant="contained" onClick={() => handleClick('Good')}>
+            Good action
+          </Button>
+        </Grid>
+        <Grid item xs={6}>
+          <Button variant="contained" onClick={() => handleClick('Evil')}>
+            Evil action
+          </Button>
+        </Grid>
+      </Grid>
+    </Box>
   );
 };
 

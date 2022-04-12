@@ -1,6 +1,7 @@
+import { TextField } from '@mui/material';
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import * as actions from '../store/actions';
+import * as actions from '../../actions';
 
 const ReasonInput = () => {
   const dispatch = useDispatch();
@@ -19,18 +20,13 @@ const ReasonInput = () => {
   };
 
   return (
-    <div>
-      <label htmlFor="reasonInput" style={{ display: 'block' }}>
-        Action Reason
-      </label>
-      <input
-        id="reasonInput"
-        type="text"
-        className="inputText"
-        onChange={handleChange}
-        value={reasonInput}
-      />
-    </div>
+    <TextField
+      value={reasonInput}
+      label="Action reason"
+      onChange={handleChange}
+      id="outlined-start-adornment"
+      sx={{ m: 1, width: '25ch' }}
+    />
   );
 };
 

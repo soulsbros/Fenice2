@@ -1,11 +1,12 @@
+import { TextField } from '@mui/material';
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import * as actions from '../store/actions';
+import * as actions from '../../actions';
 
 const ActionWeight = () => {
   const dispatch = useDispatch();
 
-  const { actionWeight } = useSelector((st) => st.alignmentReducer);
+  const actionWeight = useSelector((st) => st.alignmentReducer.actionWeight);
 
   const setActionWeight = useCallback(
     (data) => {
@@ -15,22 +16,20 @@ const ActionWeight = () => {
   );
 
   const handleChange = (e) => {
-    setActionWeight(parseInt(e.target.value));
+    const value = e.target.value === '' ? 0 : e.target.value;
+    setActionWeight(parseInt(value));
   };
 
   return (
-    <div>
-      <label htmlFor="actionWeight" style={{ display: 'block' }}>
-        Action weight
-      </label>
-      <input
-        id="actionWeight"
-        type="number"
-        className="inputText"
-        onChange={handleChange}
-        value={actionWeight}
-      />
-    </div>
+    <TextField
+      value={actionWeight.toString()}
+      type="number"
+      onChange={handleChange}
+      label="Action weight"
+      id="filled-start-adornment"
+      sx={{ m: 1, width: '25ch' }}
+      variant="outlined"
+    />
   );
 };
 

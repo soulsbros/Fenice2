@@ -1,19 +1,19 @@
 import { CssBaseline } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
+import { ThemeProvider } from '@mui/material/styles';
 import { Box } from '@mui/system';
 import React, { useEffect } from 'react';
-import Home from './views/Home';
-import Sidebar from './components/Sidebar';
-import { ThemeProvider } from '@mui/material/styles';
-import Alignment from './views/Alignment';
-import Documents from './views/Documents';
-import Tracker from './views/Tracker';
-import theme from './Theme';
+import { useDispatch, useSelector } from 'react-redux';
 import { validateCookie } from './api';
+import Sidebar from './components/Sidebar';
+import TopBar from './components/TopBar';
+import theme from './Theme';
+import Alignment from './views/Alignment';
+import Characters from './views/Characters';
+import Documents from './views/Documents';
+import Home from './views/Home';
 import Profile from './views/Profile';
 import Skills from './views/Skills';
-import TopBar from './components/TopBar';
-import Characters from './views/Characters';
+import Tracker from './views/Tracker';
 
 const App = () => {
   const dispatch = useDispatch();

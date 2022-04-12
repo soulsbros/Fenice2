@@ -11,7 +11,7 @@ const Characters = () => {
 
   useEffect(() => {
     let mapCampaigns = async () => {
-      let result = await getCharactersByCampaignName(campaign);
+      let result = await getCharactersByCampaignName(campaign.label);
       setCharacters(result.data || []);
     };
     mapCampaigns();
