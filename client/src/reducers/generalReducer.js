@@ -1,6 +1,6 @@
 const initialState = {
   page: 'home',
-  selectedCampaign: { label: null },
+  selectedCampaign: { id: null, label: null },
 };
 
 const generalReducer = (state = initialState, { type, payload }) => {

@@ -14,7 +14,7 @@ const CharacterAction = ({ character }) => {
   return (
     <FormControlLabel
       control={<Checkbox onChange={() => setSelectedChar(character._id)} />}
-      label={`${character.name.toUpperCase()} ${character.lastname.toUpperCase()}`}
+      label={`${character.name} ${character.lastname}`}
     />
   );
 };
