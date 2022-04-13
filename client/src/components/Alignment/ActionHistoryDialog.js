@@ -9,7 +9,7 @@ import {
   ListItem,
   ListItemText,
   Slide,
-  Typography
+  Typography,
 } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useCallback } from 'react';
