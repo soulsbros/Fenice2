@@ -1,8 +1,11 @@
-import { Box, Button, Grid, Toolbar } from '@mui/material';
-import React, { useCallback, useEffect } from 'react';
+import { Box, Grid, Toolbar } from '@mui/material';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../actions';
+import ActionHistory from '../components/Alignment/ActionHistory';
+import ActionHistoryDialog from '../components/Alignment/ActionHistoryDialog';
 import ActionWeight from '../components/Alignment/ActionWeight';
+import AlignmentActions from '../components/Alignment/AlignmentActions';
 import Canvas from '../components/Alignment/Canvas';
 import CharacterAction from '../components/Alignment/CharacterAction';
 import ReasonInput from '../components/Alignment/ReasonInput';
@@ -13,44 +16,6 @@ const Alignment = () => {
 
   const characters = useSelector((st) => st.alignmentReducer.characters);
   const campaign = useSelector((st) => st.generalReducer.selectedCampaign);
-  const actionWeight = useSelector((st) => st.alignmentReducer.actionWeight);
-  const reasonInput = useSelector((st) => st.alignmentReducer.reasonInput);
-  const selectedChars = useSelector((st) => st.alignmentReducer.selectedChars);
-
-  const addAction = useCallback(
-    (data) => {
-      dispatch(actions.addAction(data));
-    },
-    [dispatch],
-  );
-
-  const setReasonInput = useCallback(
-    (data) => {
-      dispatch(actions.setReasonInput(data));
-    },
-    [dispatch],
-  );
-
-  const handleClick = (actionType) => {
-    let val = actionWeight;
-
-    if (actionType === 'Good' || actionType === 'Lawful') {
-      val = -actionWeight;
-    }
-    let action = {
-      charsId: selectedChars,
-      action: {
-        type: actionType,
-        timestamp: new Date(),
-        reason: reasonInput,
-        value: val,
-      },
-      campaign: campaign.id,
-    };
-
-    addAction(action);
-    setReasonInput('');
-  };
 
   useEffect(() => {
     if (campaign && campaign.label !== null) {
@@ -70,6 +35,7 @@ const Alignment = () => {
               <Grid item xs={4}>
                 <ActionWeight />
                 <ReasonInput />
+                <ActionHistory />
               </Grid>
               <Grid item xs={4}>
                 <Box sx={{ flexGrow: 1 }}>
@@ -86,33 +52,11 @@ const Alignment = () => {
                 </Box>
               </Grid>
               <Grid item xs={4}>
-                <Box sx={{ flexGrow: 1 }}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                      <Button variant="contained" onClick={() => handleClick('Lawful')}>
-                        Lawful action
-                      </Button>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Button variant="contained" onClick={() => handleClick('Chaotic')}>
-                        Chaotic action
-                      </Button>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Button variant="contained" onClick={() => handleClick('Good')}>
-                        Good action
-                      </Button>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Button variant="contained" onClick={() => handleClick('Evil')}>
-                        Evil action
-                      </Button>
-                    </Grid>
-                  </Grid>
-                </Box>
+                <AlignmentActions />
               </Grid>
             </Grid>
           </Box>
+          <ActionHistoryDialog />
         </>
       ) : null}
     </Box>

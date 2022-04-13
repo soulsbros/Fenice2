@@ -1,9 +1,9 @@
 const initialState = {
   characters: [],
   actionWeight: 1,
-  campaign: null,
   reasonInput: '',
   selectedChars: [],
+  showActionHistory: false,
 };
 
 const alignmentReducer = (state = initialState, { type, payload }) => {
@@ -18,11 +18,6 @@ const alignmentReducer = (state = initialState, { type, payload }) => {
         ...state,
         actionWeight: payload,
       };
-    case 'SET_CAMPAIGN':
-      return {
-        ...state,
-        campaign: payload,
-      };
     case 'SET_REASON_INPUT':
       return {
         ...state,
@@ -32,6 +27,11 @@ const alignmentReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         selectedChars: [...state.selectedChars, payload],
+      };
+    case 'SET_SHOW_ACTION_HISTORY':
+      return {
+        ...state,
+        showActionHistory: payload,
       };
     default:
       return state;

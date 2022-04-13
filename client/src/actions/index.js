@@ -36,3 +36,8 @@ export const addSelectedChar = (payload) => ({
   type: 'ADD_SELECTED_CHAR',
   payload,
 });
+
+export const setShowActionHistory = (payload) => ({
+  type: 'SET_SHOW_ACTION_HISTORY',
+  payload,
+});
