@@ -1,30 +1,31 @@
+import Close from '@mui/icons-material/Close';
 import {
-  Button,
+  AppBar,
   Dialog,
-  DialogActions,
   DialogContent,
-  DialogTitle,
   Grid,
+  IconButton,
   List,
-  ListItem,
   ListItemText,
   Slide,
-  Typography,
+  Toolbar,
+  Typography
 } from '@mui/material';
 import { Box } from '@mui/system';
+import { format } from 'date-fns';
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../../actions';
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const ActionHistoryDialog = () => {
   const dispatch = useDispatch();
 
   const characters = useSelector((st) => st.alignmentReducer.characters);
   const showActionHistory = useSelector((st) => st.alignmentReducer.showActionHistory);
-
-  const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-  });
 
   const setShowActionHistory = useCallback(
     (data) => {
@@ -53,7 +54,21 @@ const ActionHistoryDialog = () => {
       onClose={() => setShowActionHistory(false)}
       TransitionComponent={Transition}
     >
-      <DialogTitle>Action History</DialogTitle>
+      <AppBar sx={{ position: 'relative' }}>
+        <Toolbar>
+          <IconButton
+            edge="start"
+            color="inherit"
+            onClick={() => setShowActionHistory(false)}
+            aria-label="close"
+          >
+            <Close />
+          </IconButton>
+          <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+            Action History
+          </Typography>
+        </Toolbar>
+      </AppBar>
       <DialogContent>
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2}>
@@ -65,12 +80,14 @@ const ActionHistoryDialog = () => {
                   </Typography>
                   <List>
                     {char.history.map((action) => (
-                      <ListItem key={action.timestamp}>
-                        <ListItemText
-                          primary={`${action.type} - ${action.timestamp}`}
-                          secondary={action.reason}
-                        />
-                      </ListItem>
+                      <ListItemText
+                        key={action.timestamp}
+                        primary={`${action.type} - ${format(
+                          new Date(action.timestamp),
+                          'dd.MM.yyyy HH:mm:ss',
+                        )}`}
+                        secondary={`${action.reason || '(none)'} - ${action.value}`}
+                      />
                     ))}
                   </List>
                 </Grid>
@@ -78,11 +95,6 @@ const ActionHistoryDialog = () => {
           </Grid>
         </Box>
       </DialogContent>
-      <DialogActions>
-        <Button variant="outlined" onClick={() => setShowActionHistory(false)}>
-          Close
-        </Button>
-      </DialogActions>
     </Dialog>
   );
 };
