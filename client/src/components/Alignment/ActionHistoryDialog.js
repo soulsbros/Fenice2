@@ -9,7 +9,7 @@ import {
   ListItemText,
   Slide,
   Toolbar,
-  Typography
+  Typography,
 } from '@mui/material';
 import { Box } from '@mui/system';
 import { format } from 'date-fns';
