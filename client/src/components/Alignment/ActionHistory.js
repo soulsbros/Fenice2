@@ -13,9 +13,9 @@ const ActionHistory = () => {
     [dispatch],
   );
   return (
-    <Button variant="outlined" onClick={() => setShowActionHistory(true)}>
+    <Button variant="outlined" sx={{ margin: 1 }} onClick={() => setShowActionHistory(true)}>
       {' '}
-      Action History
+      Actions history
     </Button>
   );
 };

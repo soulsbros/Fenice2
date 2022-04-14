@@ -26,8 +26,7 @@ const ActionWeight = () => {
       type="number"
       onChange={handleChange}
       label="Action weight"
-      id="filled-start-adornment"
-      sx={{ m: 1, width: '25ch' }}
+      sx={{ m: 1, width: 'calc(25% - 16px)' }}
       variant="outlined"
     />
   );

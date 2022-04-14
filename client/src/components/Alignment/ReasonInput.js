@@ -24,8 +24,7 @@ const ReasonInput = () => {
       value={reasonInput}
       label="Action reason"
       onChange={handleChange}
-      id="outlined-start-adornment"
-      sx={{ m: 1, width: '25ch' }}
+      sx={{ m: 1, width: 'calc(75% - 16px)' }}
     />
   );
 };

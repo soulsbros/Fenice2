@@ -54,7 +54,7 @@ const AlignmentActions = () => {
             Lawful action
           </Button>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={6} sx={{ textAlign: 'right' }}>
           <Button variant="contained" onClick={() => handleClick('Chaotic')}>
             Chaotic action
           </Button>
@@ -64,7 +64,7 @@ const AlignmentActions = () => {
             Good action
           </Button>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={6} sx={{ textAlign: 'right' }}>
           <Button variant="contained" onClick={() => handleClick('Evil')}>
             Evil action
           </Button>

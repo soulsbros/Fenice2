@@ -32,12 +32,12 @@ const Alignment = () => {
           <Canvas />
           <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={2}>
-              <Grid item xs={4}>
+              <Grid item xs={6}>
                 <ActionWeight />
                 <ReasonInput />
                 <ActionHistory />
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={3}>
                 <Box sx={{ flexGrow: 1 }}>
                   {characters &&
                     characters
@@ -51,7 +51,7 @@ const Alignment = () => {
                       ))}
                 </Box>
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={3}>
                 <AlignmentActions />
               </Grid>
             </Grid>
