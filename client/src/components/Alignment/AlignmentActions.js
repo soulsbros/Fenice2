@@ -49,21 +49,21 @@ const AlignmentActions = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container justifyContent="center" style={{ marginBottom: '10px' }}>
+        <Grid item xs={6}>
+          <Button variant="contained" onClick={() => handleClick('Good')} fullWidth>
+            Good action
+          </Button>
+        </Grid>
+      </Grid>
+      <Grid container spacing={2} style={{ marginBottom: '10px' }}>
         <Grid item md={6}>
           <Button variant="contained" onClick={() => handleClick('Lawful')} fullWidth>
             Lawful action
           </Button>
         </Grid>
-      </Grid>
-      <Grid container spacing={2} style={{ marginBottom: '10px' }}>
         <Grid item xs={6} sx={{ textAlign: 'right' }}>
           <Button variant="contained" onClick={() => handleClick('Chaotic')} fullWidth>
             Chaotic action
-          </Button>
-        </Grid>
-        <Grid item xs={6}>
-          <Button variant="contained" onClick={() => handleClick('Good')} fullWidth>
-            Good action
           </Button>
         </Grid>
       </Grid>

@@ -9,7 +9,7 @@ import {
   ListItemText,
   Slide,
   Toolbar,
-  Typography,
+  Typography
 } from '@mui/material';
 import { Box } from '@mui/system';
 import { format } from 'date-fns';
@@ -86,7 +86,7 @@ const ActionHistoryDialog = () => {
                           new Date(action.timestamp),
                           'dd.MM.yyyy HH:mm:ss',
                         )}`}
-                        secondary={`${action.reason || '(none)'} - ${action.value}`}
+                        secondary={`${action.reason || '(none)'} - ${Math.abs(action.value)}`}
                       />
                     ))}
                   </List>
