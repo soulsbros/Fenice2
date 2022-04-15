@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { Box } from '@mui/system';
 import { format } from 'date-fns';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../../actions';
 
@@ -26,6 +26,12 @@ const ActionHistoryDialog = () => {
 
   const characters = useSelector((st) => st.alignmentReducer.characters);
   const showActionHistory = useSelector((st) => st.alignmentReducer.showActionHistory);
+  const [gridSize, setGridSize] = useState(6);
+
+  useEffect(() => {
+    const gridSize = 12 / characters.length;
+    setGridSize(gridSize);
+  }, [characters]);
 
   const setShowActionHistory = useCallback(
     (data) => {
@@ -74,7 +80,7 @@ const ActionHistoryDialog = () => {
           <Grid container spacing={2}>
             {characters &&
               getHistories().map((char) => (
-                <Grid key={char.id} item xs={6}>
+                <Grid key={char.id} item xs={gridSize}>
                   <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
                     {char.name}
                   </Typography>
