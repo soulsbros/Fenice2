@@ -16,6 +16,8 @@ const Alignment = () => {
 
   const characters = useSelector((st) => st.alignmentReducer.characters);
   const campaign = useSelector((st) => st.generalReducer.selectedCampaign);
+  const isDm = useSelector((st) => st.userReducer.dm);
+  const isAdmin = useSelector((st) => st.userReducer.admin);
 
   useEffect(() => {
     if (campaign && campaign.label !== null) {
@@ -33,27 +35,35 @@ const Alignment = () => {
           <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={2}>
               <Grid item xs={6}>
-                <ActionWeight />
-                <ReasonInput />
+                {isDm || isAdmin ? (
+                  <>
+                    <ActionWeight />
+                    <ReasonInput />
+                  </>
+                ) : null}
                 <ActionHistory />
               </Grid>
-              <Grid item xs={3}>
-                <Box sx={{ flexGrow: 1 }}>
-                  {characters &&
-                    characters
-                      .sort((a, b) => {
-                        return a.name.localeCompare(b.name);
-                      })
-                      .map((char) => (
-                        <Grid key={char._id} item xs={6}>
-                          <CharacterAction key={char.name} character={char} />
-                        </Grid>
-                      ))}
-                </Box>
-              </Grid>
-              <Grid item xs={3}>
-                <AlignmentActions />
-              </Grid>
+              {isDm || isAdmin ? (
+                <>
+                  <Grid item xs={3}>
+                    <Box sx={{ flexGrow: 1 }}>
+                      {characters &&
+                        characters
+                          .sort((a, b) => {
+                            return a.name.localeCompare(b.name);
+                          })
+                          .map((char) => (
+                            <Grid key={char._id} item xs={6}>
+                              <CharacterAction key={char.name} character={char} />
+                            </Grid>
+                          ))}
+                    </Box>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <AlignmentActions />
+                  </Grid>
+                </>
+              ) : null}
             </Grid>
           </Box>
           <ActionHistoryDialog />

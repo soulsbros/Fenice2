@@ -30,7 +30,8 @@ const CampaignSelector = ({ sx }) => {
   return (
     <Autocomplete
       disablePortal
-      value={campaign.label}
+      value={campaign?.label || null}
+      isOptionEqualToValue={(option, value) => option.label === value}
       options={campaignOptions}
       onChange={handleCampaignChange}
       sx={{ width: 300, display: 'inline-block', ...sx }}

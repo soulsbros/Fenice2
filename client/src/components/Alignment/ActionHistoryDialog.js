@@ -9,7 +9,7 @@ import {
   ListItemText,
   Slide,
   Toolbar,
-  Typography
+  Typography,
 } from '@mui/material';
 import { Box } from '@mui/system';
 import { format } from 'date-fns';
@@ -71,7 +71,7 @@ const ActionHistoryDialog = () => {
             <Close />
           </IconButton>
           <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-            Action History
+            Actions History
           </Typography>
         </Toolbar>
       </AppBar>
@@ -87,7 +87,7 @@ const ActionHistoryDialog = () => {
                   <List>
                     {char.history.map((action) => (
                       <ListItemText
-                        key={action.timestamp}
+                        key={action.timestamp + char.id}
                         primary={`${action.type} - ${format(
                           new Date(action.timestamp),
                           'dd.MM.yyyy HH:mm:ss',
