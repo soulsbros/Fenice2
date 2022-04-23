@@ -7,6 +7,7 @@
   "keywords": [],
   "main": "app.js",
   "dependencies": {
+    "date-fns": "^2.28.0",
     "eslint-plugin-prettier": "^4.0.0",
     "express": "^4.17.2",
     "forever": "^4.0.1",
