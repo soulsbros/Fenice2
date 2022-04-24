@@ -23,10 +23,10 @@ const alignmentReducer = (state = initialState, { type, payload }) => {
         ...state,
         reasonInput: payload,
       };
-    case 'ADD_SELECTED_CHAR':
+    case 'SET_SELECTED_CHAR':
       return {
         ...state,
-        selectedChars: [...state.selectedChars, payload],
+        selectedChars: payload,
       };
     case 'SET_SHOW_ACTION_HISTORY':
       return {

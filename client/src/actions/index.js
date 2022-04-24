@@ -32,8 +32,8 @@ export const setReasonInput = (payload) => ({
   payload,
 });
 
-export const addSelectedChar = (payload) => ({
-  type: 'ADD_SELECTED_CHAR',
+export const setSelectedChar = (payload) => ({
+  type: 'SET_SELECTED_CHAR',
   payload,
 });
 
