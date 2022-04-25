@@ -33,7 +33,15 @@ const Sidebar = () => {
       }}
     >
       <Toolbar />
-      <Box sx={{ overflow: 'auto' }}>
+      <Box
+        sx={{
+          overflow: 'auto',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          height: '100%',
+        }}
+      >
         <List>
           <ListItem button onClick={() => (window.location.href = 'https://lafenice.soulsbros.ch')}>
             <ListItemIcon>
@@ -89,6 +97,25 @@ const Sidebar = () => {
             </ListItem>
           )}
         </List>
+        <Box sx={{ padding: '20px' }}>
+          &copy;2022 Soulsbros
+          <a
+            href="https://github.com/soulsbros"
+            target="_blank"
+            style={{ verticalAlign: 'middle', marginLeft: '4px' }}
+            rel="noreferrer"
+          >
+            <img src="https://soulsbros.ch/img/icon_github.png" width="32px" alt="GitHub logo" />
+          </a>
+          <a
+            href="https://soulsbros.ch/?p=contact"
+            target="_blank"
+            style={{ verticalAlign: 'middle', marginLeft: '4px' }}
+            rel="noreferrer"
+          >
+            <img src="https://soulsbros.ch/img/icon_contact.png" width="32px" alt="Contact logo" />
+          </a>
+        </Box>
       </Box>
     </Drawer>
   );

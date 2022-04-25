@@ -7,25 +7,31 @@ const CampaignSelector = ({ sx }) => {
   const dispatch = useDispatch();
   const campaign = useSelector((st) => st.generalReducer.selectedCampaign);
   const [campaignOptions, setCampaignOptions] = useState([]);
-  const handleCampaignChange = (event) => {
+  const handleCampaignChange = (event, value) => {
     dispatch({
       type: 'SET_CAMPAIGN',
-      payload: event.target.innerText,
+      payload: value,
     });
   };
 
   useEffect(() => {
     let mapCampaigns = async () => {
       let result = await getAllCampaigns();
-      setCampaignOptions(result.data.map((el) => el.name));
+      setCampaignOptions(
+        result.data.map((el) => ({
+          id: el._id,
+          label: el.name,
+        })),
+      );
     };
     mapCampaigns();
   }, []);
 
   return (
     <Autocomplete
-      value={campaign}
       disablePortal
+      value={campaign?.label || null}
+      isOptionEqualToValue={(option, value) => option.label === value}
       options={campaignOptions}
       onChange={handleCampaignChange}
       sx={{ width: 300, display: 'inline-block', ...sx }}

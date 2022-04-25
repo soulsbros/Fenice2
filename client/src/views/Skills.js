@@ -1,3 +1,6 @@
+import Close from '@mui/icons-material/Close';
+import School from '@mui/icons-material/School';
+import Warning from '@mui/icons-material/Warning';
 import {
   AppBar,
   Autocomplete,
@@ -12,11 +15,8 @@ import {
 import { Box } from '@mui/system';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { findSkill, skills } from '../util/skills';
-import Close from '@mui/icons-material/Close';
-import Warning from '@mui/icons-material/Warning';
-import School from '@mui/icons-material/School';
 import CampaignSelector from '../components/CampaignSelector';
+import { findSkill, skills } from '../util/skills';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -65,9 +65,9 @@ const Skills = () => {
         sx={{ width: 300, display: 'inline-block', margin: 2 }}
         renderInput={(params) => <TextField {...params} color="secondary" label="Skill" />}
       />
-      {skill && campaign && (
+      {skill && campaign.label != null && (
         <Typography gutterBottom>
-          The best character for <b>{skill}</b> in {campaign} is: Place Holder
+          The best character for <b>{skill}</b> in {campaign.label} is: Place Holder
         </Typography>
       )}
       {skill && (
