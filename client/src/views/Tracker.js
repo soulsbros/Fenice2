@@ -1,14 +1,14 @@
-import { Button, Typography } from '@material-ui/core';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { Button, Typography } from '@mui/material';
+import React, { useCallback, useContext, useEffect } from 'react';
 import { SocketContext } from '../SocketContext';
-import MasterView from '../components/tracker/MasterView';
-import PlayerView from '../components/tracker/PlayerView';
-import { useSelector } from 'react-redux';
+import MasterView from '../components/Tracker/MasterView';
+import PlayerView from '../components/Tracker/PlayerView';
+import { useDispatch, useSelector } from 'react-redux';
 import { Box, Toolbar } from '@mui/material';
 
 const Tracker = () => {
-  const [clientId, setClientId] = useState(null);
-  const [currPlayer, setCurrPlayer] = useState(null);
+  const dispatch = useDispatch();
+  const clientId = useSelector((st) => st.trackerReducer.clientId);
   const isMaster = useSelector((st) => st.userReducer.dm);
   const socket = useContext(SocketContext);
 
@@ -16,13 +16,17 @@ const Tracker = () => {
     if (isMaster) {
       socket.emit('unsetMaster');
     }
-    setClientId(null);
-    setCurrPlayer(null);
-  }, [socket, isMaster]);
+    dispatch({
+      type: 'RESET_IDS',
+    });
+  }, [socket, isMaster, dispatch]);
 
   useEffect(() => {
     socket.on('registeredPlayer', (data) => {
-      setClientId(data.id);
+      dispatch({
+        type: 'SET_CLIENT_ID',
+        payload: data.id,
+      });
     });
 
     socket.on('kick', () => {
@@ -35,9 +39,12 @@ const Tracker = () => {
     });
 
     socket.on('updateTurns', (newCurrent) => {
-      setCurrPlayer(newCurrent);
+      dispatch({
+        type: 'SET_CURRENT_PLAYER',
+        payload: newCurrent,
+      });
     });
-  }, [socket, disconnect]);
+  }, [socket, disconnect, dispatch]);
 
   const register = () => {
     socket.emit(isMaster ? 'registerMaster' : 'registerPlayer');
@@ -59,12 +66,8 @@ const Tracker = () => {
         </Button>
       ) : (
         <>
-          {isMaster ? (
-            <MasterView currPlayer={currPlayer} />
-          ) : (
-            <PlayerView currPlayer={currPlayer} clientId={clientId} />
-          )}
-          <Typography style={{ marginTop: '20px' }}>
+          {isMaster ? <MasterView /> : <PlayerView />}
+          <Typography sx={{ mt: '20px' }}>
             <Button variant="contained" onClick={disconnect}>
               Disconnect
             </Button>

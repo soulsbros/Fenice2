@@ -1,10 +1,12 @@
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 import React, { useContext } from 'react';
 import { SocketContext } from '../../SocketContext';
 import StatusViewer from './StatusViewer';
+import { useSelector } from 'react-redux';
 
-const MasterView = ({ currPlayer }) => {
+const MasterView = () => {
   const socket = useContext(SocketContext);
+  const currPlayer = useSelector((st) => st.trackerReducer.currPlayer);
 
   const nextPlayer = () => {
     socket.emit('endTurn');
@@ -24,27 +26,23 @@ const MasterView = ({ currPlayer }) => {
         // Not playing - form to insert data
         // TODO multiple forms
         <>
-          <Button variant="contained" color="primary" onClick={start}>
+          <Button variant="contained" onClick={start}>
             Start
           </Button>
-          &nbsp;
         </>
       ) : (
         // Playing - status and controls
         <>
-          <StatusViewer currPlayer={currPlayer} isMaster={true} />
-          <Button variant="contained" onClick={disconnectAll}>
+          <StatusViewer isMaster={true} />
+          <Button variant="outlined" onClick={disconnectAll}>
             Kick all
           </Button>
-          &nbsp;
-          <Button variant="contained" onClick={start}>
+          <Button variant="outlined" onClick={start}>
             Restart
           </Button>
-          &nbsp;
-          <Button variant="contained" color="primary" onClick={nextPlayer}>
+          <Button variant="contained" onClick={nextPlayer}>
             Next player
           </Button>
-          &nbsp;
         </>
       )}
     </>

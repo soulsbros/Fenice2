@@ -22,5 +22,5 @@
       "type": "integer"
     }
   },
-  "required": ["name", "initiative", "hp", "currentHp", "ac", "player"]
+  "required": ["name", "initiative", "hp", "currentHp", "ac"]
 }
