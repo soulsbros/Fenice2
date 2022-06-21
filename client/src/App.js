@@ -11,8 +11,8 @@ import { SocketContext } from './SocketContext';
 import theme from './Theme';
 import Alignment from './views/Alignment';
 import Characters from './views/Characters';
-import Documents from './views/Documents';
 import Home from './views/Home';
+import Map from './views/Map';
 import Profile from './views/Profile';
 import Skills from './views/Skills';
 import Tracker from './views/Tracker';
@@ -25,20 +25,19 @@ const App = () => {
 
   const renderBody = () => {
     switch (page) {
-      case 'home':
-        return <Home />;
       case 'alignment':
         return <Alignment />;
       case 'characters':
         return <Characters />;
       case 'combattracker':
         return <Tracker />;
-      case 'documents':
-        return <Documents />;
+      case 'map':
+        return <Map />;
       case 'profile':
         return <Profile />;
       case 'skills':
         return <Skills />;
+      case 'home':
       default:
         return <Home />;
     }
