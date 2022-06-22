@@ -8,7 +8,7 @@ const Map = () => {
   let map;
   useEffect(() => {
     // eslint-disable-next-line
-    map = L.map('map').setView([43.4467, -23.045], 6);
+    map = L.map('map').setView([47.428545, -7.69043], 5);
     const mapOptions = {
       tms: true,
       updateWhenIdle: false,
