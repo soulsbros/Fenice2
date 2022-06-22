@@ -7,7 +7,7 @@ import mapLocations from '../util/mapLocations';
 const Map = () => {
   let map;
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps, no-undef
+    // eslint-disable-next-line
     map = L.map('map').setView([43.4467, -23.045], 6);
     const mapOptions = {
       tms: true,
