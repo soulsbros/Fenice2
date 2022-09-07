@@ -1,4 +1,5 @@
 const findSkill = (str) => skills.filter((el) => el.name.toLowerCase() === str.toLowerCase())[0];
+const getWikiURL = (skillName) => `https://www.d20srd.org/srd/skills/${skillName}.htm`;
 
 const skills = [
   {
@@ -231,4 +232,4 @@ const skills = [
   },
 ];
 
-export { skills, findSkill };
+export { skills, findSkill, getWikiURL };

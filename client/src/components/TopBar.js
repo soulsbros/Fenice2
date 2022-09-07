@@ -1,4 +1,5 @@
 import { AccountCircle } from '@mui/icons-material';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { AppBar, IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -50,6 +51,7 @@ const TopBar = () => {
               {username}
               <IconButton size="large" color="inherit">
                 <AccountCircle />
+                <KeyboardArrowDownIcon />
               </IconButton>
             </Typography>
 

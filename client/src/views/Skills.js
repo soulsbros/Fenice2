@@ -16,7 +16,7 @@ import { Box } from '@mui/system';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import CampaignSelector from '../components/CampaignSelector';
-import { findSkill, skills } from '../util/skills';
+import { findSkill, getWikiURL, skills } from '../util/pf2skills';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -35,7 +35,7 @@ const Skills = () => {
         return index === 0 ? word.toLowerCase() : word.toUpperCase();
       })
       .replace(/\s+/g, '');
-    const url = `https://www.d20srd.org/srd/skills/${skillName}.htm`;
+    const url = getWikiURL(skillName);
     setWikiURL(url);
     setOpen(true);
   };
@@ -55,7 +55,7 @@ const Skills = () => {
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <Toolbar />
       <Typography variant="h6" gutterBottom>
-        Skill checks
+        Skill checks (Pathfinder 2e)
       </Typography>
       <CampaignSelector />
       <Autocomplete
@@ -65,11 +65,7 @@ const Skills = () => {
         sx={{ width: 300, display: 'inline-block', margin: 2 }}
         renderInput={(params) => <TextField {...params} color="secondary" label="Skill" />}
       />
-      {skill && campaign.label != null && (
-        <Typography gutterBottom>
-          The best character for <b>{skill}</b> in {campaign.label} is: Place Holder
-        </Typography>
-      )}
+
       {skill && (
         <Typography component="div">
           {findSkill(skill).armorPenalty && (
@@ -89,6 +85,13 @@ const Skills = () => {
           </Button>
         </Typography>
       )}
+
+      {skill && campaign.label != null && (
+        <Typography sx={{ mt: 4 }}>
+          The best character for <b>{skill}</b> in {campaign.label} is: Place Holder
+        </Typography>
+      )}
+
       <Dialog fullScreen open={open} onClose={handleDialogClose} TransitionComponent={Transition}>
         <AppBar sx={{ position: 'relative' }}>
           <Toolbar>

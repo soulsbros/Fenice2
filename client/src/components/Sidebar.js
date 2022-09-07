@@ -1,9 +1,9 @@
+import { AllInclusive, ArrowBack, Casino, Login, Map, Person, Timer } from '@mui/icons-material/';
+import Home from '@mui/icons-material/Home';
 import { Drawer, List, ListItem, ListItemIcon, ListItemText, Toolbar } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Home from '@mui/icons-material/Home';
-import { AllInclusive, ArrowBack, Casino, Login, Map, Person, Timer } from '@mui/icons-material/';
 
 const drawerWidth = 240;
 
@@ -55,47 +55,46 @@ const Sidebar = () => {
             </ListItemIcon>
             <ListItemText primary="Home" />
           </ListItem>
+          <ListItem button onClick={() => setPage('alignment')}>
+            <ListItemIcon>
+              <AllInclusive />
+            </ListItemIcon>
+            <ListItemText primary="Alignment" />
+          </ListItem>
+          <ListItem button onClick={() => setPage('characters')}>
+            <ListItemIcon>
+              <Person />
+            </ListItemIcon>
+            <ListItemText primary="Characters" />
+          </ListItem>
           {username ? (
-            <>
-              <ListItem button onClick={() => setPage('alignment')}>
-                <ListItemIcon>
-                  <AllInclusive />
-                </ListItemIcon>
-                <ListItemText primary="Alignment" />
-              </ListItem>
-              <ListItem button onClick={() => setPage('characters')}>
-                <ListItemIcon>
-                  <Person />
-                </ListItemIcon>
-                <ListItemText primary="Characters" />
-              </ListItem>
-              <ListItem button onClick={() => setPage('combattracker')}>
-                <ListItemIcon>
-                  <Timer />
-                </ListItemIcon>
-                <ListItemText primary="Combat tracker" />
-              </ListItem>
-              <ListItem button onClick={() => setPage('map')}>
-                <ListItemIcon>
-                  <Map />
-                </ListItemIcon>
-                <ListItemText primary="Map" />
-              </ListItem>
-              <ListItem button onClick={() => setPage('skills')}>
-                <ListItemIcon>
-                  <Casino />
-                </ListItemIcon>
-                <ListItemText primary="Skill checks" />
-              </ListItem>
-            </>
-          ) : (
+            <ListItem button onClick={() => setPage('combattracker')}>
+              <ListItemIcon>
+                <Timer />
+              </ListItemIcon>
+              <ListItemText primary="Combat tracker" />
+            </ListItem>
+          ) : null}
+          <ListItem button onClick={() => setPage('map')}>
+            <ListItemIcon>
+              <Map />
+            </ListItemIcon>
+            <ListItemText primary="Map (Dark Age)" />
+          </ListItem>
+          <ListItem button onClick={() => setPage('skills')}>
+            <ListItemIcon>
+              <Casino />
+            </ListItemIcon>
+            <ListItemText primary="Skill checks" />
+          </ListItem>
+          {!username ? (
             <ListItem button onClick={doLogin}>
               <ListItemIcon>
                 <Login />
               </ListItemIcon>
               <ListItemText primary="Login" />
             </ListItem>
-          )}
+          ) : null}
         </List>
         <Box sx={{ padding: '20px' }}>
           &copy;2022 Soulsbros
