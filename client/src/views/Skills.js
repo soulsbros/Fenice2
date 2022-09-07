@@ -12,7 +12,6 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
-import { Box } from '@mui/system';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import CampaignSelector from '../components/CampaignSelector';
@@ -52,8 +51,7 @@ const Skills = () => {
   const skillOptions = skills.map((el) => el.name);
 
   return (
-    <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-      <Toolbar />
+    <>
       <Typography variant="h6" gutterBottom>
         Skill checks (Pathfinder 2e)
       </Typography>
@@ -62,7 +60,7 @@ const Skills = () => {
         disablePortal
         options={skillOptions}
         onChange={handleSkillChange}
-        sx={{ width: 300, display: 'inline-block', margin: 2 }}
+        sx={{ width: 300, display: 'inline-block', margin: 2, backgroundColor: 'white' }}
         renderInput={(params) => <TextField {...params} color="secondary" label="Skill" />}
       />
 
@@ -105,7 +103,7 @@ const Skills = () => {
         </AppBar>
         <iframe title="wikiPage" src={wikiURL} height="100%" />
       </Dialog>
-    </Box>
+    </>
   );
 };
 

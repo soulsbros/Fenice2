@@ -1,4 +1,4 @@
-import { CssBaseline } from '@mui/material';
+import { CssBaseline, Toolbar } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
@@ -95,7 +95,10 @@ const App = () => {
 
           <Sidebar />
 
-          {renderBody()}
+          <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+            <Toolbar />
+            {renderBody()}
+          </Box>
         </Box>
       </SocketContext.Provider>
     </ThemeProvider>

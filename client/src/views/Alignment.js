@@ -1,4 +1,4 @@
-import { Box, Grid, Toolbar } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../actions';
@@ -26,8 +26,7 @@ const Alignment = () => {
   }, [campaign, dispatch]);
 
   return (
-    <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-      <Toolbar />
+    <>
       <TopBar />
       {campaign && campaign.label !== null ? (
         <>
@@ -69,7 +68,7 @@ const Alignment = () => {
           <ActionHistoryDialog />
         </>
       ) : null}
-    </Box>
+    </>
   );
 };
 

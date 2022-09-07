@@ -1,10 +1,9 @@
 import { Button, Typography } from '@mui/material';
 import React, { useCallback, useContext, useEffect } from 'react';
-import { SocketContext } from '../SocketContext';
+import { useDispatch, useSelector } from 'react-redux';
 import MasterView from '../components/Tracker/MasterView';
 import PlayerView from '../components/Tracker/PlayerView';
-import { useDispatch, useSelector } from 'react-redux';
-import { Box, Toolbar } from '@mui/material';
+import { SocketContext } from '../SocketContext';
 
 const Tracker = () => {
   const dispatch = useDispatch();
@@ -51,9 +50,7 @@ const Tracker = () => {
   };
 
   return (
-    <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-      <Toolbar />
-
+    <>
       <p id="status">
         {clientId === null
           ? 'Disconnected'
@@ -74,7 +71,7 @@ const Tracker = () => {
           </Typography>
         </>
       )}
-    </Box>
+    </>
   );
 };
 

@@ -34,7 +34,7 @@ const CampaignSelector = ({ sx }) => {
       isOptionEqualToValue={(option, value) => option.label === value}
       options={campaignOptions}
       onChange={handleCampaignChange}
-      sx={{ width: 300, display: 'inline-block', ...sx }}
+      sx={{ width: 300, display: 'inline-block', backgroundColor: 'white', ...sx }}
       renderInput={(params) => <TextField {...params} color="secondary" label="Campaign" />}
     />
   );

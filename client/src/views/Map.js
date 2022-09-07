@@ -1,5 +1,4 @@
-import { Grid, List, ListItem, ListItemAvatar, ListItemText, Toolbar } from '@mui/material';
-import { Box } from '@mui/system';
+import { Grid, List, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 import React, { useEffect } from 'react';
 import mapLocations from '../util/mapLocations';
 
@@ -85,9 +84,7 @@ const Map = () => {
   };
 
   return (
-    <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-      <Toolbar />
-
+    <>
       <div id="map" style={{ height: '70vh' }}></div>
 
       <Grid container sx={{ justifyContent: 'space-between' }}>
@@ -110,7 +107,7 @@ const Map = () => {
           Red = lore, blue = visited, yellow = next destination
         </Grid>
       </Grid>
-    </Box>
+    </>
   );
 };
 
