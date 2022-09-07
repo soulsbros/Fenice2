@@ -79,7 +79,7 @@ const App = () => {
     console.info('Connecting to ' + (isProd ? 'prod' : 'dev'));
     const newSocket = isProd
       ? io.connect({ path: '/socket.io' })
-      : io.connect(`http://${window.location.hostname}:4000`, {
+      : io.connect(`http://${location.hostname}:4000`, {
           path: '/socket.io',
         });
     setSocket(newSocket);

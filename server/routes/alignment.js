@@ -19,12 +19,27 @@ router.get('/getCampaigns', async (req, res) => {
 
 router.get('/getCharactersByCampaignName/:name', async (req, res) => {
   try {
+    // Get data from new DB (mongo)
     const response = await fetch(
       `https://alignment.lafenice.soulsbros.ch/api/getCharactersByCampaignName/${req.params.name}`,
     );
     const body = await response.json();
 
-    res.status(200).send(body.sort((a, b) => a.name.localeCompare(b.name)));
+    // For each character, get data from the old DB (SQL)
+    let result = [];
+    for (const character of body) {
+      const response = await fetch(
+        `https://lafenice.soulsbros.ch/actions/getCharacterData.php?id=${character.externalId}`,
+      );
+      try {
+        const body2 = await response.json();
+        result.push({ ...body2, ...character });
+      } catch (err) {
+        result.push(character);
+      }
+    }
+
+    res.status(200).send(result.sort((a, b) => a.name.localeCompare(b.name)));
   } catch (err) {
     console.error(err);
     res.status(500).send({});

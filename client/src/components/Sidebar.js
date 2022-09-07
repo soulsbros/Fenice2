@@ -19,8 +19,7 @@ const Sidebar = () => {
   };
 
   const doLogin = () => {
-    window.location.href =
-      'https://login.soulsbros.ch?p=login&location=https://fenice2.soulsbros.ch';
+    location.href = 'https://login.soulsbros.ch?p=login&location=https://fenice2.soulsbros.ch';
   };
 
   return (
@@ -43,7 +42,7 @@ const Sidebar = () => {
         }}
       >
         <List>
-          <ListItem button onClick={() => (window.location.href = 'https://lafenice.soulsbros.ch')}>
+          <ListItem button onClick={() => (location.href = 'https://lafenice.soulsbros.ch')}>
             <ListItemIcon>
               <ArrowBack />
             </ListItemIcon>

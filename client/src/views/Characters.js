@@ -77,10 +77,10 @@ const Characters = () => {
         <DialogContent sx={{ p: 6 }}>
           <Grid item xs={12}>
             <img
-              src="https://lafenice.soulsbros.ch/img/pg/106.jpg"
-              alt="character"
+              src={`https://lafenice.soulsbros.ch/img/pg/${characterData?.externalId}.jpg`}
+              alt="character portrait"
               style={{
-                maxWidth: '100%',
+                width: '100%',
               }}
             />
           </Grid>
@@ -94,14 +94,14 @@ const Characters = () => {
             </Grid>
             <Grid item>
               <ListItemText
-                primary={'Placeholders'}
+                primary={characterData?.race}
                 secondary={'Race'}
                 sx={{ textAlign: 'center' }}
               />
             </Grid>
             <Grid item>
               <ListItemText
-                primary={'Holder of places'}
+                primary={characterData?.class}
                 secondary={'Class'}
                 sx={{ textAlign: 'center' }}
               />
@@ -115,46 +115,16 @@ const Characters = () => {
             </Grid>
             <Grid item>
               <ListItemText
-                primary={'Place Holder'}
+                primary={characterData?.playerName}
                 secondary={'Player name'}
                 sx={{ textAlign: 'right' }}
               />
             </Grid>
           </Grid>
 
-          <Typography>
-            If true, the text will not wrap, but instead will truncate with a text overflow
-            ellipsis. Note that text overflow can only happen with block or inline-block level
-            elements (the element needs to have a width in order to overflow). If true, the text
-            will not wrap, but instead will truncate with a text overflow ellipsis. Note that text
-            overflow can only happen with block or inline-block level elements (the element needs to
-            have a width in order to overflow). If true, the text will not wrap, but instead will
-            truncate with a text overflow ellipsis. Note that text overflow can only happen with
-            block or inline-block level elements (the element needs to have a width in order to
-            overflow). If true, the text will not wrap, but instead will truncate with a text
-            overflow ellipsis. Note that text overflow can only happen with block or inline-block
-            level elements (the element needs to have a width in order to overflow). If true, the
-            text will not wrap, but instead will truncate wwrap, but instead will truncate with a
-            text overflow ellipsis. Note that text overflow can only happen with block or
-            inline-block level elements (the element needs to have a width in order to overflow). If
-            true, the text will not wrap, but instead will truncate with a text overflow ellipsis.
-            Note that text overflow can only happen with block or inline-block level elements (the
-            element needs to have a width in order to overflow). If true, the text will not wrap,
-            but instead will truncate with a text overflow ellipsis. Note that text overflow can
-            only happen with block or inline-block level elements (the element needs to have a width
-            in order to overflow). If true, the text will not wrap, but instead will truncate wwrap,
-            but instead will truncate with a text overflow ellipsis. Note that text overflow can
-            only happen with block or inline-block level elements (the element needs to have a width
-            in order to overflow). If true, the text will not wrap, but instead will truncate with a
-            text overflow ellipsis. Note that text overflow can only happen with block or
-            inline-block level elements (the element needs to have a width in order to overflow). If
-            true, the text will not wrap, but instead will truncate with a text overflow ellipsis.
-            Note that text overflow can only happen with block or inline-block level elements (the
-            element needs to have a width in order to overflow). If true, the text will not wrap,
-            but instead will truncate with a text overflow ellipsis. Note that text overflow can
-            only happen with block or inline-block level elements (the element needs to have a width
-            in order to overflow).
-          </Typography>
+          <Typography>{characterData?.backstory}</Typography>
+
+          <Typography>{characterData?.character}</Typography>
         </DialogContent>
       </Dialog>
     </>

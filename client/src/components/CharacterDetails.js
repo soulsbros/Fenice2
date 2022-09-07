@@ -21,10 +21,11 @@ const CharacterDetails = ({ data }) => {
     <Grid item xs={4}>
       <Card sx={{ m: 2, p: '20px 50px', cursor: 'pointer' }} onClick={openDialog}>
         <img
-          src="https://lafenice.soulsbros.ch/img/pg/106.jpg"
-          alt="character"
+          src={`https://lafenice.soulsbros.ch/img/pg/${data.externalId}.jpg`}
+          alt="character portrait"
           style={{
-            maxWidth: '100%',
+            width: '100%',
+            maxHeight: '600px',
           }}
         />
 
@@ -37,21 +38,7 @@ const CharacterDetails = ({ data }) => {
           </Grid>
           <Grid item>
             <ListItemText
-              primary={'Placeholders'}
-              secondary={'Race'}
-              sx={{ textAlign: 'center' }}
-            />
-          </Grid>
-          <Grid item>
-            <ListItemText
-              primary={'Holder of places'}
-              secondary={'Class'}
-              sx={{ textAlign: 'center' }}
-            />
-          </Grid>
-          <Grid item>
-            <ListItemText
-              primary={'Place Holder'}
+              primary={data.playerName ? data.playerName : 'Unknown'}
               secondary={'Player name'}
               sx={{ textAlign: 'right' }}
             />
