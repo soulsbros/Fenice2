@@ -28,13 +28,18 @@ router.get('/getCharactersByCampaignName/:name', async (req, res) => {
     // For each character, get data from the old DB (SQL)
     let result = [];
     for (const character of body) {
-      const response = await fetch(
-        `https://lafenice.soulsbros.ch/actions/getCharacterData.php?id=${character.externalId}`,
-      );
-      try {
-        const body2 = await response.json();
-        result.push({ ...body2, ...character });
-      } catch (err) {
+      if (character.externalId !== null) {
+        const response = await fetch(
+          `https://lafenice.soulsbros.ch/actions/getCharacterData.php?id=${character.externalId}`,
+        );
+        try {
+          const body2 = await response.json();
+          result.push({ ...body2, ...character });
+        } catch (err) {
+          console.error(character.externalId, err);
+          result.push(character);
+        }
+      } else {
         result.push(character);
       }
     }

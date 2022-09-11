@@ -1,6 +1,14 @@
-import { Grid, List, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
+import {
+  Card,
+  Grid,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Typography,
+} from '@mui/material';
 import React, { useEffect } from 'react';
-import mapLocations from '../util/mapLocations';
+import { futureItineraryPoints, itineraryPoints, mapLocations } from '../util/mapLocations';
 
 const Map = () => {
   let map;
@@ -43,7 +51,11 @@ const Map = () => {
 
     // -- Locations --
 
-    mapLocations.forEach((el) => {
+    const fullLocationList = mapLocations.lore
+      .concat(mapLocations.itinerary)
+      .concat(mapLocations.futureItinerary);
+
+    fullLocationList.forEach((el) => {
       // eslint-disable-next-line no-undef
       const marker = L.marker(el.position, {
         // eslint-disable-next-line no-undef
@@ -59,21 +71,17 @@ const Map = () => {
 
     // -- Path --
 
-    const latlngs = [
-      mapLocations[4].position,
-      mapLocations[5].position,
-      mapLocations[6].position,
-      mapLocations[7].position,
-      mapLocations[8].position,
-    ];
+    // eslint-disable-next-line no-undef
+    L.polyline(itineraryPoints, { color: '#4380c2' }).addTo(map);
 
     // eslint-disable-next-line no-undef
-    L.polyline(latlngs, { color: '#4380c2' }).addTo(map);
+    L.polyline(futureItineraryPoints, { color: '#ea881c' }).addTo(map);
 
     // -- Event handlers --
 
     const onMapClick = (e) => {
-      console.info('Position: ' + e.latlng);
+      console.info(`Position: [${e.latlng.lat}, ${e.latlng.lng}]`);
+      navigator.clipboard.writeText(`[${e.latlng.lat}, ${e.latlng.lng}],`);
     };
 
     map.on('click', onMapClick);
@@ -88,23 +96,59 @@ const Map = () => {
       <div id="map" style={{ height: '70vh' }}></div>
 
       <Grid container sx={{ justifyContent: 'space-between' }}>
-        <Grid item>
-          <List>
-            {mapLocations.map((el) => (
-              <ListItem alignItems="flex-start" key={el.name}>
-                <ListItemAvatar style={{ cursor: 'pointer' }} onClick={() => focusMap(el.position)}>
-                  <img src={`/img/marker${el.marker}.png`} alt="marker" style={{ width: '25px' }} />
-                </ListItemAvatar>
-                <ListItemText
-                  primary={el.dateVisited ? `${el.name} (${el?.dateVisited})` : el.name}
-                  secondary={el.description}
-                />
-              </ListItem>
-            ))}
-          </List>
+        <Grid item xs={6}>
+          <Card sx={{ m: 2 }}>
+            <Typography variant="h6" sx={{ p: 1 }}>
+              Our itinerary
+            </Typography>
+            <List>
+              {mapLocations.itinerary.concat(mapLocations.futureItinerary).map((el) => (
+                <ListItem alignItems="flex-start" key={el.name}>
+                  <ListItemAvatar
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => focusMap(el.position)}
+                  >
+                    <img
+                      src={`/img/marker${el.marker}.png`}
+                      alt="marker"
+                      style={{ width: '25px' }}
+                    />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={el.dateVisited ? `${el.name} (${el?.dateVisited})` : el.name}
+                    secondary={el.description}
+                  />
+                </ListItem>
+              ))}
+            </List>
+          </Card>
         </Grid>
-        <Grid item sx={{ mt: 2 }}>
-          Red = lore, blue = visited, yellow = next destination
+        <Grid item xs={6}>
+          <Card sx={{ m: 2 }}>
+            <Typography variant="h6" sx={{ p: 1 }}>
+              Lore locations
+            </Typography>
+            <List>
+              {mapLocations.lore.map((el) => (
+                <ListItem alignItems="flex-start" key={el.name}>
+                  <ListItemAvatar
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => focusMap(el.position)}
+                  >
+                    <img
+                      src={`/img/marker${el.marker}.png`}
+                      alt="marker"
+                      style={{ width: '25px' }}
+                    />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={el.dateVisited ? `${el.name} (${el?.dateVisited})` : el.name}
+                    secondary={el.description}
+                  />
+                </ListItem>
+              ))}
+            </List>
+          </Card>
         </Grid>
       </Grid>
     </>
