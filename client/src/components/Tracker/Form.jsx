@@ -1,10 +1,6 @@
-import { JsonForms } from '@jsonforms/react';
-import React, { useContext, useState } from 'react';
-import schema from '../../form/trackerSchema.json';
-import uischema from '../../form/trackerUISchema.json';
-import { materialCells, materialRenderers } from '@jsonforms/material-renderers';
-import { useDispatch } from 'react-redux';
 import { Button } from '@mui/material';
+import React, { useContext, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { SocketContext } from '../../SocketContext';
 
 const Form = () => {
@@ -12,6 +8,7 @@ const Form = () => {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({});
 
+  // eslint-disable-next-line no-unused-vars
   const handleChange = (data) => {
     setFormData(data);
   };
@@ -33,13 +30,7 @@ const Form = () => {
 
   return (
     <>
-      <JsonForms
-        schema={schema}
-        uischema={uischema}
-        renderers={materialRenderers}
-        cells={materialCells}
-        onChange={handleChange}
-      />
+      WIP
       <Button sx={{ mt: '20px', mr: '20px' }} variant="contained" onClick={registerInitiative}>
         Submit
       </Button>

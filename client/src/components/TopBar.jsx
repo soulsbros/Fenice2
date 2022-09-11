@@ -10,6 +10,7 @@ const TopBar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const setPage = (p) => {
+    setAnchorEl(null);
     dispatch({
       type: 'SET_PAGE',
       payload: p,
