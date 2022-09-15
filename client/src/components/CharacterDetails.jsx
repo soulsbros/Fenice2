@@ -25,7 +25,6 @@ const CharacterDetails = ({ data }) => {
           alt="character portrait"
           style={{
             width: '100%',
-            maxHeight: '600px',
           }}
         />
 

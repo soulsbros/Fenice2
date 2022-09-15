@@ -1,8 +1,8 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
-let backendHostname = process.env.REACT_APP_BACKEND_HOSTNAME || 'localhost';
-let backendPort = process.env.REACT_APP_BACKEND_PORT || 4000;
+let backendHostname = process.env.VITE_APP_BACKEND_HOSTNAME || 'localhost';
+let backendPort = process.env.VITE_APP_BACKEND_PORT || 4000;
 
 // https://vitejs.dev/config/
 export default defineConfig({

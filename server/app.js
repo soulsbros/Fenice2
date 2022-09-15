@@ -2,7 +2,7 @@ const express = require('express');
 const http = require('http');
 const cors = require('cors');
 
-const serverPort = process.env.REACT_APP_BACKEND_PORT || 4000;
+const serverPort = process.env.VITE_APP_BACKEND_PORT || 4000;
 const auth = require('./routes/auth');
 const alignment = require('./routes/alignment');
 
