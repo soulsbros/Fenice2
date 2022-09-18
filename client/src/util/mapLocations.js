@@ -69,7 +69,28 @@ const mapLocations = {
       description:
         'A small gracious town, filled with halflings. For the love of everything, play dice with them...',
       marker: 'Blue',
-      dateVisited: '17th of Erastus - now',
+      dateVisited: '8th of Erastus',
+    },
+    {
+      name: 'Misarias',
+      position: [40.61308617898251, -11.005554199218752],
+      description: 'A fortified city where we met Alkest, Kurbas, and Nok Nok',
+      marker: 'Blue',
+      dateVisited: '18th of Erastus - 19th of Erastus',
+    },
+    {
+      name: `Haugin's Ear`,
+      position: [40.49206477636645, -9.115905761718752],
+      description: 'A small cursed village, where everyone has been turned into a fox',
+      marker: 'Blue',
+      dateVisited: '19th of Erastus',
+    },
+    {
+      name: `Goblin City`,
+      position: [40.36771970021672, -8.041992187500002],
+      description: `An underground goblin city that w're trying to reclaim`,
+      marker: 'Blue',
+      dateVisited: '19th of Erastus - now',
     },
   ],
   futureItinerary: [
@@ -149,14 +170,16 @@ const itineraryPoints = [
   mapLocations.itinerary[5].position, // senara
   [40.402713395541056, -12.32666015625],
   [40.52210173747721, -11.914672851562502],
+  mapLocations.itinerary[6].position, // misarias
+  [40.536824156415335, -10.71441650390625],
+  mapLocations.itinerary[7].position, // haugin's ear
+  mapLocations.itinerary[8].position, // goblin city
 ];
 
 const futureItineraryPoints = [
-  [40.52210173747721, -11.914672851562502],
-  [40.63037774787604, -11.002807617187502],
-  [40.51765088512292, -9.121398925781252],
+  mapLocations.itinerary[8].position, // goblin city
   [40.08982602709258, -7.020263671875001],
-  [38.344687, -2.900391],
+  [38.344687, -2.900391], // almas
   mapLocations.futureItinerary[0].position,
 ];
 

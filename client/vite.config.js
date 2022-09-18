@@ -8,6 +8,10 @@ let backendPort = process.env.VITE_APP_BACKEND_PORT || 4000;
 export default defineConfig({
   plugins: [react()],
   server: {
+    port: 3000,
+    hmr: {
+      port: process.env.VITE_APP_PROD ? 443 : 3000,
+    },
     proxy: {
       '/socket.io': {
         target: 'http://' + backendHostname + ':' + backendPort,
