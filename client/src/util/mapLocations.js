@@ -88,9 +88,23 @@ const mapLocations = {
     {
       name: `Goblin City`,
       position: [40.36771970021672, -8.041992187500002],
-      description: `An underground goblin city that w're trying to reclaim`,
+      description: `An underground goblin city that we kinda failed to reclaim`,
       marker: 'Blue',
-      dateVisited: '19th of Erastus - now',
+      dateVisited: '19th of Erastus - ',
+    },
+    {
+      name: `Piren's Bluff`,
+      position: [40.07611648280531, -7.012023925781251],
+      description: `Small village of farmers that have never seen giant spiders before`,
+      marker: 'Blue',
+      dateVisited: '',
+    },
+    {
+      name: `Oregent`,
+      position: [39.77557811645709, -4.724121093750001],
+      description: `Big ass fancy city, lawful good`,
+      marker: 'Blue',
+      dateVisited: '',
     },
   ],
   futureItinerary: [
@@ -174,13 +188,15 @@ const itineraryPoints = [
   [40.536824156415335, -10.71441650390625],
   mapLocations.itinerary[7].position, // haugin's ear
   mapLocations.itinerary[8].position, // goblin city
+  mapLocations.itinerary[9].position, // piren's bluff
+  [39.8431232338646, -6.097412109375001],
+  [39.76437609565462, -5.333862304687501],
+  mapLocations.itinerary[10].position, // oregent
 ];
 
 const futureItineraryPoints = [
-  mapLocations.itinerary[8].position, // goblin city
-  [40.08982602709258, -7.020263671875001],
-  [38.344687, -2.900391], // almas
-  mapLocations.futureItinerary[0].position,
+  mapLocations.itinerary[10].position, // oregent
+  mapLocations.futureItinerary[0].position, // yleste
 ];
 
 export { mapLocations, itineraryPoints, futureItineraryPoints };
