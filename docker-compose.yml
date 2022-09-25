@@ -9,7 +9,6 @@ services:
     environment:
       - VITE_APP_BACKEND_HOSTNAME=fenice2.0-backend
       - VITE_APP_BACKEND_PORT=4000
-      - VITE_APP_PROD=true # set this for deployment
     links:
       - fenice2.0-backend
     depends_on:

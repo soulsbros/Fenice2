@@ -9,9 +9,8 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 3000,
-    hmr: {
-      port: 3000,
-    },
+    strictPort: true,
+    host: true,
     proxy: {
       '/socket.io': {
         target: 'http://' + backendHostname + ':' + backendPort,

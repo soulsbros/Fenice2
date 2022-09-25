@@ -17,7 +17,7 @@ import Profile from './views/Profile';
 import Skills from './views/Skills';
 import Tracker from './views/Tracker';
 
-const isProd = import.meta.env.VITE_APP_PROD || false;
+const isProd = import.meta.env.PROD;
 
 const App = () => {
   const dispatch = useDispatch();
