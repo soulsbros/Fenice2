@@ -8,9 +8,16 @@ import {
   Typography,
 } from '@mui/material';
 import React, { useEffect } from 'react';
+import markerBlue from '../img/markerBlue.png';
+import markerGreen from '../img/markerGreen.png';
+import markerRed from '../img/markerRed.png';
+import markerYellow from '../img/markerYellow.png';
 import { futureItineraryPoints, itineraryPoints, mapLocations } from '../util/mapLocations';
 
 const Map = () => {
+  // Markers
+  const markers = { Red: markerRed, Blue: markerBlue, Yellow: markerYellow, Green: markerGreen };
+
   let map;
   useEffect(() => {
     // -- Map object --
@@ -60,7 +67,7 @@ const Map = () => {
       const marker = L.marker(el.position, {
         // eslint-disable-next-line no-undef
         icon: L.icon({
-          iconUrl: `/img/marker${el.marker}.png`,
+          iconUrl: `https://lafenice.soulsbros.ch/img/marker${el.marker}.png`,
           iconSize: [25, 40],
           iconAnchor: [12.5, 40],
           popupAnchor: [2, -22],
@@ -108,11 +115,7 @@ const Map = () => {
                     style={{ cursor: 'pointer' }}
                     onClick={() => focusMap(el.position)}
                   >
-                    <img
-                      src={`/img/marker${el.marker}.png`}
-                      alt="marker"
-                      style={{ width: '25px' }}
-                    />
+                    <img src={markers[el.marker]} alt="marker" style={{ width: '25px' }} />
                   </ListItemAvatar>
                   <ListItemText
                     primary={el.dateVisited ? `${el.name} (${el?.dateVisited})` : el.name}
@@ -135,11 +138,7 @@ const Map = () => {
                     style={{ cursor: 'pointer' }}
                     onClick={() => focusMap(el.position)}
                   >
-                    <img
-                      src={`/img/marker${el.marker}.png`}
-                      alt="marker"
-                      style={{ width: '25px' }}
-                    />
+                    <img src={markers[el.marker]} alt="marker" style={{ width: '25px' }} />
                   </ListItemAvatar>
                   <ListItemText
                     primary={el.dateVisited ? `${el.name} (${el?.dateVisited})` : el.name}

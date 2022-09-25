@@ -3,6 +3,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { AppBar, IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import favicon from '../img/favicon-32x32.png';
 
 const TopBar = () => {
   const dispatch = useDispatch();
@@ -39,11 +40,7 @@ const TopBar = () => {
           onClick={() => setPage('home')}
           sx={{ cursor: 'pointer' }}
         >
-          <img
-            alt="favicon"
-            src="img/favicon-32x32.png"
-            style={{ verticalAlign: 'bottom', marginRight: 5 }}
-          />
+          <img alt="favicon" src={favicon} style={{ verticalAlign: 'bottom', marginRight: 5 }} />
           La Compagnia della Fenice
         </Typography>
         {username ? (

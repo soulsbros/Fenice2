@@ -40,14 +40,14 @@ const mapLocations = {
       position: [44.78, -31.4587],
       description: "A peculiar little island, hideout of the Corvi. Don't stay for dinner!",
       marker: 'Blue',
-      dateVisited: '2nd of Sarenith - 11 of Sarenith',
+      dateVisited: '2nd - 11th of Sarenith',
     },
     {
       name: 'Nisroch',
       position: [44.504486, -21.470032],
       description: 'Kaboom!',
       marker: 'Blue',
-      dateVisited: '16th of Sarenith - 22nd of Sarenith',
+      dateVisited: '16th - 22nd of Sarenith',
     },
     {
       name: 'Taggun Hold',
@@ -61,7 +61,7 @@ const mapLocations = {
       position: [39.189552, -16.040039],
       description: 'A big, spider-protected city, complete with a dwarven forge',
       marker: 'Blue',
-      dateVisited: '11th of Erastus - 15th of Erastus',
+      dateVisited: '11th - 15th of Erastus',
     },
     {
       name: 'Senara',
@@ -76,7 +76,7 @@ const mapLocations = {
       position: [40.61308617898251, -11.005554199218752],
       description: 'A fortified city where we met Alkest, Kurbas, and Nok Nok',
       marker: 'Blue',
-      dateVisited: '18th of Erastus - 19th of Erastus',
+      dateVisited: '18th - 19th of Erastus',
     },
     {
       name: `Haugin's Ear`,
@@ -90,21 +90,21 @@ const mapLocations = {
       position: [40.36771970021672, -8.041992187500002],
       description: `An underground goblin city that we kinda failed to reclaim`,
       marker: 'Blue',
-      dateVisited: '19th of Erastus - ',
+      dateVisited: '19th - 21st of Erastus',
     },
     {
       name: `Piren's Bluff`,
       position: [40.07611648280531, -7.012023925781251],
       description: `Small village of farmers that have never seen giant spiders before`,
       marker: 'Blue',
-      dateVisited: '',
+      dateVisited: '24th - 25th of Erastus',
     },
     {
       name: `Oregent`,
       position: [39.77557811645709, -4.724121093750001],
       description: `Big ass fancy city, lawful good`,
       marker: 'Blue',
-      dateVisited: '',
+      dateVisited: '26th of Erastus - now',
     },
   ],
   futureItinerary: [
@@ -196,6 +196,8 @@ const itineraryPoints = [
 
 const futureItineraryPoints = [
   mapLocations.itinerary[10].position, // oregent
+  [38.85390916714615, -3.7792968750000004],
+  [38.39891804079242, -2.9333496093750004], //almas
   mapLocations.futureItinerary[0].position, // yleste
 ];
 
