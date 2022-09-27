@@ -10,6 +10,7 @@ import TopBar from './components/TopBar';
 import { SocketContext } from './SocketContext';
 import theme from './Theme';
 import Alignment from './views/Alignment';
+import Calendar from './views/Calendar';
 import Characters from './views/Characters';
 import Home from './views/Home';
 import Map from './views/Map';
@@ -33,6 +34,8 @@ const App = () => {
         return <Tracker />;
       case 'map':
         return <Map />;
+      case 'calendar':
+        return <Calendar />;
       case 'profile':
         return <Profile />;
       case 'skills':

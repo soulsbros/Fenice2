@@ -1,4 +1,13 @@
-import { AllInclusive, ArrowBack, Casino, Login, Map, Person, Timer } from '@mui/icons-material/';
+import {
+  AllInclusive,
+  ArrowBack,
+  CalendarToday,
+  Casino,
+  Login,
+  Map,
+  Person,
+  Timer,
+} from '@mui/icons-material/';
 import Home from '@mui/icons-material/Home';
 import { Drawer, List, ListItem, ListItemIcon, ListItemText, Toolbar } from '@mui/material';
 import { Box } from '@mui/system';
@@ -79,6 +88,12 @@ const Sidebar = () => {
               <Map />
             </ListItemIcon>
             <ListItemText primary="Map (Dark Age)" />
+          </ListItem>
+          <ListItem button onClick={() => setPage('calendar')}>
+            <ListItemIcon>
+              <CalendarToday />
+            </ListItemIcon>
+            <ListItemText primary="Calendar (Dark Age)" />
           </ListItem>
           <ListItem button onClick={() => setPage('skills')}>
             <ListItemIcon>
