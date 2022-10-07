@@ -102,19 +102,19 @@ const mapLocations = {
     {
       name: `Oregent`,
       position: [39.77557811645709, -4.724121093750001],
-      description: `Big ass fancy city, lawful good`,
+      description: `Big ass fancy city, lawful good - naked elves on rooftops included!`,
       marker: 'Blue',
-      dateVisited: '26th of Erastus - now',
+      dateVisited: '26th - 28th of Erastus',
     },
-  ],
-  futureItinerary: [
     {
       name: 'Yleste',
       position: [35.424698, 0.002747],
-      description: 'Our next destination',
-      marker: 'Yellow',
+      description: 'The city where we will find the stars!',
+      marker: 'Blue',
+      dateVisited: '28th of Erastus - now',
     },
   ],
+  futureItinerary: [],
 };
 
 const itineraryPoints = [
@@ -192,13 +192,11 @@ const itineraryPoints = [
   [39.8431232338646, -6.097412109375001],
   [39.76437609565462, -5.333862304687501],
   mapLocations.itinerary[10].position, // oregent
-];
-
-const futureItineraryPoints = [
-  mapLocations.itinerary[10].position, // oregent
   [38.85390916714615, -3.7792968750000004],
   [38.39891804079242, -2.9333496093750004], //almas
-  mapLocations.futureItinerary[0].position, // yleste
+  mapLocations.itinerary[11].position, // yleste
 ];
+
+const futureItineraryPoints = [];
 
 export { mapLocations, itineraryPoints, futureItineraryPoints };
