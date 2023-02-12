@@ -109,9 +109,23 @@ const mapLocations = {
     {
       name: 'Yleste',
       position: [35.424698, 0.002747],
-      description: 'The city where we will find the stars!',
+      description: 'The city where we found the stars! And a civil war.',
       marker: 'Blue',
-      dateVisited: '28th of Erastus - now',
+      dateVisited: '28th of Erastus - 3rd of Ardus',
+    },
+    {
+      name: 'Almas',
+      position: [38.39891804079242, -2.9333496093750004],
+      description: 'A small portuary city very keen on freeing slaves',
+      marker: 'Blue',
+      dateVisited: '6th - 7th of Ardus',
+    },
+    {
+      name: `Oregent`,
+      position: [39.77557811645709, -4.724121093750001],
+      description: `Back to where we met Kienzou, to deliver 890 gnomes`,
+      marker: 'Blue',
+      dateVisited: '9th of Ardus - now',
     },
   ],
   futureItinerary: [],
@@ -195,6 +209,10 @@ const itineraryPoints = [
   [38.85390916714615, -3.7792968750000004],
   [38.39891804079242, -2.9333496093750004], //almas
   mapLocations.itinerary[11].position, // yleste
+  // TODO
+  // return from yleste
+  mapLocations.itinerary[12].position, // almas
+  // oregent
 ];
 
 const futureItineraryPoints = [];

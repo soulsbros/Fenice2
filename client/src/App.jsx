@@ -13,7 +13,7 @@ import Alignment from './views/Alignment';
 import Calendar from './views/Calendar';
 import Characters from './views/Characters';
 import Home from './views/Home';
-import Map from './views/Map';
+import MapNew from './views/MapNew';
 import Profile from './views/Profile';
 import Skills from './views/Skills';
 import Tracker from './views/Tracker';
@@ -33,7 +33,7 @@ const App = () => {
       case 'combattracker':
         return <Tracker />;
       case 'map':
-        return <Map />;
+        return <MapNew />;
       case 'calendar':
         return <Calendar />;
       case 'profile':
