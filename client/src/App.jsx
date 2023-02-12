@@ -13,6 +13,7 @@ import Alignment from './views/Alignment';
 import Calendar from './views/Calendar';
 import Characters from './views/Characters';
 import Home from './views/Home';
+import Map from './views/Map';
 import MapNew from './views/MapNew';
 import Profile from './views/Profile';
 import Skills from './views/Skills';
@@ -33,6 +34,8 @@ const App = () => {
       case 'combattracker':
         return <Tracker />;
       case 'map':
+        return <Map />;
+      case 'fullMap':
         return <MapNew />;
       case 'calendar':
         return <Calendar />;
@@ -93,7 +96,7 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <SocketContext.Provider value={socket}>
         <CssBaseline />
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex', minHeight: '100vh' }}>
           <TopBar />
 
           <Sidebar />

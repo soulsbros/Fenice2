@@ -97,6 +97,12 @@ const Sidebar = () => {
             </ListItemIcon>
             <ListItemText primary="Skill checks" />
           </ListItem>
+          <ListItem button onClick={() => setPage('fullMap')}>
+            <ListItemIcon>
+              <Map />
+            </ListItemIcon>
+            <ListItemText primary="Golarion map" />
+          </ListItem>
           {!username ? (
             <ListItem button onClick={doLogin}>
               <ListItemIcon>

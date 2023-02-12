@@ -35,14 +35,14 @@ const Map = () => {
     // -- Tiles and controls --
 
     // eslint-disable-next-line no-undef
-    L.tileLayer('https://pathfinderwiki.com/maps/golarion-tile/tiles/{z}/{x}/{y}', {
+    L.tileLayer('https://oznogon.com/golarion-tile/tiles/{z}/{x}/{y}', {
       ...mapOptions,
       attribution:
         'Map data &copy; <a href="https://www.dungeonetics.com/golarion-geography">John Mechalas</a>, <a href="https://paizo.com/community/communityuse">Paizo CUP</a>',
     }).addTo(map);
 
     // eslint-disable-next-line no-undef
-    L.tileLayer('https://pathfinderwiki.com/maps/golarion-tile/tiles-relief/{z}/{x}/{y}', {
+    L.tileLayer('https://oznogon.com/golarion-tile/tiles-relief/{z}/{x}/{y}', {
       ...mapOptions,
       opacity: 0.15,
       maxNativeZoom: 6,
@@ -110,7 +110,7 @@ const Map = () => {
             </Typography>
             <List>
               {mapLocations.itinerary.concat(mapLocations.futureItinerary).map((el) => (
-                <ListItem alignItems="flex-start" key={el.name}>
+                <ListItem alignItems="flex-start" key={el.name + el.dateVisited}>
                   <ListItemAvatar
                     style={{ cursor: 'pointer' }}
                     onClick={() => focusMap(el.position)}
@@ -133,7 +133,7 @@ const Map = () => {
             </Typography>
             <List>
               {mapLocations.lore.map((el) => (
-                <ListItem alignItems="flex-start" key={el.name}>
+                <ListItem alignItems="flex-start" key={el.name + el.dateVisited}>
                   <ListItemAvatar
                     style={{ cursor: 'pointer' }}
                     onClick={() => focusMap(el.position)}
