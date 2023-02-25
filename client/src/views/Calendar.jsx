@@ -72,6 +72,7 @@ const Calendar = () => {
         day: 'Day',
         list: 'List',
       }}
+      now="2022-08-17T00:00:00"
     />
   );
 };
