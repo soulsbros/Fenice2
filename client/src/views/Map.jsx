@@ -12,7 +12,12 @@ import markerBlue from '../img/markerBlue.png';
 import markerGreen from '../img/markerGreen.png';
 import markerRed from '../img/markerRed.png';
 import markerYellow from '../img/markerYellow.png';
-import { futureItineraryPoints, itineraryPoints, mapLocations } from '../util/mapLocations';
+import {
+  futureItineraryPoints,
+  itineraryPoints,
+  mapLocations,
+  teleportPoints,
+} from '../util/mapLocations';
 
 const Map = () => {
   // Markers
@@ -79,10 +84,15 @@ const Map = () => {
     // -- Path --
 
     // eslint-disable-next-line no-undef
-    L.polyline(itineraryPoints, { color: '#4380c2' }).addTo(map);
+    itineraryPoints.forEach((line) => L.polyline(line, { color: '#4380c2' }).addTo(map));
 
     // eslint-disable-next-line no-undef
     L.polyline(futureItineraryPoints, { color: '#ea881c' }).addTo(map);
+
+    teleportPoints.forEach((line) =>
+      // eslint-disable-next-line no-undef
+      L.polyline(line, { color: 'red', dashArray: '20, 20', dashOffset: '0' }).addTo(map),
+    );
 
     // -- Event handlers --
 
