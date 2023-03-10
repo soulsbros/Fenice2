@@ -275,6 +275,10 @@ const itineraryPoints = [
     [45.677427564291605, -0.05218505859375001],
     [46.05030928672157, -0.46966552734375006], //lethaquel
   ],
+  [
+    [45.76360016272612, -2.0379638671875004], //thorn's end
+    [45.43109788291079, -2.0544433593750004], //arabrecht
+  ],
 ];
 
 const teleportPoints = [
@@ -284,6 +288,14 @@ const teleportPoints = [
   ],
   [
     [46.05030928672157, -0.46966552734375006], //lethaquel
+    mapLocations.itinerary[16].position, // voluse
+  ],
+  [
+    mapLocations.itinerary[16].position, // voluse
+    [45.76360016272612, -2.0379638671875004], //thorn's end
+  ],
+  [
+    [45.43109788291079, -2.0544433593750004], //arabrecht
     mapLocations.itinerary[16].position, // voluse
   ],
 ];
