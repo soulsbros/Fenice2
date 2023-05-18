@@ -1,5 +1,10 @@
-// note: marker name must start with a capital letter (Blue, Red, Green, Yellow)
+/* 
+  Important notes:
+  - marker name must start with a capital letter (Blue, Red, Green, Yellow)
+  - don't sort the mapLocations arrays!
+*/
 
+// those appear on the list under the map
 const mapLocations = {
   lore: [
     {
@@ -24,6 +29,12 @@ const mapLocations = {
       name: 'Torch',
       position: [53.97, -0.4556],
       description: "Rok's birthplace, somewhere in the Numerian region",
+      marker: 'Red',
+    },
+    {
+      name: 'Surana Mansion',
+      position: [49.174501046221586, 3.6968994140625004],
+      description: "A small castle, now home for Alan'divir's family",
       marker: 'Red',
     },
   ],
@@ -153,6 +164,7 @@ const mapLocations = {
   futureItinerary: [],
 };
 
+// from here on, those make up the path on the map
 const itineraryPoints = [
   [
     mapLocations.itinerary[0].position, // haska
@@ -230,6 +242,7 @@ const itineraryPoints = [
     [39.76437609565462, -5.333862304687501],
     mapLocations.itinerary[10].position, // oregent
   ],
+  // teleportPoints[0]
   [
     mapLocations.itinerary[11].position, // yleste
     [35.083197344381354, -0.45043945312500006],
@@ -275,9 +288,27 @@ const itineraryPoints = [
     [45.677427564291605, -0.05218505859375001],
     [46.05030928672157, -0.46966552734375006], //lethaquel
   ],
+  // teleportPoints[1]
+  // teleportPoints[2]
   [
     [45.76360016272612, -2.0379638671875004], //thorn's end
     [45.43109788291079, -2.0544433593750004], //arabrecht
+  ],
+  // teleportPoints[3]
+  // teleportPoints[4]
+  [
+    [46.921987020980595, -0.5630493164062501], // caruskei
+    [47.05128751683927, -0.12908935546875003],
+    [47.098058340017, 0.17028808593750003],
+    [47.17654092066638, 0.30761718750000006],
+    [47.48560063610646, 0.32684326171875006],
+    [47.72452519217648, 0.25543212890625006],
+    [47.89241262723576, 0.21697998046875003],
+    [48.04874049440941, 0.33233642578125],
+    [48.103639322800625, 0.5355834960937501], // novoboro
+    [48.832110872727704, 2.2302246093750004],
+    [49.10074890601479, 3.02398681640625],
+    mapLocations.lore[4].position, // surana mansion
   ],
 ];
 
@@ -298,8 +329,14 @@ const teleportPoints = [
     [45.43109788291079, -2.0544433593750004], //arabrecht
     mapLocations.itinerary[16].position, // voluse
   ],
+  [
+    mapLocations.itinerary[16].position, // voluse
+    [46.921987020980595, -0.5630493164062501], // caruskei
+  ],
 ];
 
-const futureItineraryPoints = [];
+const futureItineraryPoints = [
+  mapLocations.lore[0].position, // algamat
+];
 
 export { mapLocations, itineraryPoints, futureItineraryPoints, teleportPoints };
