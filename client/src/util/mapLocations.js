@@ -152,13 +152,19 @@ const mapLocations = {
       marker: 'Blue',
       dateVisited: '12th of Arodus',
     },
-
     {
       name: `Voluse`,
       position: [46.78106814715621, -1.7935180664062502],
       description: `The River Kingdoms capital, very well hidden`,
       marker: 'Blue',
-      dateVisited: '17th of Arodus - now',
+      dateVisited: '17th - 25th of Arodus',
+    },
+    {
+      name: `Hajoth Hakados`,
+      position: [52.50344835343625, 1.1645507812500002],
+      description: `An android-welcoming city with shiny metals`,
+      marker: 'Blue',
+      dateVisited: '14th of Rova - now',
     },
   ],
   futureItinerary: [],
@@ -309,8 +315,16 @@ const itineraryPoints = [
     [48.832110872727704, 2.2302246093750004],
     [49.10074890601479, 3.02398681640625],
     mapLocations.lore[4].position, // surana mansion
-    // TODO itinerary there
-    [52.50344835343625, 1.1645507812500002], // hajoth hakados
+    [49.48758183946942, 3.3013916015625004],
+    [49.59825047928544, 3.2821655273437504],
+    [49.67103148861441, 3.197021484375],
+    [49.81658593100351, 2.9141235351562504],
+    [49.894508339870015, 2.6916503906250004],
+    [49.882119997419615, 2.5241088867187504],
+    [50.05176050201445, 2.3922729492187504],
+    [51.340878539540945, 0.6619262695312501], // heibarr
+    [51.4916327007008, 0.5877685546875001],
+    mapLocations.itinerary[17].position, // hajoth hakados
   ],
 ];
 
