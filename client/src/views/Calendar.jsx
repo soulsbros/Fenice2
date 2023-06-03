@@ -5,7 +5,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import React from 'react';
-import INITIAL_EVENTS from '../util/calendarEvents';
+import { INITIAL_EVENTS, today } from '../util/calendarEvents';
 
 const Calendar = () => {
   function renderEventContent(eventInfo) {
@@ -72,7 +72,7 @@ const Calendar = () => {
         day: 'Day',
         list: 'List',
       }}
-      now="2022-08-17T00:00:00"
+      now={today}
     />
   );
 };

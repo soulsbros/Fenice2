@@ -63,7 +63,7 @@ const Sidebar = () => {
             <ListItemIcon>
               <ArrowBack />
             </ListItemIcon>
-            <ListItemText primary="Back to old site" />
+            <ListItemText primary="Old site" />
           </ListItem>
           <ListItem button onClick={() => setPage('home')}>
             <ListItemIcon>
@@ -125,7 +125,7 @@ const Sidebar = () => {
             <ListItemIcon>
               <Map />
             </ListItemIcon>
-            <ListItemText primary="Map" />
+            <ListItemText primary="Itinerary" />
           </ListItem>
         </List>
         <Box sx={{ padding: '20px' }}>

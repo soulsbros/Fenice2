@@ -15,7 +15,7 @@ const mapLocations = {
     },
     {
       name: 'Bassomonte',
-      position: [50.685017, 1.691895],
+      position: [47.954809896971966, 2.5708007812500004],
       description: "A small village in the woods, birthplace of Alan'divir",
       marker: 'Red',
     },
@@ -309,6 +309,8 @@ const itineraryPoints = [
     [48.832110872727704, 2.2302246093750004],
     [49.10074890601479, 3.02398681640625],
     mapLocations.lore[4].position, // surana mansion
+    // TODO itinerary there
+    [52.50344835343625, 1.1645507812500002], // hajoth hakados
   ],
 ];
 
