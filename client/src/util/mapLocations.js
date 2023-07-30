@@ -160,11 +160,39 @@ const mapLocations = {
       dateVisited: '17th - 25th of Arodus',
     },
     {
-      name: `Hajoth Hakados`,
+      name: `Novoboro`,
+      position: [48.10896394246189, 0.5163574218750001],
+      description: `A small trader outpost`,
+      marker: 'Blue',
+      dateVisited: '28th of Arodus',
+    },
+    {
+      name: 'Surana Mansion',
+      position: [49.174501046221586, 3.6968994140625004],
+      description: "A small castle, now home for Alan'divir's family",
+      marker: 'Blue',
+      dateVisited: '31th of Arodus - 2nd of Rova',
+    },
+    {
+      name: `Heibarr`,
+      position: [51.36312191813004, 0.6591796875000001],
+      description: `A ghost town - don't fall in the river...`,
+      marker: 'Blue',
+      dateVisited: '10th - 11th of Rova',
+    },
+    {
+      name: `Hajoth Hakados`, // 20
       position: [52.50344835343625, 1.1645507812500002],
       description: `An android-welcoming city with shiny metals`,
       marker: 'Blue',
-      dateVisited: '14th of Rova - now',
+      dateVisited: '14th - 17th of Rova',
+    },
+    {
+      name: 'Torch',
+      position: [53.97, -0.4556],
+      description: "Rok's birthplace, somewhere in the Numerian region",
+      marker: 'Blue',
+      dateVisited: '22th of Rova - now',
     },
   ],
   futureItinerary: [],
@@ -322,9 +350,10 @@ const itineraryPoints = [
     [49.894508339870015, 2.6916503906250004],
     [49.882119997419615, 2.5241088867187504],
     [50.05176050201445, 2.3922729492187504],
-    [51.340878539540945, 0.6619262695312501], // heibarr
+    mapLocations.itinerary[19].position, // hajoth hakados // heibarr
     [51.4916327007008, 0.5877685546875001],
-    mapLocations.itinerary[17].position, // hajoth hakados
+    mapLocations.itinerary[20].position, // hajoth hakados
+    mapLocations.lore[3].position, // torch
   ],
 ];
 
@@ -355,4 +384,4 @@ const futureItineraryPoints = [
   mapLocations.lore[0].position, // algamat
 ];
 
-export { mapLocations, itineraryPoints, futureItineraryPoints, teleportPoints };
+export { futureItineraryPoints, itineraryPoints, mapLocations, teleportPoints };
