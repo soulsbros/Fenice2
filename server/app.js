@@ -93,5 +93,5 @@ io.on('connection', (socket) => {
 });
 
 server.listen(serverPort, () =>
-  console.info(`[INFO] fenice2.0 server listening on port ${serverPort}`),
+  console.info(`[INFO] fenice2 server listening on port ${serverPort}`),
 );

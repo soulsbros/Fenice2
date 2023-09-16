@@ -1,26 +1,26 @@
 version: '3.7'
 services:
-  fenice2.0-frontend:
-    container_name: fenice2.0-frontend
+  fenice2-frontend:
+    container_name: fenice2-frontend
     restart: always
     build: ./client # change to image for prod
     ports:
       - "3000:3000"
     environment:
-      - VITE_APP_BACKEND_HOSTNAME=fenice2.0-backend
+      - VITE_APP_BACKEND_HOSTNAME=fenice2-backend
       - VITE_APP_BACKEND_PORT=4000
-    links:
-      - fenice2.0-backend
     depends_on:
-      - fenice2.0-backend
-  fenice2.0-backend:
-    container_name: fenice2.0-backend
+      - fenice2-backend
+
+  fenice2-backend:
+    container_name: fenice2-backend
     restart: always
     build: ./server # change to image for prod
     ports:
       - "4000:4000"
     environment:
       - VITE_APP_BACKEND_PORT=4000
+      
 networks:
   default:
-    name: fenice2.0
+    name: fenice2

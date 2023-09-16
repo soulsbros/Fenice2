@@ -1,8 +1,7 @@
-FROM node:lts-gallium
+FROM oven/bun
 
-CMD ["npm", "start"]
-RUN mkdir -p /usr/src/app
+CMD ["bun", "start"]
 WORKDIR /usr/src/app
 
 COPY . /usr/src/app/
-RUN npm install
+RUN bun install

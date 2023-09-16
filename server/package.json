@@ -1,5 +1,5 @@
 {
-  "name": "fenice2.0-server",
+  "name": "fenice2-server",
   "version": "0.1.0",
   "description": "The site of La Compagnia della Fenice",
   "author": "soulsbros",
@@ -13,13 +13,12 @@
     "forever": "^4.0.1",
     "mongodb": "^4.2.1",
     "node-fetch": "^2.6.7",
-    "nodemon": "^2.0.15",
     "socket.io": "^4.4.1"
   },
   "scripts": {
     "start": "forever app.js",
     "stop": "forever stop app.js",
-    "dev": "nodemon app.js",
+    "dev": "bun app.js",
     "lint": "eslint ./ --ext .js --fix --max-warnings=0"
   }
 }

@@ -1,11 +1,10 @@
-FROM node:lts-gallium as builder
+FROM oven/bun as builder
 
-RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 COPY . /usr/src/app
-RUN npm install && \
-    npm run build
+RUN bun install && \
+    bun run build
 
 FROM nginx:1.23.1-alpine
 

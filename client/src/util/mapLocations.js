@@ -170,7 +170,7 @@ const mapLocations = {
       name: 'Surana Mansion',
       position: [49.174501046221586, 3.6968994140625004],
       description: "A small castle, now home for Alan'divir's family",
-      marker: 'Blue',
+      marker: 'Red',
       dateVisited: '31th of Arodus - 2nd of Rova',
     },
     {
@@ -191,8 +191,15 @@ const mapLocations = {
       name: 'Torch',
       position: [53.97, -0.4556],
       description: "Rok's birthplace, somewhere in the Numerian region",
-      marker: 'Blue',
-      dateVisited: '22th of Rova - now',
+      marker: 'Red',
+      dateVisited: '22th of Rova - ?',
+    },
+    {
+      name: 'Algamat',
+      position: [53.97, -0.4556],
+      description: 'A dwarven mountain city, home of Agna Ironbreaker',
+      marker: 'Red',
+      dateVisited: '4th of Lamashan - now',
     },
   ],
   futureItinerary: [],
@@ -354,6 +361,8 @@ const itineraryPoints = [
     [51.4916327007008, 0.5877685546875001],
     mapLocations.itinerary[20].position, // hajoth hakados
     mapLocations.lore[3].position, // torch
+    [56.51682275378103, -0.34057617187500006],
+    mapLocations.lore[0].position, // algamat
   ],
 ];
 
@@ -380,8 +389,6 @@ const teleportPoints = [
   ],
 ];
 
-const futureItineraryPoints = [
-  mapLocations.lore[0].position, // algamat
-];
+const futureItineraryPoints = [];
 
 export { futureItineraryPoints, itineraryPoints, mapLocations, teleportPoints };

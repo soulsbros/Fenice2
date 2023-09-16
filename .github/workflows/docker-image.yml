@@ -23,7 +23,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4.6.0
         with:
-          images: ${{ secrets.DOCKERHUB_USERNAME }}/fenice2.0-client
+          images: ${{ secrets.DOCKERHUB_USERNAME }}/fenice2-client
           tags: |
             type=ref,event=branch
             type=ref,event=pr
@@ -52,7 +52,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4.6.0
         with:
-          images: ${{ secrets.DOCKERHUB_USERNAME }}/fenice2.0-server
+          images: ${{ secrets.DOCKERHUB_USERNAME }}/fenice2-server
           tags: |
             type=ref,event=branch
             type=ref,event=pr
