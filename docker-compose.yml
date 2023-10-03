@@ -1,25 +1,29 @@
-version: '3.7'
+version: '3.9'
 services:
-  fenice2-frontend:
-    container_name: fenice2-frontend
+  fenice2:
+    container_name: fenice2
     restart: always
-    build: ./client # change to image for prod
+    build: . # change to image for prod
+    environment:
+      - MONGODB_URI=mongodb://user:password@mongodb:27017
     ports:
       - "3000:3000"
-    environment:
-      - VITE_APP_BACKEND_HOSTNAME=fenice2-backend
-      - VITE_APP_BACKEND_PORT=4000
-    depends_on:
-      - fenice2-backend
 
-  fenice2-backend:
-    container_name: fenice2-backend
-    restart: always
-    build: ./server # change to image for prod
-    ports:
-      - "4000:4000"
+  mongodb:
+    image: bitnami/mongodb
+    container_name: mongodb
     environment:
-      - VITE_APP_BACKEND_PORT=4000
+      - MONGODB_USERNAME=user
+      - MONGODB_PASSWORD=password
+      - MONGODB_ROOT_PASSWORD=password
+      - MONGODB_DATABASE=dnd-alignment
+    ports: 
+      - 27017:27017
+    volumes:
+      - mongo:/data/db
+
+volumes:
+  mongo:
       
 networks:
   default:

@@ -8,14 +8,11 @@ The site of La Compagnia della Fenice
 
 ## Run in Docker
 
-A Docker image is available on Docker Hub for both
-[client](https://hub.docker.com/steeven9/fenice2-client)
-and [server](https://hub.docker.com/steeven9/fenice2-server).
+A Docker image is available on [Docker Hub](https://hub.docker.com/steeven9/fenice2).
 
-* Run `docker-compose up` in the root folder
+* Run `docker-compose up` in the root folder to
 
 ## Run locally
 
-* Run `npm ri` to install all the dependencies
-* Run `npm run dev` in the server folder
-* Run `npm start` in the client folder
+* Run `yarn install` to install all the dependencies
+* Run `yarn run dev` to start the webserver
