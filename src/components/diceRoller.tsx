@@ -4,7 +4,7 @@ import DiceBox from "@3d-dice/dice-box";
 import { AdvancedRoller, DisplayResults } from "@3d-dice/dice-ui";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
-import DiceRollButton from "./diceRollButton";
+import Button from "./button";
 
 let rollDice = (notation: string) => {
   console.error("Dice not initialized yet");
@@ -67,13 +67,10 @@ export default function DiceRoller() {
 
   return (
     <>
-      <DiceRollButton
-        label="d20 advantage"
-        onClick={() => rollDice("2d20kh1")}
-      />
-      <DiceRollButton label="Fireball" onClick={() => rollDice("6d6")} />
-      <DiceRollButton label="Stat roll" onClick={() => rollDice("4d6dl1")} />
-      <DiceRollButton label="Holy shit" onClick={() => rollDice("200d20")} />
+      <Button label="d20 advantage" onClick={() => rollDice("2d20kh1")} />
+      <Button label="Fireball" onClick={() => rollDice("6d6")} />
+      <Button label="Stat roll" onClick={() => rollDice("4d6dl1")} />
+      <Button label="Holy shit" onClick={() => rollDice("200d20")} />
 
       <select
         id="colors"

@@ -3,6 +3,7 @@ import Link from "next/link";
 import {
   Calendar,
   Home,
+  List,
   Map,
   MapPin,
   Octagon,
@@ -24,12 +25,38 @@ export default function Sidebar() {
           icon={<SkipBack />}
         />
         <SidebarLink name="Home" path="/" icon={<Home />} />
-        <SidebarLink name="Alignment" path="/" icon={<Octagon />} />
-        <SidebarLink name="Characters" path="/" icon={<Users />} />
-        <SidebarLink name="Skill checks" path="/" icon={<Zap />} />
+        <SidebarLink
+          name="Alignment"
+          path="/alignment"
+          icon={<Octagon />}
+          disabled
+        />
+        <SidebarLink
+          name="Characters"
+          path="/characters"
+          icon={<Users />}
+          disabled
+        />
         <SidebarLink name="Golarion map" path="/map" icon={<Map />} />
-        <SidebarLink name="Calendar" path="/" icon={<Calendar />} />
-        <SidebarLink name="Itinerary" path="/itinerary" icon={<MapPin />} />
+        <SidebarLink name="Initiative" path="/initiative" icon={<List />} />
+        <SidebarLink
+          name="Skill checks"
+          path="/skills"
+          icon={<Zap />}
+          disabled
+        />
+        <SidebarLink
+          name="DA Calendar"
+          path="/calendar"
+          icon={<Calendar />}
+          disabled
+        />
+        <SidebarLink
+          name="DA Itinerary"
+          path="/itinerary"
+          icon={<MapPin />}
+          disabled
+        />
       </div>
 
       <div className="flex space-x-2 p-4 items-center">
@@ -37,7 +64,6 @@ export default function Sidebar() {
         <Link
           href="https://github.com/soulsbros"
           target="_blank"
-          rel="noreferrer"
           className="hover:rotate-45 transition-all"
         >
           <Image src={githubLogo} width={32} alt="GitHub logo" />
