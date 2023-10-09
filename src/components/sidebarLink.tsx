@@ -22,21 +22,15 @@ export default function SidebarLink({
 
   return (
     <>
-      <div
+      <Link
+        href={disabled ? "" : path}
         className={`flex p-4 hover:bg-blue-300 ${
-          disabled ? "cursor-default" : "cursor-pointer"
-        }`}
+          disabled ? "cursor-default text-slate-500" : ""
+        } ${currentPage ? "text-red-700" : ""}`}
       >
         {icon}
-        <Link
-          href={disabled ? "" : path}
-          className={`ml-3 ${disabled ? "cursor-default text-slate-500" : ""} ${
-            currentPage ? "text-red-700" : ""
-          }`}
-        >
-          {name}
-        </Link>
-      </div>
+        <p className="ml-3">{name}</p>
+      </Link>
     </>
   );
 }

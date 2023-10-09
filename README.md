@@ -10,9 +10,9 @@ The site of La Compagnia della Fenice
 
 A Docker image is available on [Docker Hub](https://hub.docker.com/steeven9/fenice2).
 
-* Run `docker-compose up` in the root folder to
+* Run `docker-compose up` in the root folder to bring up the whole project.
 
 ## Run locally
 
-* Run `yarn install` to install all the dependencies
-* Run `yarn run dev` to start the webserver
+* Run `bun install` to install all the dependencies
+* Run `bun run dev` to start the webserver
