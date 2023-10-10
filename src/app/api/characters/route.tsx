@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { ourMongo } from "../../../../lib/mongoConn";
+import { ourMongo } from "../../../lib/mongoConn";
 
 export async function GET() {
   try {

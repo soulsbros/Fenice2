@@ -2,12 +2,15 @@
 
 import Button from "@/components/button";
 import { useEffect, useState } from "react";
+import io from "socket.io-client";
 
 interface Player {
   name: string;
   score: number;
   active: boolean;
 }
+
+let socket: any;
 
 export default function Initiative() {
   const storageKey = "initiative";
@@ -73,9 +76,12 @@ export default function Initiative() {
     setPosition((position + 1) % newOrder.length);
   };
 
-  const save = (newOrder: Player[]) => {
+  const save = (newOrder: Player[], sendUpdate = true) => {
     setOrder(newOrder);
     localStorage.setItem(storageKey, JSON.stringify(newOrder));
+    if (sendUpdate) {
+      socket.emit("players-change", JSON.stringify(newOrder));
+    }
   };
 
   const renderOrder =
@@ -95,8 +101,24 @@ export default function Initiative() {
       ))
     );
 
+  const initializeSocket = async () => {
+    await fetch("/api/socket");
+    socket = io();
+
+    socket.on("connect", () => {
+      console.log("Connected to socket");
+    });
+
+    socket.on("update-players", (data: string) => {
+      console.log("Received update");
+      save(JSON.parse(data), false);
+    });
+  };
+
   useEffect(() => {
+    initializeSocket();
     setOrder(JSON.parse(localStorage.getItem(storageKey) ?? "[]"));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

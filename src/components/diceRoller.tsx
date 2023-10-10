@@ -18,7 +18,7 @@ let diceBox: any;
 
 export default function DiceRoller() {
   const searchParams = useSearchParams();
-  const diceString = searchParams.get("d");
+  const diceString = searchParams!.get("d");
 
   useEffect(() => {
     diceBox = new DiceBox("#dice-box", {
