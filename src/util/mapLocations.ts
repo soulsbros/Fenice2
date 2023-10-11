@@ -393,6 +393,6 @@ const teleportPoints = [
   ],
 ];
 
-const futureItineraryPoints = [];
+const futureItineraryPoints: number[][][] = [];
 
 export { futureItineraryPoints, itineraryPoints, mapLocations, teleportPoints };

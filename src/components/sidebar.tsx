@@ -51,12 +51,7 @@ export default function Sidebar() {
           icon={<Calendar />}
           disabled
         />
-        <SidebarLink
-          name="DA Itinerary"
-          path="/itinerary"
-          icon={<MapPin />}
-          disabled
-        />
+        <SidebarLink name="DA Itinerary" path="/itinerary" icon={<MapPin />} />
       </div>
 
       <div className="flex space-x-2 p-4 items-center">
