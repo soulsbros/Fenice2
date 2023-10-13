@@ -1,14 +1,18 @@
-const findSkill = (str: string) =>
+export const findSkill = (str: string) =>
   skills.filter((el) => el.name.toLowerCase() === str.toLowerCase())[0];
-const getWikiURL = (skillName: string) => {
+
+export const getWikiURL = (skillName: string) => {
   const baseURL = "https://2e.aonprd.com/Skills.aspx?ID=";
   return (
     baseURL +
-    (skills.findIndex((el) => el.name.toLowerCase() === skillName) + 1)
+    (skills.findIndex(
+      (el) => el.name.toLowerCase() === skillName.toLowerCase()
+    ) +
+      1)
   );
 };
 
-const skills = [
+export const skills = [
   {
     name: "Acrobatics",
     ability: "DEX",
@@ -112,5 +116,3 @@ const skills = [
     requiresTraining: false,
   },
 ];
-
-export { findSkill, getWikiURL, skills };

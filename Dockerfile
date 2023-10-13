@@ -3,15 +3,10 @@ FROM node:18-alpine AS base
 FROM base AS deps
 
 WORKDIR /app
-RUN apk add --no-cache libc6-compat
+COPY package.json yarn.lock ./
 
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
-RUN \
-    if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-    elif [ -f package-lock.json ]; then npm ci; \
-    elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && pnpm i --frozen-lockfile; \
-    else echo "Lockfile not found." && exit 1; \
-    fi
+RUN apk add --no-cache libc6-compat
+RUN yarn --frozen-lockfile
 
 
 FROM base AS builder
@@ -36,11 +31,10 @@ ENV HOSTNAME "0.0.0.0"
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
-
-COPY --from=builder /app/public ./public
-
 RUN mkdir .next
 RUN chown nextjs:nodejs .next
+
+COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 

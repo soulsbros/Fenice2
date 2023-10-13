@@ -1,5 +1,7 @@
 import { Server } from "socket.io";
 
+//TODO rewrite in TS and move to app directory
+
 const SocketHandler = (req, res) => {
   if (!res.socket.server.io) {
     console.log("Socket is initializing");

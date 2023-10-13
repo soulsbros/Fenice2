@@ -1,18 +1,22 @@
 "use client";
 
-import { mapLocations } from "@/util/mapLocations";
+import { MapLocation } from "@/types/Map";
 import "leaflet-defaulticon-compatibility";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 
-export default function LeafletMap(props: any) {
-  const { position, zoom } = props;
+interface LeafletMapProps {
+  position: [number, number];
+  zoom: number;
+  markers: MapLocation[];
+}
 
-  const fullLocationList = mapLocations.lore
-    .concat(mapLocations.itinerary)
-    .concat(mapLocations.futureItinerary);
-
+export default function LeafletMap({
+  position,
+  zoom,
+  markers,
+}: LeafletMapProps) {
   const mapOptions = {
     tms: true,
     updateWhenIdle: false,
@@ -21,12 +25,14 @@ export default function LeafletMap(props: any) {
     maxZoom: 9,
   };
 
-  const markersList = fullLocationList.map((el) => (
-    <Marker position={[el.position[0], el.position[1]]} key={el.name}>
+  const markersList = markers.map((el) => (
+    <Marker position={el.position} key={el.name + el.dateVisited}>
       <Popup>
         <b>{el.name}</b>
         <br />
-        {el.description}
+        <i>{el.description}</i>
+        <br />
+        Visited: {el.dateVisited}
       </Popup>
     </Marker>
   ));

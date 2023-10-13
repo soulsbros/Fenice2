@@ -18,6 +18,7 @@ export default function SidebarLink({
   disabled = false,
 }: Props) {
   const pathname = usePathname();
+  //TODO add support for subpages
   const currentPage = pathname === path;
 
   return (

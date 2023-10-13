@@ -1,5 +1,7 @@
 "use client";
 
+import { MapLocation } from "@/types/Map";
+import { mapLocations } from "@/util/mapLocations";
 import dynamic from "next/dynamic";
 
 const LeafletMap = dynamic(() => import("../../components/leafletMap"), {
@@ -7,5 +9,11 @@ const LeafletMap = dynamic(() => import("../../components/leafletMap"), {
 });
 
 export default function Itinerary() {
-  return <LeafletMap position={[47.428545, -7.69043]} zoom={5} />;
+  return (
+    <LeafletMap
+      position={[44, -10]}
+      zoom={5}
+      markers={mapLocations.itinerary as MapLocation[]}
+    />
+  );
 }

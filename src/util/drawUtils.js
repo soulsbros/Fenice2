@@ -1,7 +1,9 @@
-const BORDER_COLOR = '#000000';
-const GOOD_COLOR = '#ccf2ff';
-const EVIL_COLOR = '#ffcccc';
-const NEUTRAL_COLOR = '#fff2cc';
+const BORDER_COLOR = "#000000";
+const GOOD_COLOR = "#ccf2ff";
+const EVIL_COLOR = "#ffcccc";
+const NEUTRAL_COLOR = "#fff2cc";
+
+//TODO rewrite in TS
 
 const toRadians = (deg) => {
   return (deg * Math.PI) / 180;
@@ -36,13 +38,13 @@ const drawAlignmentCircle = (ctx, character, r, centerX, centerY) => {
   ctx.beginPath();
   ctx.arc(x, y, 25, 0, 2 * Math.PI);
   ctx.lineWidth = 5;
-  ctx.fillStyle = '#752626';
+  ctx.fillStyle = "#752626";
   ctx.fill();
   ctx.stroke();
-  ctx.font = '12px Helvetica';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillStyle = '#ffff';
+  ctx.font = "12px Helvetica";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillStyle = "#ffff";
   ctx.fillText(character.name.charAt(0), x, y);
   ctx.closePath();
 };
@@ -133,7 +135,7 @@ export const drawCenterCircle = (ctx, centerX, centerY) => {
 };
 
 export const drawSideCircle = (ctx, a, r, centerX, centerY) => {
-  const alignments = ['CN', 'CE', 'NE', 'LE', 'LN', 'LG', 'NG', 'CG'];
+  const alignments = ["CN", "CE", "NE", "LE", "LN", "LG", "NG", "CG"];
   for (let i = 0; i < 8; i++) {
     const x = centerX + r * Math.cos(a * i);
     const y = centerY + r * Math.sin(a * i);
@@ -149,10 +151,10 @@ export const drawSideCircle = (ctx, a, r, centerX, centerY) => {
     }
     ctx.lineWidth = 0;
     ctx.fill();
-    ctx.fillStyle = '#000000';
-    ctx.font = '20px Helvetica';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
+    ctx.fillStyle = "#000000";
+    ctx.font = "20px Helvetica";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
     ctx.fillText(alignments[i], x, y);
     ctx.closePath();
     ctx.beginPath();
@@ -162,9 +164,9 @@ export const drawSideCircle = (ctx, a, r, centerX, centerY) => {
     ctx.stroke();
     ctx.closePath();
   }
-  ctx.fillStyle = '#000000';
-  ctx.font = '20px Helvetica';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText('N', centerX, centerY);
+  ctx.fillStyle = "#000000";
+  ctx.font = "20px Helvetica";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText("N", centerX, centerY);
 };

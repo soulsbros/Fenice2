@@ -2,6 +2,7 @@
 
 import Button from "@/components/button";
 import { useEffect, useState } from "react";
+import { Trash2 } from "react-feather";
 import io from "socket.io-client";
 
 interface Player {
@@ -49,12 +50,6 @@ export default function Initiative() {
     save(order.filter((player) => player.name !== name));
   };
 
-  const sort = () => {
-    const newOrder = order.toSorted(comparator);
-    setOrder(newOrder);
-    save(newOrder);
-  };
-
   const clear = () => {
     setOrder([]);
     setPosition(0);
@@ -96,7 +91,10 @@ export default function Initiative() {
           }`}
         >
           {player.name} ({player.score})
-          <Button onClick={() => removeCharacter(player.name)} label="Remove" />
+          <Button
+            onClick={() => removeCharacter(player.name)}
+            icon={<Trash2 />}
+          />
         </div>
       ))
     );
@@ -130,15 +128,15 @@ export default function Initiative() {
       </div>
 
       <p className="font-semibold text-lg">Add character</p>
-      <div className="flex m-4 space-x-3">
+      <div className="m-4">
         <input
-          className="p-2"
+          className="p-2 m-2"
           id="newCharacterName"
           type="text"
           placeholder="Character name"
         />
         <input
-          className="p-2"
+          className="p-2 m-2"
           id="newCharacterScore"
           type="number"
           placeholder="Initiative score"
@@ -147,7 +145,6 @@ export default function Initiative() {
       </div>
 
       <p className="font-semibold text-lg mb-4">Controls</p>
-      <Button label="Sort" onClick={sort} />
       <Button label="Clear" onClick={clear} />
       <Button label="Next" onClick={next} />
     </>

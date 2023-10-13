@@ -1,23 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import {
-  Calendar,
-  Home,
-  List,
-  Map,
-  MapPin,
-  Octagon,
-  SkipBack,
-  Users,
-  Zap,
-} from "react-feather";
+import { Home, List, Map, MapPin, SkipBack, Zap } from "react-feather";
 import contactLogo from "../img/icon_contact.png";
 import githubLogo from "../img/icon_github.png";
 import SidebarLink from "./sidebarLink";
 
 export default function Sidebar() {
   return (
-    <div className="min-w-fit flex flex-col justify-between">
+    <div className="min-w-fit flex-col justify-between hidden sm:flex">
       <div>
         <SidebarLink
           name="Old site"
@@ -25,32 +15,24 @@ export default function Sidebar() {
           icon={<SkipBack />}
         />
         <SidebarLink name="Home" path="/" icon={<Home />} />
-        <SidebarLink
+        {/* <SidebarLink
           name="Alignment"
           path="/alignment"
           icon={<Octagon />}
-          disabled
-        />
-        <SidebarLink
+        /> */}
+        {/* <SidebarLink
           name="Characters"
           path="/characters"
           icon={<Users />}
-          disabled
-        />
+        /> */}
         <SidebarLink name="Golarion map" path="/map" icon={<Map />} />
         <SidebarLink name="Initiative" path="/initiative" icon={<List />} />
-        <SidebarLink
-          name="Skill checks"
-          path="/skills"
-          icon={<Zap />}
-          disabled
-        />
-        <SidebarLink
+        <SidebarLink name="Skills" path="/skills" icon={<Zap />} />
+        {/* <SidebarLink
           name="DA Calendar"
           path="/calendar"
           icon={<Calendar />}
-          disabled
-        />
+        /> */}
         <SidebarLink name="DA Itinerary" path="/itinerary" icon={<MapPin />} />
       </div>
 
