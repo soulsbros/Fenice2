@@ -200,7 +200,7 @@ const mapLocations = {
     },
     {
       name: "Algamat",
-      position: [53.97, -0.4556],
+      position: [57.810164, 1.604004],
       description: "A dwarven mountain city, home of Agna Ironbreaker",
       marker: "Red",
       dateVisited: "4th of Lamashan - now",

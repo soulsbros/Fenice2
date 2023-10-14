@@ -1,10 +1,9 @@
 import { Server } from "socket.io";
 
-//TODO rewrite in TS and move to app directory
+//TODO move to app directory
 
-const SocketHandler = (req, res) => {
+export default function SocketHandler(req: Request, res: any) {
   if (!res.socket.server.io) {
-    console.log("Socket is initializing");
     const io = new Server(res.socket.server);
     res.socket.server.io = io;
 
@@ -16,6 +15,4 @@ const SocketHandler = (req, res) => {
     });
   }
   res.end();
-};
-
-export default SocketHandler;
+}

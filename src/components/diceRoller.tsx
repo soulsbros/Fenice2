@@ -67,11 +67,6 @@ export default function DiceRoller() {
 
   return (
     <>
-      <Button label="d20 advantage" onClick={() => rollDice("2d20kh1")} />
-      <Button label="Fireball" onClick={() => rollDice("6d6")} />
-      <Button label="Stat roll" onClick={() => rollDice("4d6dl1")} />
-      <Button label="Holy shit" onClick={() => rollDice("200d20")} />
-
       <select
         id="colors"
         onChange={(option) => updateColor(option.target.value)}
@@ -83,6 +78,11 @@ export default function DiceRoller() {
         <option value="#34035e">Purple</option>
         <option value="#ff0000">Red</option>
       </select>
+
+      <Button label="d20 advantage" onClick={() => rollDice("2d20kh1")} />
+      <Button label="Fireball" onClick={() => rollDice("6d6")} />
+      <Button label="Stat roll" onClick={() => rollDice("4d6dl1")} />
+      <Button label="Holy shit" onClick={() => rollDice("200d20")} />
 
       <div id="dice-box" className="relative"></div>
     </>

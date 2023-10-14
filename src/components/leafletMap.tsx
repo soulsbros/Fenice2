@@ -1,21 +1,29 @@
 "use client";
 
-import { MapLocation } from "@/types/Map";
+import { LinesList, MapLocation } from "@/types/Map";
 import "leaflet-defaulticon-compatibility";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet/dist/leaflet.css";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import {
+  MapContainer,
+  Marker,
+  Polyline,
+  Popup,
+  TileLayer,
+} from "react-leaflet";
 
 interface LeafletMapProps {
   position: [number, number];
   zoom: number;
-  markers: MapLocation[];
+  markers?: MapLocation[];
+  lines?: LinesList[];
 }
 
 export default function LeafletMap({
   position,
   zoom,
-  markers,
+  markers = [],
+  lines = [],
 }: LeafletMapProps) {
   const mapOptions = {
     tms: true,
@@ -37,6 +45,14 @@ export default function LeafletMap({
     </Marker>
   ));
 
+  const linesList = lines.map((el) => (
+    <Polyline
+      key={el.points.toString()}
+      pathOptions={el.options}
+      positions={el.points}
+    />
+  ));
+
   return (
     <MapContainer center={position} zoom={zoom} className="h-full">
       <TileLayer
@@ -51,6 +67,7 @@ export default function LeafletMap({
         maxNativeZoom={6}
       />
       {markersList}
+      {linesList}
     </MapContainer>
   );
 }
