@@ -1,12 +1,12 @@
 import { ReactElement } from "react";
 
-interface Props {
+interface ButtonProps {
   icon?: ReactElement;
   label?: string;
   onClick: () => void;
 }
 
-export default function Button({ label, icon, onClick }: Props) {
+export default function Button({ label, icon, onClick }: ButtonProps) {
   return (
     <button
       className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded m-2"

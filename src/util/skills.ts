@@ -8,7 +8,9 @@ export const findSkill = (skill: string, edition: Edition) =>
 export const getWikiURL = (skillName: string, edition: Edition) => {
   switch (edition) {
     case Edition.DnD3:
-      return `https://www.d20srd.org/srd/skills/${skillName.toLowerCase()}.htm`;
+      return `https://www.d20srd.org/srd/skills/${
+        skillName[0].toLowerCase() + skillName.replaceAll(" ", "").slice(1)
+      }.htm`;
     case Edition.DnD5:
       return `https://www.dandwiki.com/wiki/5e_SRD:${skillName.replaceAll(
         " ",
@@ -176,7 +178,7 @@ export const skills = {
       requiresTraining: false,
     },
     {
-      name: "Decipher script",
+      name: "Decipher Script",
       ability: "INT",
       armorPenalty: false,
       requiresTraining: true,
@@ -188,7 +190,7 @@ export const skills = {
       requiresTraining: false,
     },
     {
-      name: "Disable device",
+      name: "Disable Device",
       ability: "INT",
       armorPenalty: false,
       requiresTraining: true,
@@ -200,7 +202,7 @@ export const skills = {
       requiresTraining: false,
     },
     {
-      name: "Escape artist",
+      name: "Escape Artist",
       ability: "DEX",
       armorPenalty: true,
       requiresTraining: false,
@@ -212,13 +214,13 @@ export const skills = {
       requiresTraining: false,
     },
     {
-      name: "Gather information",
+      name: "Gather Information",
       ability: "CHA",
       armorPenalty: false,
       requiresTraining: false,
     },
     {
-      name: "Handle animal",
+      name: "Handle Animal",
       ability: "CHA",
       armorPenalty: false,
       requiresTraining: true,
@@ -260,13 +262,13 @@ export const skills = {
       requiresTraining: false,
     },
     {
-      name: "Move silently",
+      name: "Move Silently",
       ability: "DEX",
       armorPenalty: true,
       requiresTraining: false,
     },
     {
-      name: "Open lock",
+      name: "Open Lock",
       ability: "DEX",
       armorPenalty: false,
       requiresTraining: true,
@@ -302,13 +304,13 @@ export const skills = {
       requiresTraining: false,
     },
     {
-      name: "Sense motive",
+      name: "Sense Motive",
       ability: "WIS",
       armorPenalty: false,
       requiresTraining: false,
     },
     {
-      name: "Sleight of hand",
+      name: "Sleight of Hand",
       ability: "DEX",
       armorPenalty: true,
       requiresTraining: true,
@@ -344,19 +346,19 @@ export const skills = {
       requiresTraining: true,
     },
     {
-      name: "Use magic device",
+      name: "Use Magic Device",
       ability: "CHA",
       armorPenalty: false,
       requiresTraining: true,
     },
     {
-      name: "Use psionic device",
+      name: "Use Psionic Device",
       ability: "CHA",
       armorPenalty: false,
       requiresTraining: true,
     },
     {
-      name: "Use rope",
+      name: "Use Rope",
       ability: "DEX",
       armorPenalty: false,
       requiresTraining: false,

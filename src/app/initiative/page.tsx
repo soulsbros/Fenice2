@@ -38,7 +38,7 @@ export default function Initiative() {
 
     const newOrder = [
       ...order,
-      { name: name.value, score: parseInt(score.value), active: false },
+      { name: name.value, score: parseFloat(score.value), active: false },
     ].toSorted(comparator);
 
     name.value = "";
@@ -79,6 +79,12 @@ export default function Initiative() {
     }
   };
 
+  const remove = (name: string) => {
+    if (confirm(`Do you want to remove ${name} from the initiative?`)) {
+      removeCharacter(name);
+    }
+  };
+
   const renderOrder =
     order.length === 0 ? (
       <p className="p-2">The party seems a little empty...</p>
@@ -87,14 +93,14 @@ export default function Initiative() {
         <div
           key={player.name}
           className={`m-2 flex justify-between items-center ${
-            player.active ? "text-green-700" : ""
+            player.active ? "bg-lime-500" : ""
           }`}
         >
-          {player.name} ({player.score})
-          <Button
-            onClick={() => removeCharacter(player.name)}
-            icon={<Trash2 />}
-          />
+          <div>
+            <p className="text-lg">{player.name}</p>
+            <p className="text-sm italic">{player.score}</p>
+          </div>
+          <Button onClick={() => remove(player.name)} icon={<Trash2 />} />
         </div>
       ))
     );
