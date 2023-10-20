@@ -83,6 +83,7 @@ export default function Initiative() {
     if (sendUpdate) {
       socket.emit("players-change", newData);
     }
+    document.querySelector("div .bg-lime-500")?.scrollIntoView();
   };
 
   const renderOrder =
