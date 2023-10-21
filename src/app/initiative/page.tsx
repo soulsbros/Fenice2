@@ -3,7 +3,7 @@
 import Button from "@/components/button";
 import { GameData, Player } from "@/types/Initiative";
 import { useEffect, useState } from "react";
-import { Trash2 } from "react-feather";
+import { ChevronsRight, Heart, Trash2 } from "react-feather";
 import io from "socket.io-client";
 
 let socket: any;
@@ -20,13 +20,21 @@ export default function Initiative() {
       "#newCharacterScore"
     ) as HTMLInputElement;
 
-    if (
-      order.find((player) => player.name === name.value) ||
-      !name.value ||
-      !score.value
-    ) {
+    if (order.find((player) => player.name === name.value)) {
+      alert(`Player ${name.value} already exists`);
+      console.error("Player already exists", name.value, score.value);
+      return;
+    }
+
+    if (order.find((player) => player.score == parseFloat(score.value))) {
+      alert(`Initiative value ${score.value} already exists`);
+      console.error("Score already exists", name.value, score.value);
+      return;
+    }
+
+    if (!name.value || !score.value) {
       alert("Invalid input");
-      console.error("Invalid input:", name.value, score.value);
+      console.error("Invalid input", name.value, score.value);
       return;
     }
 
@@ -36,6 +44,7 @@ export default function Initiative() {
         name: name.value,
         score: parseFloat(score.value),
         active: false,
+        health: "Unknown", //TODO make it editable
       },
     ].toSorted(comparator);
 
@@ -62,6 +71,17 @@ export default function Initiative() {
     }
   };
 
+  const restart = () => {
+    if (confirm(`Do you want to restart the combat?`)) {
+      document.querySelector<HTMLInputElement>("#newCharacterName")!.value = "";
+      document.querySelector<HTMLInputElement>("#newCharacterScore")!.value =
+        "";
+      const newOrder = [...order];
+      newOrder[newOrder.findIndex((player) => player.active)].active = false;
+      save({ order: newOrder, turn: 1 });
+    }
+  };
+
   const next = () => {
     const newOrder = [...order];
     let newTurn = turn;
@@ -83,7 +103,11 @@ export default function Initiative() {
     if (sendUpdate) {
       socket.emit("players-change", newData);
     }
-    document.querySelector("div .bg-lime-500")?.scrollIntoView();
+    if ((document.querySelector("#autoAdvance") as HTMLInputElement)?.checked) {
+      document
+        .querySelector("div .bg-lime-500")
+        ?.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   const renderOrder =
@@ -94,17 +118,22 @@ export default function Initiative() {
         <div
           key={player.name}
           className={`m-2 flex justify-between items-center ${
-            player.active ? "bg-lime-500" : ""
+            player.active ? "bg-lime-500 font-semibold" : ""
           }`}
         >
           <div>
             <p className="text-lg">{player.name}</p>
-            <p className="text-sm italic">{player.score}</p>
+            <p className="text-sm italic flex space-x-2">
+              <ChevronsRight /> {player.score} <Heart />{" "}
+              {player.health || "Unknown"}
+            </p>
           </div>
-          <Button
-            onClick={() => removeCharacter(player.name)}
-            icon={<Trash2 />}
-          />
+          {!player.active ? (
+            <Button
+              onClick={() => removeCharacter(player.name)}
+              icon={<Trash2 />}
+            />
+          ) : null}
         </div>
       ))
     );
@@ -129,6 +158,13 @@ export default function Initiative() {
     }
   };
 
+  const handleKeypress = (e: any) => {
+    if (e.key == "Enter") {
+      //TODO fix eventlistener resetting initiative
+      // addCharacter();
+    }
+  };
+
   // prevent screen from sleeping, https://developer.chrome.com/articles/wake-lock
   const requestWakeLock = async () => {
     if (!navigator.wakeLock) {
@@ -148,6 +184,12 @@ export default function Initiative() {
     initializeSocket();
     requestWakeLock();
     document.addEventListener("visibilitychange", handleVisibilityChange);
+    document
+      .querySelector("#newCharacterName")
+      ?.addEventListener("keyup", handleKeypress);
+    document
+      .querySelector("#newCharacterScore")
+      ?.addEventListener("keyup", handleKeypress);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -179,8 +221,24 @@ export default function Initiative() {
       </div>
 
       <p className="font-semibold text-lg mb-4">Controls</p>
-      <Button label="Clear" onClick={clear} />
-      <Button label="Next" onClick={next} />
+
+      <div className="space-x-2">
+        <Button label="Clear" onClick={clear} />
+        {order.findIndex((player) => player.active) !== -1 ? (
+          <>
+            <Button label="Restart" onClick={restart} />
+          </>
+        ) : null}
+        <Button
+          label={
+            order.findIndex((player) => player.active) === -1 ? "Start" : "Next"
+          }
+          onClick={next}
+        />
+        <label>
+          <input type="checkbox" id="autoAdvance" defaultChecked /> Scroll
+        </label>
+      </div>
     </>
   );
 }

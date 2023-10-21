@@ -67,22 +67,24 @@ export default function DiceRoller() {
 
   return (
     <>
-      <select
-        id="colors"
-        onChange={(option) => updateColor(option.target.value)}
-        className="border rounded-lg p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white"
-      >
-        <option value="#1e7098">Blue</option>
-        <option value="#07fc03">Green</option>
-        <option value="#fca503">Orange</option>
-        <option value="#34035e">Purple</option>
-        <option value="#ff0000">Red</option>
-      </select>
+      <div className="space-x-2">
+        <select
+          id="colors"
+          onChange={(option) => updateColor(option.target.value)}
+          className="border rounded-lg p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white"
+        >
+          <option value="#1e7098">Blue</option>
+          <option value="#07fc03">Green</option>
+          <option value="#fca503">Orange</option>
+          <option value="#34035e">Purple</option>
+          <option value="#ff0000">Red</option>
+        </select>
 
-      <Button label="d20 advantage" onClick={() => rollDice("2d20kh1")} />
-      <Button label="Fireball" onClick={() => rollDice("6d6")} />
-      <Button label="Stat roll" onClick={() => rollDice("4d6dl1")} />
-      <Button label="Holy shit" onClick={() => rollDice("200d20")} />
+        <Button label="d20 advantage" onClick={() => rollDice("2d20kh1")} />
+        <Button label="Fireball" onClick={() => rollDice("6d6")} />
+        <Button label="Stat roll" onClick={() => rollDice("4d6dl1")} />
+        <Button label="Holy shit" onClick={() => rollDice("200d20")} />
+      </div>
 
       <div id="dice-box" className="relative"></div>
     </>
