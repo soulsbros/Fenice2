@@ -1,10 +1,11 @@
+import UserIndicator from "@/components/login";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Image from "next/image";
-import { User } from "react-feather";
 import Sidebar from "../components/sidebar";
 import icon from "../img/icon.png";
 import "./globals.css";
+import { NextAuthProvider } from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -42,14 +43,13 @@ export default function RootLayout({
             />
             La Compagnia della Fenice
           </div>
-          <div className="flex items-center">
-            <div>Login</div>
-            <User className="ml-2" />
-          </div>
+          <UserIndicator />
         </header>
         <main className="flex flex-1">
           <Sidebar />
-          <div className="flex-grow p-3 max-w-full">{children}</div>
+          <div className="flex-grow p-3 max-w-full">
+            <NextAuthProvider>{children}</NextAuthProvider>
+          </div>
         </main>
       </body>
     </html>
