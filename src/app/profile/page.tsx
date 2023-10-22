@@ -1,6 +1,7 @@
-import Button, { LogoutButton } from "@/components/button";
+import { LogoutButton } from "@/components/button";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
+import Link from "next/link";
 import defaultImage from "../../img/default.png";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 
@@ -33,7 +34,9 @@ export default async function Profile() {
           </div>
 
           <div className="mt-4 space-x-2">
-            <Button href={`${issuer}/account`} label="Manage account" />
+            <Link href={`${issuer}/account`} target="_blank" className="button">
+              Manage account
+            </Link>
             <LogoutButton />
           </div>
         </>

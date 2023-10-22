@@ -26,3 +26,7 @@ body {
 .displayResults .hidden {
   display: none;
 }
+
+.button {
+  @apply bg-red-600 hover:bg-red-700 text-white font-bold py-[10px] px-4 rounded;
+}
