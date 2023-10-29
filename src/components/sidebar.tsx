@@ -7,7 +7,10 @@ import SidebarLink from "./sidebarLink";
 
 export default function Sidebar() {
   return (
-    <div className="min-w-fit flex-col justify-between hidden sm:flex">
+    <div
+      id="menuPanel"
+      className="min-w-fit flex-col justify-between hidden sm:flex"
+    >
       <div>
         <SidebarLink
           name="Old site"

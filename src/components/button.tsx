@@ -10,11 +10,11 @@ interface ButtonProps {
 }
 
 export default function Button({ label, icon, onClick }: ButtonProps) {
-  const className =
-    "bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded";
-
   return (
-    <button className={className} onClick={onClick}>
+    <button
+      className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+      onClick={onClick}
+    >
       {icon} {label}
     </button>
   );

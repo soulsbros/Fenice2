@@ -1,5 +1,6 @@
-import UserIndicator from "@/components/login";
+import MenuButton from "@/components/menuButton";
 import Sidebar from "@/components/sidebar";
+import UserIndicator from "@/components/userIndicator";
 import icon from "@/img/icon.png";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -32,8 +33,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} flex flex-col`}>
+      <body className={`${inter.className} flex flex-col min-w-[300px]`}>
         <header className="bg-red-600 p-3 text-white flex justify-between items-center">
+          <MenuButton />
+
           <div className="flex items-center">
             <Image
               src={icon}
@@ -43,10 +46,13 @@ export default function RootLayout({
             />
             La Compagnia della Fenice
           </div>
+
           <UserIndicator />
         </header>
+
         <main className="flex flex-1">
           <Sidebar />
+
           <div className="flex-grow p-3 max-w-full">
             <NextAuthProvider>{children}</NextAuthProvider>
           </div>
