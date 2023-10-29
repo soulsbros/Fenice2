@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    let db = await ourMongo("characters");
+    let db = await ourMongo("campaigns");
     let docs = (await db?.find().toArray()) ?? [];
     docs.sort((a, b) => a.name.localeCompare(b.name));
 

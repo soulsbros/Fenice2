@@ -9,7 +9,7 @@ import {
 import { LatLngTuple } from "leaflet";
 import dynamic from "next/dynamic";
 
-const LeafletMap = dynamic(() => import("../../components/leafletMap"), {
+const LeafletMap = dynamic(() => import("@/components/leafletMap"), {
   ssr: false,
 });
 

@@ -1,8 +1,8 @@
+import contactLogo from "@/img/icon_contact.png";
+import githubLogo from "@/img/icon_github.png";
 import Image from "next/image";
 import Link from "next/link";
 import { Home, List, Map, MapPin, SkipBack, Zap } from "react-feather";
-import contactLogo from "../img/icon_contact.png";
-import githubLogo from "../img/icon_github.png";
 import SidebarLink from "./sidebarLink";
 
 export default function Sidebar() {

@@ -16,9 +16,10 @@ export async function ourMongo(collection: string) {
   try {
     await client.connect();
     database = client.db("dnd-alignment");
+    console.info(" ✓ Connected to mongoDB database");
     return database.collection(collection);
   } catch (err) {
-    console.error("Failed to connect to the mongoDB database!");
+    console.error(" x Failed to connect to the mongoDB database!");
     console.error(err);
   }
 }

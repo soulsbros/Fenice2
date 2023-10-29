@@ -3,7 +3,7 @@ import KeycloakProvider from "next-auth/providers/keycloak";
 
 const clientId = process.env.KEYCLOAK_ID ?? "";
 const clientSecret = process.env.KEYCLOAK_SECRET ?? "";
-// sshould include the realm – e.g. https://my-keycloak-domain.com/realms/My_Realm
+// should include the realm – e.g. https://my-keycloak-domain.com/realms/My_Realm
 const issuer = process.env.KEYCLOAK_ISSUER ?? "";
 
 export const authOptions: NextAuthOptions = {

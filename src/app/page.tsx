@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 
-const DiceRoller = dynamic(() => import("../components/diceRoller"), {
+const DiceRoller = dynamic(() => import("@/components/diceRoller"), {
   ssr: false,
 });
 

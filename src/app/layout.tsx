@@ -1,9 +1,9 @@
 import UserIndicator from "@/components/login";
+import Sidebar from "@/components/sidebar";
+import icon from "@/img/icon.png";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Image from "next/image";
-import Sidebar from "../components/sidebar";
-import icon from "../img/icon.png";
 import "./globals.css";
 import { NextAuthProvider } from "./providers";
 
