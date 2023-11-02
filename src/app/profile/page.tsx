@@ -27,6 +27,8 @@ export default async function Profile() {
             Name: {user?.name}
             <br />
             Email: {user?.email}
+            <br />
+            Roles: {user?.roles ?? "-"}
           </div>
         </div>
 

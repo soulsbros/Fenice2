@@ -12,8 +12,27 @@ export const authOptions: NextAuthOptions = {
       clientId: clientId,
       clientSecret: clientSecret,
       issuer: issuer,
+      profile(profile) {
+        return {
+          id: profile.sub,
+          name: profile.name ?? profile.preferred_username,
+          email: profile.email,
+          image: profile.picture,
+          roles: profile.resource_access.fenice2.roles ?? [],
+        };
+      },
     }),
   ],
+  callbacks: {
+    jwt({ token, user }) {
+      if (user) token.roles = user.roles;
+      return token;
+    },
+    session({ session, token }) {
+      session.user.roles = token.roles;
+      return session;
+    },
+  },
 };
 
 const handler = NextAuth(authOptions);
