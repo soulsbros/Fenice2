@@ -28,7 +28,7 @@ export default async function Profile() {
             <br />
             Email: {user?.email}
             <br />
-            Roles: {user?.roles ?? "-"}
+            Roles: {user?.roles.map((role) => `${role} `)}
           </div>
         </div>
 
