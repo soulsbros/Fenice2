@@ -1,5 +1,5 @@
+import { skills } from "@/lib/skills";
 import { Edition } from "@/types/Skills";
-import { skills } from "@/util/skills";
 import Link from "next/link";
 
 export default function Skills() {

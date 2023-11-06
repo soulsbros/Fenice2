@@ -1,12 +1,12 @@
+import { findSkill, getWikiURL } from "@/lib/skills";
 import { Edition } from "@/types/Skills";
-import { findSkill, getWikiURL } from "@/util/skills";
 import { AlertTriangle, Book } from "react-feather";
 
 export default function Skills({
   params,
-}: {
+}: Readonly<{
   params: { skill: string; edition: Edition };
-}) {
+}>) {
   let { skill, edition } = params;
   skill = decodeURIComponent(skill);
 

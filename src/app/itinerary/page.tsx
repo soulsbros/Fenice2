@@ -1,11 +1,11 @@
 "use client";
 
-import { LinesList, MapLocation } from "@/types/Map";
 import {
   itineraryPoints,
   mapLocations,
   teleportPoints,
-} from "@/util/mapLocations";
+} from "@/lib/mapLocations";
+import { LinesList, MapLocation } from "@/types/Map";
 import { LatLngTuple } from "leaflet";
 import dynamic from "next/dynamic";
 

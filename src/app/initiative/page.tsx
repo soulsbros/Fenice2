@@ -1,8 +1,8 @@
 "use client";
 
 import Button from "@/components/button";
+import { advancePlayer } from "@/lib/initiative";
 import { GameData, Player } from "@/types/Initiative";
-import { advancePlayer } from "@/util/initiativeUtils";
 import { useEffect, useState } from "react";
 import { ChevronsRight, Heart, Trash2 } from "react-feather";
 import io from "socket.io-client";

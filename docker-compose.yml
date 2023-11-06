@@ -6,7 +6,7 @@ services:
     build: . # change to image for prod
     environment:
       - MONGODB_URI=mongodb://user:password@mongodb:27017
-      - NEXTAUTH_URL=https://fenice2.site.com
+      - NEXTAUTH_URL=http://localhost:3000
       - NEXTAUTH_SECRET=supersecret
       - KEYCLOAK_ID=fenice2
       - KEYCLOAK_SECRET=testsecret
