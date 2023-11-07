@@ -1,8 +1,9 @@
 "use client";
 
 import Button from "@/components/button";
-import { advancePlayer } from "@/lib/initiative";
-import { GameData, Player } from "@/types/Initiative";
+import { advanceCharacter, getHealthDescription } from "@/lib/initiative";
+import { Character, GameData } from "@/types/Initiative";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { ChevronsRight, Heart, Trash2 } from "react-feather";
 import io from "socket.io-client";
@@ -10,24 +11,31 @@ import io from "socket.io-client";
 let socket: any;
 
 export default function Initiative() {
-  const [order, setOrder] = useState<Player[]>([]);
+  const session = useSession();
+  const [order, setOrder] = useState<Character[]>([]);
   const [turn, setTurn] = useState(1);
-  const comparator = (playerA: Player, playerB: Player) =>
-    playerB.score - playerA.score;
+  const comparator = (characterA: Character, characterB: Character) =>
+    characterB.score - characterA.score;
 
   const addCharacter = () => {
     let name = document.querySelector("#newCharacterName") as HTMLInputElement;
     let score = document.querySelector(
       "#newCharacterScore"
     ) as HTMLInputElement;
+    let currentHealth = document.querySelector(
+      "#newCharacterCurrentHealth"
+    ) as HTMLInputElement;
+    let totalHealth = document.querySelector(
+      "#newCharacterTotalHealth"
+    ) as HTMLInputElement;
 
-    if (order.find((player) => player.name === name.value)) {
-      alert(`Player ${name.value} already exists`);
-      console.error("Player already exists", name.value, score.value);
+    if (order.find((character) => character.name === name.value)) {
+      alert(`Character ${name.value} already exists`);
+      console.error("Character already exists", name.value, score.value);
       return;
     }
 
-    if (order.find((player) => player.score == parseFloat(score.value))) {
+    if (order.find((character) => character.score == parseFloat(score.value))) {
       alert(`Initiative value ${score.value} already exists`);
       console.error("Score already exists", name.value, score.value);
       return;
@@ -45,46 +53,56 @@ export default function Initiative() {
         name: name.value,
         score: parseFloat(score.value),
         active: false,
-        health: "Unknown", //TODO make it editable
+        player: session.data?.user.email ?? "",
+        currentHealth: parseInt(totalHealth.value) || 0,
+        totalHealth: parseInt(currentHealth.value) || 0,
       },
     ].toSorted(comparator);
 
     name.value = "";
     score.value = "";
+    currentHealth.value = "";
+    totalHealth.value = "";
     save({ order: newOrder, turn: turn });
   };
 
   const removeCharacter = (name: string) => {
     if (confirm(`Do you want to remove ${name} from the initiative?`)) {
+      const isActive =
+        order.find((character) => character.active)?.name === name;
+      let newOrder = order;
+      let newTurn = turn;
+
+      if (isActive) {
+        const res = advanceCharacter(order, turn);
+        newOrder = res.newOrder;
+        newTurn = res.newTurn;
+      }
+
       save({
-        order: order.filter((player) => player.name !== name),
-        turn: turn,
+        order: newOrder.filter((character) => character.name !== name),
+        turn: newTurn,
       });
     }
   };
 
   const clear = () => {
     if (confirm(`Do you want to clear the entire initiative?`)) {
-      document.querySelector<HTMLInputElement>("#newCharacterName")!.value = "";
-      document.querySelector<HTMLInputElement>("#newCharacterScore")!.value =
-        "";
       save({ order: [], turn: 1 });
     }
   };
 
   const restart = () => {
     if (confirm(`Do you want to restart the combat?`)) {
-      document.querySelector<HTMLInputElement>("#newCharacterName")!.value = "";
-      document.querySelector<HTMLInputElement>("#newCharacterScore")!.value =
-        "";
       const newOrder = [...order];
-      newOrder[newOrder.findIndex((player) => player.active)].active = false;
+      newOrder[newOrder.findIndex((character) => character.active)].active =
+        false;
       save({ order: newOrder, turn: 1 });
     }
   };
 
   const next = () => {
-    const { newOrder, newTurn } = advancePlayer(order, turn);
+    const { newOrder, newTurn } = advanceCharacter(order, turn);
     save({ order: newOrder, turn: newTurn });
   };
 
@@ -92,7 +110,7 @@ export default function Initiative() {
     setOrder(newData.order);
     setTurn(newData.turn);
     if (sendUpdate) {
-      socket.emit("players-change", newData);
+      socket.emit("characters-change", newData);
     }
     if ((document.querySelector("#autoAdvance") as HTMLInputElement)?.checked) {
       document
@@ -101,30 +119,39 @@ export default function Initiative() {
     }
   };
 
+  function getHealthValue(character: Character) {
+    if (
+      session.data?.user.roles.includes("dm") ||
+      character.player === session.data?.user.email
+    ) {
+      return `${character.currentHealth} / ${character.totalHealth}`;
+    } else {
+      return getHealthDescription(character);
+    }
+  }
+
   const renderOrder =
     order.length === 0 ? (
       <p className="p-2">The party seems a little empty...</p>
     ) : (
-      order.map((player) => (
+      order.map((character) => (
         <div
-          key={player.name}
+          key={character.name}
           className={`m-2 flex justify-between items-center ${
-            player.active ? "bg-lime-500 font-semibold" : ""
+            character.active ? "bg-lime-500 font-semibold" : ""
           }`}
         >
           <div>
-            <p className="text-lg">{player.name}</p>
+            <p className="text-lg">{character.name}</p>
             <p className="text-sm italic flex space-x-2">
-              <ChevronsRight /> {player.score} <Heart />{" "}
-              {player.health || "Unknown"}
+              <ChevronsRight /> {character.score} <Heart />{" "}
+              {getHealthValue(character)}
             </p>
           </div>
-          {!player.active ? (
-            <Button
-              onClick={() => removeCharacter(player.name)}
-              icon={<Trash2 />}
-            />
-          ) : null}
+          <Button
+            onClick={() => removeCharacter(character.name)}
+            icon={<Trash2 />}
+          />
         </div>
       ))
     );
@@ -137,7 +164,7 @@ export default function Initiative() {
       console.info("Connected to socket");
     });
 
-    socket.on("update-players", (data: GameData) => {
+    socket.on("update-characters", (data: GameData) => {
       console.info("Received update");
       save(data, false);
     });
@@ -208,6 +235,18 @@ export default function Initiative() {
           type="number"
           placeholder="Initiative score"
         />
+        <input
+          className="p-2 m-2"
+          id="newCharacterCurrentHealth"
+          type="number"
+          placeholder="Current health"
+        />
+        <input
+          className="p-2 m-2"
+          id="newCharacterTotalHealth"
+          type="number"
+          placeholder="Total health"
+        />
         <Button label="Add" onClick={addCharacter} />
       </div>
 
@@ -215,14 +254,14 @@ export default function Initiative() {
 
       <div className="space-x-2">
         <Button label="Clear" onClick={clear} />
-        {order.findIndex((player) => player.active) !== -1 ? (
-          <>
-            <Button label="Restart" onClick={restart} />
-          </>
+        {order.findIndex((character) => character.active) !== -1 ? (
+          <Button label="Restart" onClick={restart} />
         ) : null}
         <Button
           label={
-            order.findIndex((player) => player.active) === -1 ? "Start" : "Next"
+            order.findIndex((character) => character.active) === -1
+              ? "Start"
+              : "Next"
           }
           onClick={next}
         />

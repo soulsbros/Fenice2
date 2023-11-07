@@ -1,22 +1,73 @@
 import { getWithFilter, insertDocs } from "@/lib/mongo";
+import { Document, Filter, ObjectId } from "mongodb";
 import { NextRequest, NextResponse } from "next/server";
 
 const collection = "characters";
 
 // get characters
-//TODO filters
+// filters in query param are id, name, campaignName
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
-  const query = searchParams.get("query");
+  const id = searchParams.get("id");
+  const name = searchParams.get("name");
+  const campaignName = searchParams.get("campaignName");
+  const result = [] as any[];
 
   try {
-    const docs = await getWithFilter(collection, "name");
-    return NextResponse.json(docs);
+    const filter = {} as Filter<Document>;
+    if (id) {
+      filter._id = new ObjectId(id);
+    }
+    if (name) {
+      filter["name"] = { $regex: name, $options: "i" };
+    }
+    if (campaignName) {
+      const campaigns = await getWithFilter("campaigns", "name", {
+        name: { $regex: campaignName, $options: "i" },
+      });
+
+      await Promise.all(
+        campaigns[0].characters.map(async (character: any) => {
+          let char = await getWithFilter(collection, "name", {
+            _id: new ObjectId(character),
+          });
+          result.push(char);
+        })
+      );
+      return NextResponse.json(result);
+    }
+
+    const chars = await getWithFilter(collection, "name", filter);
+
+    for (const character of chars) {
+      if (character.externalId !== null) {
+        const response = await fetch(
+          `https://lafenice.soulsbros.ch/actions/getCharacterData.php?id=${character.externalId}`
+        );
+        try {
+          const externalData = await response.json();
+          result.push({ ...externalData, ...character });
+        } catch (err) {
+          console.error(
+            `Error fetching extra data for ${character.externalId}: ${err}`
+          );
+          return NextResponse.json(
+            {
+              error: `Error fetching extra data for ${character.externalId}: ${err}`,
+            },
+            { status: 500 }
+          );
+        }
+      } else {
+        result.push(character);
+      }
+    }
+    return NextResponse.json(result);
   } catch (err) {
     console.error(err);
     return NextResponse.json(
       {
-        error: `Error inserting ${collection}: ${err}`,
+        error: `Error fetching ${collection}: ${err}`,
       },
       { status: 500 }
     );

@@ -1,16 +1,33 @@
-import { Player } from "@/types/Initiative";
+import { Character } from "@/types/Initiative";
 
-export function advancePlayer(order: Player[], turn: number) {
+export function advanceCharacter(order: Character[], turn: number) {
   const newOrder = [...order];
   let newTurn = turn;
-  const currentPlayer = newOrder.findIndex((player) => player.active);
-  if (currentPlayer != -1) {
-    newOrder[currentPlayer].active = false;
+  const currentCharacter = newOrder.findIndex((character) => character.active);
+  if (currentCharacter != -1) {
+    newOrder[currentCharacter].active = false;
   }
-  newOrder[(currentPlayer + 1) % newOrder.length].active = true;
+  newOrder[(currentCharacter + 1) % newOrder.length].active = true;
 
-  if (currentPlayer === newOrder.length - 1) {
+  if (currentCharacter === newOrder.length - 1) {
     newTurn = turn + 1;
   }
   return { newOrder, newTurn };
+}
+
+export function getHealthDescription(character: Character) {
+  const percentage = character.currentHealth / character.totalHealth;
+  if (percentage > 0.8) {
+    return "Barely injured";
+  } else if (percentage > 0.6) {
+    return "Lightly injured";
+  } else if (percentage > 0.4) {
+    return "Injured";
+  } else if (percentage > 0.2) {
+    return "Gravely injured";
+  } else if (percentage > 0) {
+    return "Near death";
+  } else {
+    return "Unconscious";
+  }
 }

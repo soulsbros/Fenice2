@@ -1,4 +1,4 @@
-import { Db, MongoClient } from "mongodb";
+import { Db, Document, Filter, MongoClient } from "mongodb";
 import { NextResponse } from "next/server";
 
 const mongoURI =
@@ -30,7 +30,7 @@ export async function ourMongo(collection: string) {
 export async function getWithFilter(
   collection: string,
   sortingParam: string,
-  filter = {}
+  filter = {} as Filter<Document>
 ) {
   try {
     const db = await ourMongo(collection);
@@ -39,10 +39,10 @@ export async function getWithFilter(
       docs.sort((a, b) => a[sortingParam].localeCompare(b[sortingParam]));
     }
 
-    return docs;
+    return docs as any[];
   } catch (err) {
     console.error(err);
-    return { error: `Error fetching ${collection}: ${err}` };
+    return [];
   }
 }
 

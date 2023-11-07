@@ -12,12 +12,12 @@ export default function SocketHandler(req: Request, res: any) {
 
     io.on("connection", (socket) => {
       console.info(`Connection accepted, id ${socket.id}`);
-      socket.emit("update-players", initiativeData);
+      socket.emit("update-characters", initiativeData);
 
-      socket.on("players-change", (data: GameData) => {
+      socket.on("characters-change", (data: GameData) => {
         console.info(`Received update request from ${socket.id}`);
         initiativeData = data;
-        socket.broadcast.emit("update-players", data);
+        socket.broadcast.emit("update-characters", data);
       });
     });
   }

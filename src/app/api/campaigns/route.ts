@@ -1,13 +1,26 @@
 import { getWithFilter, insertDocs } from "@/lib/mongo";
-import { NextResponse } from "next/server";
+import { Document, Filter, ObjectId } from "mongodb";
+import { NextRequest, NextResponse } from "next/server";
 
 const collection = "campaigns";
 
 // get campaigns
 //TODO filters
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams;
+  const id = searchParams.get("id");
+  const name = searchParams.get("name");
+
   try {
-    const docs = await getWithFilter(collection, "name");
+    const filter = {} as Filter<Document>;
+    if (id) {
+      filter._id = new ObjectId(id);
+    }
+    if (name) {
+      filter["name"] = { $regex: name, $options: "i" };
+    }
+
+    const docs = await getWithFilter(collection, "name", filter);
     return NextResponse.json(docs);
   } catch (err) {
     console.error(err);

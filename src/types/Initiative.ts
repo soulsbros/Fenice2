@@ -1,11 +1,13 @@
-export interface Player {
+export interface Character {
   name: string;
   score: number;
   active: boolean;
-  health: string;
+  player: string;
+  totalHealth: number;
+  currentHealth: number;
 }
 
 export interface GameData {
-  order: Player[];
+  order: Character[];
   turn: number;
 }
