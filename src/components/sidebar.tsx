@@ -2,7 +2,7 @@ import contactLogo from "@/img/icon_contact.png";
 import githubLogo from "@/img/icon_github.png";
 import Image from "next/image";
 import Link from "next/link";
-import { Home, List, Map, MapPin, SkipBack, Zap } from "react-feather";
+import { Grid, Home, List, Map, MapPin, SkipBack, Zap } from "react-feather";
 import SidebarLink from "./sidebarLink";
 
 export default function Sidebar() {
@@ -37,6 +37,11 @@ export default function Sidebar() {
           icon={<Calendar />}
         /> */}
         <SidebarLink name="DA Itinerary" path="/itinerary" icon={<MapPin />} />
+        <SidebarLink
+          name="TTRPGTA"
+          path="https://ttrpgta.soulsbros.ch"
+          icon={<Grid />}
+        />
       </div>
 
       <div className="flex space-x-2 p-4 items-center">

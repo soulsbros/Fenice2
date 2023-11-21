@@ -20,23 +20,21 @@ export default function SidebarLink({
   path,
   icon,
   disabled = false,
-}: SidebarLinkProps) {
+}: Readonly<SidebarLinkProps>) {
   const pathname = usePathname();
   const currentPage =
     path === "/" ? pathname === path : pathname?.startsWith(path);
 
   return (
-    <>
-      <Link
-        href={disabled ? "" : path}
-        onClick={closeMenu}
-        className={`flex p-4 hover:bg-blue-300 ${
-          disabled ? "cursor-default text-slate-500" : ""
-        } ${currentPage ? "text-red-700" : ""}`}
-      >
-        {icon}
-        <p className="ml-3">{name}</p>
-      </Link>
-    </>
+    <Link
+      href={disabled ? "" : path}
+      onClick={closeMenu}
+      className={`flex p-4 hover:bg-blue-300 ${
+        disabled ? "cursor-default text-slate-500" : ""
+      } ${currentPage ? "text-red-700" : ""}`}
+    >
+      {icon}
+      <p className="ml-3">{name}</p>
+    </Link>
   );
 }

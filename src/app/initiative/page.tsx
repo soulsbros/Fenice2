@@ -5,7 +5,7 @@ import { advanceCharacter, getHealthDescription } from "@/lib/initiative";
 import { Character, GameData } from "@/types/Initiative";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { ChevronsRight, Heart, Trash2 } from "react-feather";
+import { ArrowUp, ChevronsRight, Heart, Trash2 } from "react-feather";
 import io from "socket.io-client";
 
 let socket: any;
@@ -54,8 +54,8 @@ export default function Initiative() {
         score: parseFloat(score.value),
         active: false,
         player: session.data?.user.email ?? "",
-        currentHealth: parseInt(totalHealth.value) || 0,
-        totalHealth: parseInt(currentHealth.value) || 0,
+        currentHealth: parseInt(currentHealth.value) || 0,
+        totalHealth: parseInt(totalHealth.value) || 0,
       },
     ].toSorted(comparator);
 
@@ -84,6 +84,10 @@ export default function Initiative() {
         turn: newTurn,
       });
     }
+  };
+
+  const moveCharacter = (character: string) => {
+    alert("Not implemented yet");
   };
 
   const clear = () => {
@@ -148,10 +152,19 @@ export default function Initiative() {
               {getHealthValue(character)}
             </p>
           </div>
-          <Button
-            onClick={() => removeCharacter(character.name)}
-            icon={<Trash2 />}
-          />
+
+          <div className="flex gap-x-1">
+            <Button
+              onClick={() => moveCharacter(character.name)}
+              tooltip="Move up"
+              icon={<ArrowUp />}
+            />
+            <Button
+              onClick={() => removeCharacter(character.name)}
+              tooltip="Remove character"
+              icon={<Trash2 />}
+            />
+          </div>
         </div>
       ))
     );
