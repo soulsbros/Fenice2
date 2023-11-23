@@ -5,7 +5,7 @@ import { advanceCharacter, getHealthDescription } from "@/lib/initiative";
 import { Character, GameData } from "@/types/Initiative";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { ArrowUp, ChevronsRight, Heart, Trash2 } from "react-feather";
+import { ChevronsRight, Edit, Heart, Trash2 } from "react-feather";
 import io from "socket.io-client";
 
 let socket: any;
@@ -17,7 +17,7 @@ export default function Initiative() {
   const comparator = (characterA: Character, characterB: Character) =>
     characterB.score - characterA.score;
 
-  const addCharacter = () => {
+  const getFields = () => {
     let name = document.querySelector("#newCharacterName") as HTMLInputElement;
     let score = document.querySelector(
       "#newCharacterScore"
@@ -29,6 +29,11 @@ export default function Initiative() {
       "#newCharacterTotalHealth"
     ) as HTMLInputElement;
 
+    return { name, score, currentHealth, totalHealth };
+  };
+
+  const addCharacter = () => {
+    const { name, score, currentHealth, totalHealth } = getFields();
     if (order.find((character) => character.name === name.value)) {
       alert(`Character ${name.value} already exists`);
       console.error("Character already exists", name.value, score.value);
@@ -68,26 +73,41 @@ export default function Initiative() {
 
   const removeCharacter = (name: string) => {
     if (confirm(`Do you want to remove ${name} from the initiative?`)) {
-      const isActive =
-        order.find((character) => character.active)?.name === name;
-      let newOrder = order;
-      let newTurn = turn;
-
-      if (isActive) {
-        const res = advanceCharacter(order, turn);
-        newOrder = res.newOrder;
-        newTurn = res.newTurn;
-      }
-
-      save({
-        order: newOrder.filter((character) => character.name !== name),
-        turn: newTurn,
-      });
+      deleteCharacter(name);
     }
   };
 
-  const moveCharacter = (character: string) => {
-    alert("Not implemented yet");
+  const editCharacter = (currentCharacter: string) => {
+    const { name, score, currentHealth, totalHealth } = getFields();
+
+    const character =
+      order[order.findIndex((character) => character.name == currentCharacter)];
+    name.value = character.name;
+    score.value = character.score.toString();
+    currentHealth.value = character.currentHealth.toString();
+    totalHealth.value = character.totalHealth.toString();
+
+    deleteCharacter(currentCharacter);
+  };
+
+  const deleteCharacter = (currentCharacter: string) => {
+    const isActive =
+      order.find((character) => character.active)?.name === currentCharacter;
+    let newOrder = order;
+    let newTurn = turn;
+
+    if (isActive) {
+      const res = advanceCharacter(order, turn);
+      newOrder = res.newOrder;
+      newTurn = res.newTurn;
+    }
+
+    save({
+      order: newOrder.filter(
+        (character) => character.name !== currentCharacter
+      ),
+      turn: newTurn,
+    });
   };
 
   const clear = () => {
@@ -101,6 +121,7 @@ export default function Initiative() {
       const newOrder = [...order];
       newOrder[newOrder.findIndex((character) => character.active)].active =
         false;
+      newOrder[0].active = true;
       save({ order: newOrder, turn: 1 });
     }
   };
@@ -155,9 +176,9 @@ export default function Initiative() {
 
           <div className="flex gap-x-1">
             <Button
-              onClick={() => moveCharacter(character.name)}
-              tooltip="Move up"
-              icon={<ArrowUp />}
+              onClick={() => editCharacter(character.name)}
+              tooltip="Edit character"
+              icon={<Edit />}
             />
             <Button
               onClick={() => removeCharacter(character.name)}
@@ -191,7 +212,7 @@ export default function Initiative() {
 
   const handleKeypress = (e: any) => {
     if (e.key == "Enter") {
-      //TODO fix eventlistener resetting initiative
+      // brokn
       // addCharacter();
     }
   };
@@ -199,7 +220,7 @@ export default function Initiative() {
   // prevent screen from sleeping, https://developer.chrome.com/articles/wake-lock
   const requestWakeLock = async () => {
     if (!navigator.wakeLock) {
-      console.error("Wake Lock API not supported");
+      console.warn("Wake Lock API not supported");
       return;
     }
 
@@ -215,12 +236,12 @@ export default function Initiative() {
     initializeSocket();
     requestWakeLock();
     document.addEventListener("visibilitychange", handleVisibilityChange);
-    document
-      .querySelector("#newCharacterName")
-      ?.addEventListener("keyup", handleKeypress);
-    document
-      .querySelector("#newCharacterScore")
-      ?.addEventListener("keyup", handleKeypress);
+    // document
+    //   .querySelector("#newCharacterName")
+    //   ?.addEventListener("keyup", handleKeypress);
+    // document
+    //   .querySelector("#newCharacterScore")
+    //   ?.addEventListener("keyup", handleKeypress);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
