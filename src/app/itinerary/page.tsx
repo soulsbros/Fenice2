@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  itineraryPoints,
-  mapLocations,
-  teleportPoints,
-} from "@/lib/mapLocations";
+import { itineraryPoints, markers, teleportPoints } from "@/lib/mapLocations";
 import { LinesList, MapLocation } from "@/types/Map";
 import { LatLngTuple } from "leaflet";
 import dynamic from "next/dynamic";
@@ -23,7 +19,7 @@ export default function Itinerary() {
     <LeafletMap
       position={[44, -10]}
       zoom={5}
-      markers={mapLocations.itinerary as MapLocation[]}
+      markers={markers as MapLocation[]}
       lines={lines}
     />
   );

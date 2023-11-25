@@ -12,11 +12,6 @@ export default function Sidebar() {
       className="min-w-fit flex-col justify-between hidden sm:flex"
     >
       <div>
-        <SidebarLink
-          name="Old site"
-          path="https://lafenice.soulsbros.ch"
-          icon={<SkipBack />}
-        />
         <SidebarLink name="Home" path="/" icon={<Home />} />
         {/* <SidebarLink
           name="Alignment"
@@ -28,17 +23,22 @@ export default function Sidebar() {
           path="/characters"
           icon={<Users />}
         /> */}
-        <SidebarLink name="Golarion map" path="/map" icon={<Map />} />
-        <SidebarLink name="Initiative" path="/initiative" icon={<List />} />
-        <SidebarLink name="Skills" path="/skills" icon={<Zap />} />
         {/* <SidebarLink
           name="DA Calendar"
           path="/calendar"
           icon={<Calendar />}
         /> */}
         <SidebarLink name="DA Itinerary" path="/itinerary" icon={<MapPin />} />
+        <SidebarLink name="Golarion map" path="/map" icon={<Map />} />
+        <SidebarLink name="Initiative" path="/initiative" icon={<List />} />
+        <SidebarLink name="Skills" path="/skills" icon={<Zap />} />
         <SidebarLink
-          name="TTRPGTA"
+          name="Old site &#x2197;"
+          path="https://lafenice.soulsbros.ch"
+          icon={<SkipBack />}
+        />
+        <SidebarLink
+          name="TTRPGTA &#x2197;"
           path="https://ttrpgta.soulsbros.ch"
           icon={<Grid />}
         />

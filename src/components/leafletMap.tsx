@@ -1,6 +1,7 @@
 "use client";
 
 import { LinesList, MapLocation } from "@/types/Map";
+import { Icon } from "leaflet";
 import "leaflet-defaulticon-compatibility";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet/dist/leaflet.css";
@@ -10,6 +11,7 @@ import {
   Polyline,
   Popup,
   TileLayer,
+  useMapEvents,
 } from "react-leaflet";
 
 interface LeafletMapProps {
@@ -24,7 +26,7 @@ export default function LeafletMap({
   zoom,
   markers = [],
   lines = [],
-}: LeafletMapProps) {
+}: Readonly<LeafletMapProps>) {
   const mapOptions = {
     tms: true,
     updateWhenIdle: false,
@@ -33,17 +35,24 @@ export default function LeafletMap({
     maxZoom: 9,
   };
 
-  const markersList = markers.map((el) => (
-    <Marker position={el.position} key={el.name + el.dateVisited}>
-      <Popup>
-        <b>{el.name}</b>
-        <br />
-        <i>{el.description}</i>
-        <br />
-        Visited: {el.dateVisited}
-      </Popup>
-    </Marker>
-  ));
+  const markersList = markers.map((el) => {
+    const icon = new Icon({
+      iconUrl: `/assets/marker${el.marker}.png`,
+      iconSize: [25, 41],
+      iconAnchor: [12.5, 41],
+    });
+    return (
+      <Marker position={el.position} key={el.name + el.dateVisited} icon={icon}>
+        <Popup>
+          <b>{el.name}</b>
+          <br />
+          <i>{el.description}</i>
+          <br />
+          Visited: {el.dateVisited ?? "never"}
+        </Popup>
+      </Marker>
+    );
+  });
 
   const linesList = lines.map((el) => (
     <Polyline
@@ -52,6 +61,16 @@ export default function LeafletMap({
       positions={el.points}
     />
   ));
+
+  const MapPositionLogger = () => {
+    useMapEvents({
+      click(e) {
+        console.info(`Position: [${e.latlng.lat}, ${e.latlng.lng}]`);
+        navigator.clipboard.writeText(`[${e.latlng.lat}, ${e.latlng.lng}],`);
+      },
+    });
+    return null;
+  };
 
   return (
     <MapContainer center={position} zoom={zoom} className="h-full">
@@ -68,6 +87,7 @@ export default function LeafletMap({
       />
       {markersList}
       {linesList}
+      <MapPositionLogger />
     </MapContainer>
   );
 }
