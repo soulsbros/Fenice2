@@ -3,6 +3,7 @@ export interface Character {
   score: number;
   active: boolean;
   player: string;
+  isPlayer: boolean;
   totalHealth: number;
   currentHealth: number;
 }

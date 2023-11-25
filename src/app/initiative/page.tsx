@@ -59,6 +59,7 @@ export default function Initiative() {
         score: parseFloat(score.value),
         active: false,
         player: session.data?.user.email ?? "",
+        isPlayer: !session.data?.user.roles.includes("dm"),
         currentHealth: parseInt(currentHealth.value) || 0,
         totalHealth: parseInt(totalHealth.value) || 0,
       },
@@ -145,10 +146,8 @@ export default function Initiative() {
   };
 
   function getHealthValue(character: Character) {
-    if (
-      session.data?.user.roles.includes("dm") ||
-      character.player === session.data?.user.email
-    ) {
+    // show numerical HPs only to the DM or if it's a player character
+    if (session.data?.user.roles.includes("dm") || character.isPlayer) {
       return `${character.currentHealth} / ${character.totalHealth}`;
     } else {
       return getHealthDescription(character);
@@ -175,11 +174,13 @@ export default function Initiative() {
           </div>
 
           <div className="flex gap-x-1">
-            <Button
-              onClick={() => editCharacter(character.name)}
-              tooltip="Edit character"
-              icon={<Edit />}
-            />
+            {session.data?.user.roles.includes("dm") || character.isPlayer ? (
+              <Button
+                onClick={() => editCharacter(character.name)}
+                tooltip="Edit character"
+                icon={<Edit />}
+              />
+            ) : null}
             <Button
               onClick={() => removeCharacter(character.name)}
               tooltip="Remove character"
