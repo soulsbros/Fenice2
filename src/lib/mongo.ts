@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 const mongoURI =
   process.env.MONGODB_URI ?? "mongodb://user:password@localhost:27017";
-const dbName = "dnd-alignment";
+const dbName = "fenice2";
 
 const client = new MongoClient(mongoURI, {
   connectTimeoutMS: 5000,
