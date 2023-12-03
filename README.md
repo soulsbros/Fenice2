@@ -1,18 +1,45 @@
-# fenice2
+# Fenice2
 
 [![](https://img.shields.io/github/license/steeven9/fenice2)](/LICENSE)
 [![C/C++ CI](https://github.com/steeven9/fenice2/actions/workflows/docker-image.yml/badge.svg)](https://github.com/steeven9/fenice2/actions/workflows/docker-image.yml)
 ![](https://img.shields.io/tokei/lines/github/steeven9/fenice2)
 
-The site of La Compagnia della Fenice
+## ℹ️ Description
 
-## Run in Docker
+This is a website for our D&D group, where we handle maps, character data and much more.
 
-A Docker image is available on [Docker Hub](https://hub.docker.com/steeven9/fenice2).
+The frontend is exposed at <https://fenice2.soulsbros.ch>.
 
-* Run `docker-compose up` in the root folder to bring up the whole project.
+### Dependencies
 
-## Run locally
+- MongoDB database
 
-* Run `bun install` to install all the dependencies
-* Run `bun run dev` to start the webserver
+## 🏡 Local development
+
+### ⚙️ Prerequisites
+
+- Node.js v20
+- Yarn package manager
+- Docker
+
+### 🔧 Installation
+
+```bash
+# install dependencies
+yarn install
+
+# set up local configuration
+cp .env.example .env.local
+```
+
+### 🚀 Run locally
+
+```bash
+# start DB
+docker-compose up mongodb -d
+
+# start frontend
+yarn dev
+```
+
+Then open your browser and head to <http://localhost:3000>

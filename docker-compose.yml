@@ -21,7 +21,7 @@ services:
       - MONGODB_USERNAME=user
       - MONGODB_PASSWORD=password
       - MONGODB_ROOT_PASSWORD=password
-      - MONGODB_DATABASE=dnd-alignment
+      - MONGODB_DATABASE=fenice2
     ports:
       - 27017:27017
     volumes:
