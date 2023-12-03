@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 const collection = "campaigns";
 
 // get campaigns
-//TODO filters
+// filters in query param are id, name
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const id = searchParams.get("id");

@@ -36,7 +36,11 @@ export async function getWithFilter(
     const db = await ourMongo(collection);
     const docs = (await db?.find(filter).toArray()) ?? [];
     if (sortingParam) {
-      docs.sort((a, b) => a[sortingParam].localeCompare(b[sortingParam]));
+      if (typeof docs[0][sortingParam] === "number") {
+        docs.sort((a, b) => a[sortingParam] - b[sortingParam]);
+      } else {
+        docs.sort((a, b) => a[sortingParam].localeCompare(b[sortingParam]));
+      }
     }
 
     return docs as any[];

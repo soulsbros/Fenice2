@@ -2,7 +2,16 @@ import contactLogo from "@/img/icon_contact.png";
 import githubLogo from "@/img/icon_github.png";
 import Image from "next/image";
 import Link from "next/link";
-import { Grid, Home, List, Map, MapPin, SkipBack, Zap } from "react-feather";
+import {
+  Grid,
+  Home,
+  List,
+  Map,
+  MapPin,
+  SkipBack,
+  Users,
+  Zap,
+} from "react-feather";
 import SidebarLink from "./sidebarLink";
 
 export default function Sidebar() {
@@ -18,11 +27,7 @@ export default function Sidebar() {
           path="/alignment"
           icon={<Octagon />}
         /> */}
-        {/* <SidebarLink
-          name="Characters"
-          path="/characters"
-          icon={<Users />}
-        /> */}
+        <SidebarLink name="Characters" path="/characters" icon={<Users />} />
         {/* <SidebarLink
           name="DA Calendar"
           path="/calendar"
