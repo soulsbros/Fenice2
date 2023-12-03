@@ -5,12 +5,12 @@ import { NextRequest, NextResponse } from "next/server";
 const collection = "characters";
 
 // get characters
-// filters in query param are id, name, campaignID
+// filters in query param are id, name, campaignId
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const id = searchParams.get("id");
   const name = searchParams.get("name");
-  const campaignID = searchParams.get("campaignID");
+  const campaignId = searchParams.get("campaignId");
 
   try {
     const filter = {} as Filter<Document>;
@@ -20,11 +20,11 @@ export async function GET(request: NextRequest) {
     if (name) {
       filter.name = { $regex: name, $options: "i" };
     }
-    if (campaignID) {
-      filter.campaignID = campaignID;
+    if (campaignId) {
+      filter.campaignId = campaignId;
     }
 
-    const chars = await getWithFilter(collection, "campaignID", filter);
+    const chars = await getWithFilter(collection, "campaignId", filter);
     return NextResponse.json(chars);
   } catch (err) {
     console.error(err);

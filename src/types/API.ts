@@ -1,7 +1,7 @@
 export interface Character {
   _id: string;
-  characterID: number;
-  campaignID: number;
+  characterId: number;
+  campaignId: number;
   player: string;
   name: string;
   race: string;
@@ -9,6 +9,6 @@ export interface Character {
   pronouns: string;
   class: string;
   alignment: string;
-  background: string;
-  character: string;
+  backstory: string;
+  personality: string;
 }
