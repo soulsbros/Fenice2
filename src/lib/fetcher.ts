@@ -8,5 +8,6 @@ export default async function fetcher(url: string) {
     return data;
   } catch (error) {
     console.error(error);
+    return [];
   }
 }
