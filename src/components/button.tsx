@@ -20,11 +20,7 @@ export default function Button({
 }: Readonly<ButtonProps>) {
   return (
     <button
-      className={`${
-        disabled
-          ? "bg-slate-400 text-gray-500"
-          : "bg-red-600 hover:bg-red-700 text-white"
-      } font-bold py-2 px-4 rounded`}
+      className={`${disabled ? "disabled" : "primary"} button`}
       onClick={disabled ? () => {} : onClick}
       title={tooltip}
     >

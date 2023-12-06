@@ -1,5 +1,6 @@
+import { getCharacters } from "@/app/actions";
 import CharacterInfo from "@/components/characterInfo";
-import fetcher from "@/lib/fetcher";
+import { ObjectId } from "mongodb";
 import Link from "next/link";
 
 export default async function CharacterPage({
@@ -8,17 +9,23 @@ export default async function CharacterPage({
   params: { id: string };
 }>) {
   let { id } = params;
-  const characterData = await fetcher(`/api/characters?id=${id}`);
+  const result = await getCharacters(undefined, { _id: new ObjectId(id) });
 
   return (
     <>
       <div className="title">Character page</div>
 
-      <CharacterInfo character={characterData[0]} trimTexts={false} />
+      {result.success ? (
+        <>
+          <CharacterInfo character={result.data[0]} trimTexts={false} />
 
-      <Link href={`/characters/${id}/edit`} className="button">
-        Edit
-      </Link>
+          <Link href={`/characters/${id}/edit`} className="primary button">
+            Edit
+          </Link>
+        </>
+      ) : (
+        "Not found"
+      )}
     </>
   );
 }

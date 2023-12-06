@@ -1,14 +1,21 @@
 import { LogoutButton } from "@/components/button";
+import CharacterInfo from "@/components/characterInfo";
 import defaultImage from "@/img/defaultUser.png";
+import { authOptions } from "@/lib/authConfig";
+import { Character } from "@/types/API";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import { getCharacters } from "../actions";
 
 export default async function Profile() {
   const session = await getServerSession(authOptions);
   const user = session?.user;
   const issuer = process.env.KEYCLOAK_ISSUER ?? "";
+
+  const result = await getCharacters(undefined, {
+    playerEmail: session?.user.email,
+  });
 
   return (
     <>
@@ -32,7 +39,11 @@ export default async function Profile() {
       </div>
 
       <div className="mt-4 space-x-2">
-        <Link href={`${issuer}/account`} target="_blank" className="button">
+        <Link
+          href={`${issuer}/account`}
+          target="_blank"
+          className="primary button"
+        >
           Manage account
         </Link>
         <LogoutButton />
@@ -40,9 +51,13 @@ export default async function Profile() {
 
       <p className="title mt-8">Your characters</p>
 
-      <div className="mt-4">Coming soon</div>
+      {result.success
+        ? result?.data.map((character: Character) => (
+            <CharacterInfo character={character} key={character.characterId} />
+          ))
+        : result.message}
 
-      <Link href={`/characters/new`} className="button mt-4">
+      <Link href={`/characters/new`} className="primary button mt-4">
         Create
       </Link>
     </>

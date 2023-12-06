@@ -27,8 +27,20 @@ body {
   display: none;
 }
 
+.primary {
+  @apply bg-red-600 hover:bg-red-700;
+}
+
+.secondary {
+  @apply bg-blue-600 hover:bg-blue-700;
+}
+
+.disabled {
+  @apply bg-slate-800 cursor-not-allowed;
+}
+
 .button {
-  @apply bg-red-600 hover:bg-red-700 text-white font-bold py-[10px] px-4 rounded inline-block;
+  @apply text-white font-bold py-[10px] px-4 rounded inline-block;
 }
 
 .title {

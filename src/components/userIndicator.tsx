@@ -1,4 +1,4 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/authConfig";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { User } from "react-feather";

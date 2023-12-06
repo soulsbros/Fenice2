@@ -1,5 +1,4 @@
 import { Db, Document, Filter, MongoClient } from "mongodb";
-import { NextResponse } from "next/server";
 
 const mongoURI =
   process.env.MONGODB_URI ?? "mongodb://user:password@localhost:27017";
@@ -29,13 +28,13 @@ export async function ourMongo(collection: string) {
 
 export async function getWithFilter(
   collection: string,
-  sortingParam: string,
+  sortingParam?: string,
   filter = {} as Filter<Document>
 ) {
   try {
     const db = await ourMongo(collection);
     const docs = (await db?.find(filter).toArray()) ?? [];
-    if (sortingParam) {
+    if (sortingParam && docs.length > 0) {
       if (typeof docs[0][sortingParam] === "number") {
         docs.sort((a, b) => a[sortingParam] - b[sortingParam]);
       } else {
@@ -43,10 +42,17 @@ export async function getWithFilter(
       }
     }
 
-    return docs as any[];
+    return {
+      success: true,
+      data: docs as any[],
+    };
   } catch (err) {
     console.error(err);
-    return [];
+    return {
+      success: false,
+      data: [],
+      message: `Error getting ${collection}: ${err}`,
+    };
   }
 }
 
@@ -56,22 +62,52 @@ export async function insertDocs(collection: string, docs: any[]) {
     const result = await db?.insertMany(docs);
 
     if (result && result.insertedCount > 0) {
-      return NextResponse.json({
-        msg: result.insertedCount + ` ${collection} inserted successfully`,
-      });
+      return {
+        success: true,
+        message: `${result.insertedCount} ${collection} inserted successfully`,
+      };
     } else {
       console.error(`Error inserting ${collection}`, result);
-      return NextResponse.json({
-        error: `Error inserting ${collection}: ${result}`,
-      });
+      return {
+        success: false,
+        message: `Error inserting ${collection}: ${result}`,
+      };
     }
   } catch (err) {
     console.error(`Error inserting ${collection}`, err);
-    return NextResponse.json(
-      {
-        error: `Error inserting ${collection}: ${err}`,
-      },
-      { status: 400 }
-    );
+    return {
+      success: false,
+      message: `Error inserting ${collection}: ${err}`,
+    };
+  }
+}
+
+export async function updateDoc(
+  collection: string,
+  doc: any,
+  filter = {} as Filter<Document>
+) {
+  const db = await ourMongo(collection);
+  try {
+    const result = await db?.replaceOne(filter, doc);
+
+    if (result && result.modifiedCount > 0) {
+      return {
+        success: true,
+        message: `${result.modifiedCount} ${collection} updated successfully`,
+      };
+    } else {
+      console.error(`Error updating ${collection}`, result);
+      return {
+        success: false,
+        message: `Error updating ${collection}: ${result}`,
+      };
+    }
+  } catch (err) {
+    console.error(`Error updating ${collection}`, err);
+    return {
+      success: false,
+      message: `Error updating ${collection}: ${err}`,
+    };
   }
 }

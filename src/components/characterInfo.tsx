@@ -45,7 +45,7 @@ export default function CharacterInfo({
             {character.race || "Unknown race"},{" "}
             {character.class || "Unknown class"}
           </p>
-          <p>{character.alignment}</p>
+          <p>{character.actualAlignment}</p>
         </div>
       </div>
 
