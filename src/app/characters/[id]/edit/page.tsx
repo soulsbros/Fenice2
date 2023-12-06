@@ -1,7 +1,9 @@
 import { getCharacters } from "@/app/actions";
 import CharacterForm from "@/components/characterForm";
+import { authOptions } from "@/lib/authConfig";
 import { Character } from "@/types/API";
 import { ObjectId } from "mongodb";
+import { getServerSession } from "next-auth";
 
 export default async function EditCharacter({
   params,
@@ -13,6 +15,11 @@ export default async function EditCharacter({
     _id: new ObjectId(id),
   });
   const previousData = result.data[0] as Character;
+  const userData = await getServerSession(authOptions);
+
+  if (userData?.user.email !== previousData.playerEmail) {
+    return <div className="title">Unauthorized</div>;
+  }
 
   return (
     <>
