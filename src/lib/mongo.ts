@@ -28,17 +28,23 @@ export async function ourMongo(collection: string) {
 
 export async function getWithFilter(
   collection: string,
-  sortingParam?: string,
+  sortingParam?: { field: string; direction: string },
   filter = {} as Filter<Document>
 ) {
   try {
     const db = await ourMongo(collection);
     const docs = (await db?.find(filter).toArray()) ?? [];
+
     if (sortingParam && docs.length > 0) {
-      if (typeof docs[0][sortingParam] === "number") {
-        docs.sort((a, b) => a[sortingParam] - b[sortingParam]);
+      if (typeof docs[0][sortingParam.field] === "number") {
+        docs.sort((a, b) => a[sortingParam.field] - b[sortingParam.field]);
       } else {
-        docs.sort((a, b) => a[sortingParam].localeCompare(b[sortingParam]));
+        docs.sort((a, b) =>
+          a[sortingParam.field].localeCompare(b[sortingParam.field])
+        );
+      }
+      if (sortingParam.direction == "DESC") {
+        docs.reverse();
       }
     }
 
@@ -108,6 +114,35 @@ export async function updateDoc(
     return {
       success: false,
       message: `Error updating ${collection}: ${err}`,
+    };
+  }
+}
+
+export async function deleteDoc(
+  collection: string,
+  filter = {} as Filter<Document>
+) {
+  const db = await ourMongo(collection);
+  try {
+    const result = await db?.deleteOne(filter);
+
+    if (result && result.deletedCount > 0) {
+      return {
+        success: true,
+        message: `${result.deletedCount} ${collection} deleted successfully`,
+      };
+    } else {
+      console.error(`Error deleting ${collection}`, result);
+      return {
+        success: false,
+        message: `Error deleting ${collection}: ${result}`,
+      };
+    }
+  } catch (err) {
+    console.error(`Error deleting ${collection}`, err);
+    return {
+      success: false,
+      message: `Error deleting ${collection}: ${err}`,
     };
   }
 }

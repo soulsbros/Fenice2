@@ -1,13 +1,14 @@
 "use server";
 
 import { authOptions } from "@/lib/authConfig";
-import { getWithFilter, insertDocs, updateDoc } from "@/lib/mongo";
+import { deleteDoc, getWithFilter, insertDocs, updateDoc } from "@/lib/mongo";
 import { Character } from "@/types/API";
 import { Document, Filter, ObjectId } from "mongodb";
 import { getServerSession } from "next-auth";
+import { revalidatePath } from "next/cache";
 
 export async function getCharacters(
-  sortingParam?: string,
+  sortingParam?: { field: string; direction: string },
   filter = {} as Filter<Document>
 ) {
   return await getWithFilter("characters", sortingParam, filter);
@@ -15,6 +16,19 @@ export async function getCharacters(
 
 export async function insertCharacter(prevState: any, formData: FormData) {
   const userData = await getServerSession(authOptions);
+
+  if (!userData) {
+    return { message: "Error: invalid user data. Try logging out and back in" };
+  }
+  if (
+    !formData.get("name") ||
+    !formData.get("race") ||
+    !formData.get("class") ||
+    !formData.get("alignment")
+  ) {
+    return { message: "Error: missing required data" };
+  }
+
   const char: Character = {
     name: formData.get("name")?.toString() ?? "",
     // TODO fix those IDs
@@ -35,18 +49,6 @@ export async function insertCharacter(prevState: any, formData: FormData) {
     updatedAt: new Date(),
   };
 
-  if (!userData) {
-    return { message: "Error: invalid user data. Try logging out and back in" };
-  }
-  if (
-    !formData.get("name") ||
-    !formData.get("race") ||
-    !formData.get("class") ||
-    !formData.get("alignment")
-  ) {
-    return { message: "Error: missing required data" };
-  }
-
   const result = await insertDocs("characters", [char]);
 
   return { message: result.message };
@@ -58,11 +60,25 @@ export async function updateCharacter(prevState: any, formData: FormData) {
   const oldData = await getCharacters(undefined, {
     _id: id,
   });
+  const char = oldData.data[0] as Character;
 
   if (!oldData.success) {
     return { message: "Error: invalid character ID" };
   }
-  const char = oldData.data[0];
+  if (!userData) {
+    return { message: "Error: invalid user data. Try logging out and back in" };
+  }
+  if (userData?.user.email !== char.playerEmail) {
+    return { message: "Error: you can only edit your character" };
+  }
+  if (
+    !formData.get("name") ||
+    !formData.get("race") ||
+    !formData.get("class") ||
+    !formData.get("alignment")
+  ) {
+    return { message: "Error: missing one or more required fields" };
+  }
 
   char.name = formData.get("name")?.toString() ?? char.name;
   char.pronouns = formData.get("pronouns")?.toString() ?? char.pronouns;
@@ -78,21 +94,34 @@ export async function updateCharacter(prevState: any, formData: FormData) {
     formData.get("personality")?.toString() ?? char.personality;
   char.updatedAt = new Date();
 
-  if (!userData) {
-    return { message: "Error: invalid user data. Try logging out and back in" };
-  }
-  if (
-    !formData.get("name") ||
-    !formData.get("race") ||
-    !formData.get("class") ||
-    !formData.get("alignment")
-  ) {
-    return { message: "Error: missing required data" };
-  }
-
   const result = await updateDoc("characters", char, {
     _id: id,
   });
+
+  return { message: result.message };
+}
+
+export async function deleteCharacter(id: string) {
+  const userData = await getServerSession(authOptions);
+  const oldData = await getCharacters(undefined, {
+    _id: new ObjectId(id),
+  });
+  const char = oldData.data[0] as Character;
+
+  if (!oldData.success) {
+    return { message: "Error: invalid character ID" };
+  }
+  if (!userData) {
+    return { message: "Error: invalid user data. Try logging out and back in" };
+  }
+  if (userData?.user.email !== char.playerEmail) {
+    return { message: "Error: you can only delete your character" };
+  }
+
+  const result = await deleteDoc("characters", {
+    _id: new ObjectId(id),
+  });
+  revalidatePath("/characters");
 
   return { message: result.message };
 }

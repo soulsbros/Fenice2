@@ -1,9 +1,10 @@
 import { getCharacters } from "@/app/actions";
+import CharacterButtons from "@/components/characterButtons";
 import CharacterInfo from "@/components/characterInfo";
 import { authOptions } from "@/lib/authConfig";
+import { Character } from "@/types/API";
 import { ObjectId } from "mongodb";
 import { getServerSession } from "next-auth";
-import Link from "next/link";
 
 export default async function CharacterPage({
   params,
@@ -13,21 +14,20 @@ export default async function CharacterPage({
   let { id } = params;
   const userData = await getServerSession(authOptions);
   const result = await getCharacters(undefined, { _id: new ObjectId(id) });
+  const char = result.data[0] as Character;
 
   return (
     <>
       <div className="title">Character page</div>
 
-      {result.success ? (
-        <CharacterInfo character={result.data[0]} trimTexts={false} />
+      {result.success && char ? (
+        <CharacterInfo character={char} trimTexts={false} />
       ) : (
-        result.message
+        result.message ?? "Character not found"
       )}
 
-      {result.data[0].playerEmail === userData?.user.email ? (
-        <Link href={`/characters/${id}/edit`} className="primary button">
-          Edit
-        </Link>
+      {char?.playerEmail === userData?.user.email ? (
+        <CharacterButtons id={id} name={char.name} />
       ) : null}
     </>
   );

@@ -13,7 +13,7 @@ const initialState = {
   message: "",
 };
 
-function SubmitButton() {
+function SubmitButton({ previousData }: Readonly<CharacterFormProps>) {
   const { pending } = useFormStatus();
 
   return (
@@ -22,7 +22,7 @@ function SubmitButton() {
       className={`${pending ? "disabled" : "primary"} button`}
       disabled={pending}
     >
-      Submit
+      {previousData ? "Update" : "Submit"}
     </button>
   );
 }
@@ -98,7 +98,7 @@ export default function CharacterForm({
         ></textarea>
       </div>
 
-      <SubmitButton />
+      <SubmitButton previousData={previousData} />
       <span className="ml-3">{state?.message}</span>
     </form>
   );

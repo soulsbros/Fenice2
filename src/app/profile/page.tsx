@@ -13,9 +13,15 @@ export default async function Profile() {
   const user = session?.user;
   const issuer = process.env.KEYCLOAK_ISSUER ?? "";
 
-  const result = await getCharacters(undefined, {
-    playerEmail: session?.user.email,
-  });
+  const result = await getCharacters(
+    {
+      field: "campaignId",
+      direction: "DESC",
+    },
+    {
+      playerEmail: session?.user.email,
+    }
+  );
 
   return (
     <>

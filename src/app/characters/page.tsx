@@ -3,7 +3,10 @@ import { Character } from "@/types/API";
 import { getCharacters } from "../actions";
 
 export default async function Characters() {
-  const result = await getCharacters("campaignId");
+  const result = await getCharacters({
+    field: "campaignId",
+    direction: "DESC",
+  });
 
   return (
     <>
