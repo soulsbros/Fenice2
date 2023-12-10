@@ -58,6 +58,9 @@ export default function CharacterInfo({
               className={`min-w-[150px]`}
             >
               {character.name}
+              {character.pronouns ? (
+                <span className="text-sm"> ({character.pronouns})</span>
+              ) : null}
             </Link>
           )}
           {CharacterAttribute("Player", character.player)}
@@ -68,18 +71,25 @@ export default function CharacterInfo({
       </div>
 
       <div className="flex">
-        <p className="w-[48%] mr-[2%] break-words">
-          {backstory || "No backstory data"}
-          {trimTexts && character.backstory.length > MAX_TEXT_LENGTH ? (
-            <Link href={`characters/${character._id}`}>Read more</Link>
-          ) : null}
-        </p>
-        <p className="w-[50%] break-words">
-          {personality || "No personality data"}
-          {trimTexts && character.personality.length > MAX_TEXT_LENGTH ? (
-            <Link href={`characters/${character._id}`}>Read more</Link>
-          ) : null}
-        </p>
+        <div className="w-[48%] mr-[2%]">
+          <p className="font-extrabold">Backstory</p>
+          <p className="break-words">
+            {backstory || "No data"}
+            {trimTexts && character.backstory.length > MAX_TEXT_LENGTH ? (
+              <Link href={`characters/${character._id}`}>Read more</Link>
+            ) : null}
+          </p>
+        </div>
+
+        <div className="w-[50%]">
+          <p className="font-extrabold">Personality</p>
+          <p className="break-words">
+            {personality || "No data"}
+            {trimTexts && character.personality.length > MAX_TEXT_LENGTH ? (
+              <Link href={`characters/${character._id}`}>Read more</Link>
+            ) : null}
+          </p>
+        </div>
       </div>
     </div>
   );
