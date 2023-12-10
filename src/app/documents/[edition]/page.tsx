@@ -1,7 +1,7 @@
+import Card from "@/components/card";
 import EditionChanger from "@/components/editionChanger";
 import { editions } from "@/lib/skills";
 import { Document } from "@/types/API";
-import Link from "next/link";
 
 export default async function Documents({
   params,
@@ -22,17 +22,20 @@ export default async function Documents({
 
       <EditionChanger currentEdition={edition} />
 
-      {docs.length == 0
-        ? "No documents found"
-        : docs.map((doc: Document) => (
-            <Link
-              href={doc.url}
-              className="block"
+      {docs.length == 0 ? (
+        "No documents found"
+      ) : (
+        <div className="">
+          {docs.map((doc: Document) => (
+            <Card
+              links={[{ text: "Read", url: doc.url }]}
+              title={doc.filename}
+              text={doc.category}
               key={doc.category + doc.filename}
-            >
-              {doc.filename} ({doc.category})
-            </Link>
+            />
           ))}
+        </div>
+      )}
     </>
   );
 }
