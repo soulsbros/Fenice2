@@ -19,3 +19,9 @@ export interface Character {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface Document {
+  url: string;
+  filename: string;
+  category: string;
+}

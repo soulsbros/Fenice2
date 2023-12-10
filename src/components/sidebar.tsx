@@ -1,8 +1,10 @@
 import contactLogo from "@/img/icon_contact.png";
 import githubLogo from "@/img/icon_github.png";
+import { editions } from "@/lib/skills";
 import Image from "next/image";
 import Link from "next/link";
 import {
+  File,
   Grid,
   Home,
   List,
@@ -34,18 +36,19 @@ export default function Sidebar() {
           icon={<Calendar />}
         /> */}
         <SidebarLink name="DA Itinerary" path="/itinerary" icon={<MapPin />} />
+        <SidebarLink
+          name="Documents"
+          path={`/documents/${editions[2].id}`}
+          icon={<File />}
+        />
         <SidebarLink name="Golarion map" path="/map" icon={<Map />} />
         <SidebarLink name="Initiative" path="/initiative" icon={<List />} />
         <SidebarLink name="Skills" path="/skills" icon={<Zap />} />
+        <SidebarLink name="Table" path="/table" icon={<Grid />} />
         <SidebarLink
           name="Old site &#x2197;"
           path="https://lafenice.soulsbros.ch"
           icon={<SkipBack />}
-        />
-        <SidebarLink
-          name="TTRPGTA &#x2197;"
-          path="https://ttrpgta.soulsbros.ch"
-          icon={<Grid />}
         />
       </div>
 

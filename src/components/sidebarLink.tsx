@@ -23,8 +23,10 @@ export default function SidebarLink({
 }: Readonly<SidebarLinkProps>) {
   const pathname = usePathname();
   const currentPage =
-    path === "/" ? pathname === path : pathname?.startsWith(path);
-
+    !path.startsWith("https://") &&
+    (path === "/"
+      ? pathname === path
+      : pathname?.startsWith(`/${path.split("/")[1]}`));
   return (
     <Link
       href={disabled ? "" : path}

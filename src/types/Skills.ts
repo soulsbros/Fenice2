@@ -1,7 +1,7 @@
-export enum Edition {
-  pf2 = "pf2e",
-  DnD3 = "DnD3",
-  DnD5 = "DnD5",
+export interface Edition {
+  id: string;
+  name: string;
+  skills: Skill[];
 }
 
 export type Ability = "STR" | "DEX" | "CON" | "INT" | "WIS" | "CHA";
