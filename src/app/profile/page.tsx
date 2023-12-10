@@ -59,7 +59,10 @@ export default async function Profile() {
 
       {result.success
         ? result?.data.map((character: Character) => (
-            <CharacterInfo character={character} key={character.characterId} />
+            <CharacterInfo
+              character={character}
+              key={character._id?.toString()}
+            />
           ))
         : result.message}
 

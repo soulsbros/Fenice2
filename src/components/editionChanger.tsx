@@ -24,7 +24,7 @@ export default function EditionChanger({
         onChange={(el) => router.push(`/documents/${el.target.value}`)}
       >
         {editions.map((edition) => (
-          <option key={edition.name} value={edition.id}>
+          <option key={edition.id} value={edition.id}>
             {edition.name}
           </option>
         ))}

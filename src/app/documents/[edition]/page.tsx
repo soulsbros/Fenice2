@@ -14,7 +14,7 @@ export default async function Documents({
   );
   const docs = await result.json();
   const editionString =
-    editions.find((ed) => ed.id === edition)?.name || edition;
+    editions.find((ed) => ed.id === edition)?.name ?? edition;
 
   return (
     <>
