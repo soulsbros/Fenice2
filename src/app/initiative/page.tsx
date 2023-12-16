@@ -248,7 +248,7 @@ export default function Initiative() {
 
   return (
     <>
-      <p className="font-semibold text-xl mb-2">Initiative order</p>
+      <p className="title">Initiative order</p>
 
       <p className="text-lg">Turn {turn}</p>
 
@@ -256,7 +256,7 @@ export default function Initiative() {
         {renderOrder}
       </div>
 
-      <p className="font-semibold text-lg">Add character</p>
+      <p className="subtitle">Add character</p>
       <div className="m-4">
         <input
           className="p-2 m-2"
@@ -285,7 +285,7 @@ export default function Initiative() {
         <Button label="Add" onClick={addCharacter} />
       </div>
 
-      <p className="font-semibold text-lg mb-4">Controls</p>
+      <p className="subtitle">Controls</p>
 
       <div className="space-x-2">
         <Button label="Clear" onClick={clear} />

@@ -22,7 +22,7 @@ export default function CharacterInfo({
   character,
   trimTexts = true,
 }: Readonly<CharacterInfoProps>) {
-  const MAX_TEXT_LENGTH = 500;
+  const MAX_TEXT_LENGTH = 300;
   let backstory = trimTexts
     ? character.backstory.substring(0, MAX_TEXT_LENGTH)
     : character.backstory;
@@ -38,7 +38,7 @@ export default function CharacterInfo({
   }
 
   return (
-    <div key={character._id?.toString()} className="mb-10">
+    <div className="mb-10">
       <div className="flex mb-2">
         <Link href={`/characters/${character._id}`} className={`min-w-[150px]`}>
           <ImageWithFallback
@@ -50,7 +50,7 @@ export default function CharacterInfo({
           />
         </Link>
 
-        <div className="flex flex-wrap items-center">
+        <div className="flex flex-wrap items-center justify-center">
           {CharacterAttribute(
             "Name",
             <Link
@@ -64,9 +64,13 @@ export default function CharacterInfo({
             </Link>
           )}
           {CharacterAttribute("Player", character.player)}
-          {CharacterAttribute("Class", character.class)}
-          {CharacterAttribute("Race", character.race)}
-          {CharacterAttribute("Alignment", character.actualAlignment)}
+          {!trimTexts ? (
+            <>
+              {CharacterAttribute("Class", character.class)}
+              {CharacterAttribute("Race", character.race)}
+              {CharacterAttribute("Alignment", character.actualAlignment)}
+            </>
+          ) : null}
         </div>
       </div>
 
@@ -76,7 +80,12 @@ export default function CharacterInfo({
           <p className="break-words">
             {backstory || "No data"}
             {trimTexts && character.backstory.length > MAX_TEXT_LENGTH ? (
-              <Link href={`characters/${character._id}`}>Read more</Link>
+              <Link
+                href={`characters/${character._id}`}
+                className="text-blue-700"
+              >
+                Read more
+              </Link>
             ) : null}
           </p>
         </div>
@@ -86,7 +95,12 @@ export default function CharacterInfo({
           <p className="break-words">
             {personality || "No data"}
             {trimTexts && character.personality.length > MAX_TEXT_LENGTH ? (
-              <Link href={`characters/${character._id}`}>Read more</Link>
+              <Link
+                href={`characters/${character._id}`}
+                className="text-blue-700"
+              >
+                Read more
+              </Link>
             ) : null}
           </p>
         </div>

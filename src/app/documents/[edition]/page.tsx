@@ -3,7 +3,7 @@ import EditionChanger from "@/components/editionChanger";
 import { editions } from "@/lib/skills";
 import { Document } from "@/types/API";
 
-export default async function Documents({
+export default async function DocumentsEdition({
   params,
 }: Readonly<{
   params: { edition: string };
@@ -20,12 +20,12 @@ export default async function Documents({
     <>
       <div className="title">Documents {editionString}</div>
 
-      <EditionChanger currentEdition={edition} />
+      <EditionChanger currentEdition={edition} type="documents" />
 
       {docs.length == 0 ? (
         "No documents found"
       ) : (
-        <div className="">
+        <div className="flex flex-wrap justify-center sm:justify-between">
           {docs.map((doc: Document) => (
             <Card
               links={[{ text: "Read", url: doc.url }]}

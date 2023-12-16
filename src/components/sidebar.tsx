@@ -43,7 +43,7 @@ export default function Sidebar() {
         />
         <SidebarLink name="Golarion map" path="/map" icon={<Map />} />
         <SidebarLink name="Initiative" path="/initiative" icon={<List />} />
-        <SidebarLink name="Skills" path="/skills" icon={<Zap />} />
+        <SidebarLink name="Skills" path="/skills/pf2" icon={<Zap />} />
         <SidebarLink name="Table" path="/table" icon={<Grid />} />
         <SidebarLink
           name="Old site &#x2197;"

@@ -7,19 +7,21 @@ export default async function Documents() {
     <>
       <div className="title">Documents</div>
 
-      {editions.map((edition: Edition) => (
-        <Card
-          links={[
-            { text: "Explore", url: `/documents/${edition.id}` },
-            {
-              text: "Download all",
-              url: `https://lafenice.soulsbros.ch/docs/docs${edition.id}.zip`,
-            },
-          ]}
-          title={edition.name}
-          key={edition.id}
-        />
-      ))}
+      <div className="space-x-10">
+        {editions.map((edition: Edition) => (
+          <Card
+            links={[
+              { text: "Explore", url: `/documents/${edition.id}` },
+              {
+                text: "Download all",
+                url: `https://lafenice.soulsbros.ch/docs/docs${edition.id}.zip`,
+              },
+            ]}
+            title={edition.name}
+            key={edition.id}
+          />
+        ))}
+      </div>
     </>
   );
 }

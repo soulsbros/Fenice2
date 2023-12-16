@@ -46,3 +46,7 @@ body {
 .title {
   @apply font-semibold text-xl mb-4;
 }
+
+.subtitle {
+  @apply font-semibold text-lg mb-2;
+}
