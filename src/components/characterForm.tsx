@@ -83,6 +83,16 @@ export default function CharacterForm({
         />
       </div>
 
+      <div>
+        <Textfield
+          placeholder="Campaign ID"
+          name="campaignId"
+          required
+          value={previousData?.campaignId.toString()}
+        />
+        <span>← Ask Steeven for this one</span>
+      </div>
+
       <div className="mb-2">
         <textarea
           className="p-2 m-2 align-top min-h-[300px] w-[calc(50%-16px)]"

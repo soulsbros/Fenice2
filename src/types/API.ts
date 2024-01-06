@@ -3,7 +3,7 @@ import { ObjectId } from "mongodb";
 export interface Character {
   _id?: string | ObjectId;
   characterId: number;
-  campaignId: number;
+  campaignId: ObjectId;
   player: string;
   playerEmail: string;
   name: string;
@@ -18,6 +18,19 @@ export interface Character {
   personality: string;
   createdAt: Date;
   updatedAt: Date;
+  image: string;
+}
+
+export interface Campaign {
+  _id?: ObjectId;
+  campaignId: number;
+  name: string;
+  type: string;
+  dm: string;
+  dmEmail: string;
+  status: string;
+  startDate: Date;
+  endDate: Date;
 }
 
 export interface Document {

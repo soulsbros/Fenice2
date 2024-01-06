@@ -31,9 +31,11 @@ export async function insertCharacter(prevState: any, formData: FormData) {
 
   const char: Character = {
     name: formData.get("name")?.toString() ?? "",
-    // TODO fix those IDs
+    // TODO fix those
     characterId: 999,
-    campaignId: 999,
+    image: "",
+    // --
+    campaignId: new ObjectId(formData.get("campaignId")?.toString() ?? ""),
     player: userData?.user.name?.split(" ")[0] ?? "",
     playerEmail: userData?.user.email ?? "",
     pronouns: formData.get("pronouns")?.toString() ?? "",

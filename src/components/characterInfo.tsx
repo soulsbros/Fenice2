@@ -1,4 +1,5 @@
 import deafultUser from "@/img/defaultUser.png";
+import { getWithFilter } from "@/lib/mongo";
 import { Character } from "@/types/API";
 import Link from "next/link";
 import { ReactElement } from "react";
@@ -18,7 +19,7 @@ function CharacterAttribute(key: string, value: string | ReactElement) {
   );
 }
 
-export default function CharacterInfo({
+export default async function CharacterInfo({
   character,
   trimTexts = true,
 }: Readonly<CharacterInfoProps>) {
@@ -35,6 +36,14 @@ export default function CharacterInfo({
     : character.personality;
   if (trimTexts && character.personality.length > MAX_TEXT_LENGTH) {
     personality += "... ";
+  }
+
+  let campaign;
+  if (!trimTexts) {
+    const campaignInfo = await getWithFilter("campaigns", undefined, {
+      _id: character.campaignId,
+    });
+    campaign = campaignInfo?.data[0].name;
   }
 
   return (
@@ -66,6 +75,7 @@ export default function CharacterInfo({
           {CharacterAttribute("Player", character.player)}
           {!trimTexts ? (
             <>
+              {CharacterAttribute("Campaign", campaign)}
               {CharacterAttribute("Class", character.class)}
               {CharacterAttribute("Race", character.race)}
               {CharacterAttribute("Alignment", character.actualAlignment)}

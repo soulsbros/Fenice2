@@ -172,10 +172,11 @@ export const markers = [
   {
     name: "Krygandom",
     position: [61.03701223240189, 3.4635874521207333],
-    description: "An isolated dwarven mountain city",
+    description: "An isolated and unknown dwarven mountain city",
     marker: "Blue",
-    dateVisited: "11th of Lamashan - now",
+    dateVisited: "13th of Lamashan - now",
   },
+  // -- not visited yet --
   {
     name: "Bassomonte",
     position: [47.954809896971966, 2.5708007812500004],
@@ -183,7 +184,7 @@ export const markers = [
     marker: "Red",
   },
   {
-    name: "Eredar", // 25
+    name: "Eredar",
     position: [54.533066, -19.929199],
     description: "Morgrym's birthplace, a fallen underground dwarven city",
     marker: "Red",
@@ -348,6 +349,10 @@ export const itineraryPoints = [
     markers[21].position, // torch
     [56.51682275378103, -0.34057617187500006],
     markers[22].position, // algamat
+    [59.66774058164963, 2.8511195917820507],
+    [60.54377524118842, 2.103928623752323],
+    [60.780618803458935, 3.90597742900046],
+    markers[23].position, // krygandom
   ],
 ];
 

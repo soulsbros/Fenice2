@@ -40,7 +40,9 @@ export async function getWithFilter(
         docs.sort((a, b) => a[sortingParam.field] - b[sortingParam.field]);
       } else {
         docs.sort((a, b) =>
-          a[sortingParam.field].localeCompare(b[sortingParam.field])
+          a[sortingParam.field]
+            .toString()
+            .localeCompare(b[sortingParam.field].toString())
         );
       }
       if (sortingParam.direction == "DESC") {
