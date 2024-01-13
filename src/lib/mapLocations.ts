@@ -4,6 +4,7 @@
   - don't sort any array!
 */
 
+// Those show up on the map so should be unique
 export const markers = [
   {
     name: "Haska",
@@ -167,14 +168,14 @@ export const markers = [
     position: [57.810164, 1.604004],
     description: "A dwarven city, home of Agna Ironbreaker",
     marker: "Red",
-    dateVisited: "4th - 5th of Lamashan",
+    dateVisited: "4th - 5th and 16th of Lamashan - now",
   },
   {
     name: "Krygandom",
     position: [61.03701223240189, 3.4635874521207333],
     description: "An isolated and unknown dwarven mountain city",
     marker: "Blue",
-    dateVisited: "13th of Lamashan - now",
+    dateVisited: "13th - 15th of Lamashan",
   },
   // -- not visited yet --
   {
@@ -191,7 +192,7 @@ export const markers = [
   },
 ];
 
-// those make up the path on the map
+// Those make up the blue path line on the map
 export const itineraryPoints = [
   [
     markers[0].position, // haska
@@ -353,9 +354,11 @@ export const itineraryPoints = [
     [60.54377524118842, 2.103928623752323],
     [60.780618803458935, 3.90597742900046],
     markers[23].position, // krygandom
+    markers[22].position, // algamat
   ],
 ];
 
+// Those are the red lines of when we teleported from a place to another
 export const teleportPoints = [
   [
     markers[10].position, // oregent
