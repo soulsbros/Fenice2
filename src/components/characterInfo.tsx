@@ -51,7 +51,12 @@ export default async function CharacterInfo({
       <div className="flex mb-2">
         <Link href={`/characters/${character._id}`} className={`min-w-[150px]`}>
           <ImageWithFallback
-            src={`https://lafenice.soulsbros.ch/img/pg/${character.characterId}.jpg`}
+            // TODO remove this check once legacy image API is not needed anymore
+            src={
+              character.characterId == 999
+                ? character.image
+                : `https://lafenice.soulsbros.ch/img/pg/${character.characterId}.jpg`
+            }
             fallbackSrc={deafultUser}
             alt="Character image"
             width={trimTexts ? 150 : 300}

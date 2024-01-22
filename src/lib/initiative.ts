@@ -16,18 +16,22 @@ export function advanceCharacter(order: Character[], turn: number) {
 }
 
 export function getHealthDescription(character: Character) {
-  const percentage = character.currentHealth / character.totalHealth;
-  if (percentage > 0.8) {
-    return "Barely injured";
-  } else if (percentage > 0.6) {
-    return "Lightly injured";
-  } else if (percentage > 0.4) {
-    return "Injured";
-  } else if (percentage > 0.2) {
-    return "Gravely injured";
-  } else if (percentage > 0) {
-    return "Near death";
+  if (character.currentHealth <= 0) {
+    return { text: "Unconscious", color: "" };
+  }
+
+  const hpRatio = character.currentHealth / character.totalHealth;
+  if (hpRatio == 1) {
+    return { text: "Untouched", color: "text-green-800" };
+  } else if (hpRatio > 0.8) {
+    return { text: "Barely injured", color: "text-green-500" };
+  } else if (hpRatio > 0.6) {
+    return { text: "Lightly injured", color: "text-yellow-600" };
+  } else if (hpRatio > 0.4) {
+    return { text: "Injured", color: "text-orange-500" };
+  } else if (hpRatio > 0.2) {
+    return { text: "Gravely injured", color: "text-red-600" };
   } else {
-    return "Unconscious";
+    return { text: "Near death", color: "text-red-800" };
   }
 }

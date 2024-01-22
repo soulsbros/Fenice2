@@ -1,6 +1,7 @@
 "use client";
 
 import Button from "@/components/button";
+import Textfield from "@/components/textfield";
 import { advanceCharacter, getHealthDescription } from "@/lib/initiative";
 import { Character, GameData } from "@/types/Initiative";
 import { useSession } from "next-auth/react";
@@ -14,6 +15,7 @@ export default function Initiative() {
   const session = useSession();
   const [order, setOrder] = useState<Character[]>([]);
   const [turn, setTurn] = useState(1);
+  const [isEditing, setIsEditing] = useState(false);
   const comparator = (characterA: Character, characterB: Character) =>
     characterB.score - characterA.score;
 
@@ -28,12 +30,15 @@ export default function Initiative() {
     let totalHealth = document.querySelector(
       "#newCharacterTotalHealth"
     ) as HTMLInputElement;
+    let enemy = document.querySelector(
+      "#newCharacterEnemy"
+    ) as HTMLInputElement;
 
-    return { name, score, currentHealth, totalHealth };
+    return { name, score, currentHealth, totalHealth, enemy };
   };
 
   const addCharacter = () => {
-    const { name, score, currentHealth, totalHealth } = getFields();
+    const { name, score, currentHealth, totalHealth, enemy } = getFields();
     if (order.find((character) => character.name === name.value)) {
       alert(`Character ${name.value} already exists`);
       console.error("Character already exists", name.value, score.value);
@@ -60,6 +65,7 @@ export default function Initiative() {
         active: false,
         player: session.data?.user.email ?? "",
         isPlayer: !session.data?.user.roles.includes("dm"),
+        isEnemy: enemy.checked,
         currentHealth: parseInt(currentHealth.value) || 0,
         totalHealth: parseInt(totalHealth.value) || 0,
       },
@@ -69,7 +75,9 @@ export default function Initiative() {
     score.value = "";
     currentHealth.value = "";
     totalHealth.value = "";
+    enemy.checked = false;
     save({ order: newOrder, turn: turn });
+    setIsEditing(false);
   };
 
   const removeCharacter = (name: string) => {
@@ -79,7 +87,8 @@ export default function Initiative() {
   };
 
   const editCharacter = (currentCharacter: string) => {
-    const { name, score, currentHealth, totalHealth } = getFields();
+    setIsEditing(true);
+    const { name, score, currentHealth, totalHealth, enemy } = getFields();
 
     const character =
       order[order.findIndex((character) => character.name == currentCharacter)];
@@ -87,6 +96,11 @@ export default function Initiative() {
     score.value = character.score.toString();
     currentHealth.value = character.currentHealth.toString();
     totalHealth.value = character.totalHealth.toString();
+    enemy.checked = character.isEnemy;
+
+    document
+      .querySelector("#newCharacterName")
+      ?.scrollIntoView({ behavior: "smooth" });
 
     deleteCharacter(currentCharacter);
   };
@@ -146,11 +160,15 @@ export default function Initiative() {
   };
 
   function getHealthValue(character: Character) {
+    const health = getHealthDescription(character);
     // show numerical HPs only to the DM or if it's a player character
     if (session.data?.user.roles.includes("dm") || character.isPlayer) {
-      return `${character.currentHealth} / ${character.totalHealth}`;
+      return {
+        text: `${character.currentHealth} / ${character.totalHealth}`,
+        color: health.color,
+      };
     } else {
-      return getHealthDescription(character);
+      return health;
     }
   }
 
@@ -158,37 +176,45 @@ export default function Initiative() {
     order.length === 0 ? (
       <p className="p-2">The party seems a little empty...</p>
     ) : (
-      order.map((character) => (
-        <div
-          key={character.name}
-          className={`m-2 flex justify-between items-center ${
-            character.active ? "bg-lime-500 font-semibold" : ""
-          }`}
-        >
-          <div>
-            <p className="text-lg">{character.name}</p>
-            <p className="text-sm italic flex space-x-2">
-              <ChevronsRight /> {character.score} <Heart />{" "}
-              {getHealthValue(character)}
-            </p>
-          </div>
+      order.map((character) => {
+        const health = getHealthValue(character);
+        return (
+          <div
+            key={character.name}
+            className={`m-2 flex justify-between items-center ${
+              character.active ? "bg-lime-500 font-semibold" : ""
+            }`}
+          >
+            <div>
+              <p
+                className={`text-lg ${character.isEnemy ? "text-red-600" : ""}`}
+              >
+                {character.name}
+              </p>
+              <p className="text-sm italic flex space-x-2">
+                <ChevronsRight /> {character.score}
+                <Heart />
+                <span className={health.color}>{health.text}</span>
+              </p>
+            </div>
 
-          <div className="flex gap-x-1">
-            {session.data?.user.roles.includes("dm") || character.isPlayer ? (
+            <div className="flex gap-x-1">
+              {session.data?.user.roles.includes("dm") || character.isPlayer ? (
+                <Button
+                  onClick={() => editCharacter(character.name)}
+                  tooltip="Edit character"
+                  icon={<Edit />}
+                />
+              ) : null}
               <Button
-                onClick={() => editCharacter(character.name)}
-                tooltip="Edit character"
-                icon={<Edit />}
+                onClick={() => removeCharacter(character.name)}
+                tooltip="Remove character"
+                icon={<Trash2 />}
               />
-            ) : null}
-            <Button
-              onClick={() => removeCharacter(character.name)}
-              tooltip="Remove character"
-              icon={<Trash2 />}
-            />
+            </div>
           </div>
-        </div>
-      ))
+        );
+      })
     );
 
   const initializeSocket = async () => {
@@ -237,56 +263,60 @@ export default function Initiative() {
     initializeSocket();
     requestWakeLock();
     document.addEventListener("visibilitychange", handleVisibilityChange);
-    // document
-    //   .querySelector("#newCharacterName")
-    //   ?.addEventListener("keyup", handleKeypress);
-    // document
-    //   .querySelector("#newCharacterScore")
-    //   ?.addEventListener("keyup", handleKeypress);
+    document
+      .querySelector("#newCharacterName")
+      ?.addEventListener("keyup", handleKeypress);
+    document
+      .querySelector("#newCharacterScore")
+      ?.addEventListener("keyup", handleKeypress);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const enemies = order.filter((e) => e.isEnemy).length;
 
   return (
     <>
       <p className="title">Initiative order</p>
-
       <p className="text-lg">Turn {turn}</p>
-
       <div className="m-4 border-solid border-2" id="order">
         {renderOrder}
       </div>
 
-      <p className="subtitle">Add character</p>
+      <div className="mb-4">
+        {enemies} enemies vs {order.length - enemies} allies
+        {isEditing ? " (editing...)" : ""}
+      </div>
+
+      <p className="subtitle">{isEditing ? "Edit" : "Add"} character</p>
       <div className="m-4">
-        <input
-          className="p-2 m-2"
+        <Textfield
           id="newCharacterName"
-          type="text"
           placeholder="Character name"
+          required
         />
-        <input
-          className="p-2 m-2"
+        <Textfield
           id="newCharacterScore"
-          type="number"
           placeholder="Initiative score"
+          required
         />
-        <input
-          className="p-2 m-2"
+        <Textfield
           id="newCharacterCurrentHealth"
-          type="number"
           placeholder="Current health"
-        />
-        <input
-          className="p-2 m-2"
-          id="newCharacterTotalHealth"
           type="number"
-          placeholder="Total health"
         />
-        <Button label="Add" onClick={addCharacter} />
+        <Textfield
+          id="newCharacterTotalHealth"
+          placeholder="Total health"
+          type="number"
+        />
+        <label>
+          Enemy
+          <input type="checkbox" className="m-2" id="newCharacterEnemy" />
+        </label>
+        <Button label={isEditing ? "Update" : "Add"} onClick={addCharacter} />
       </div>
 
       <p className="subtitle">Controls</p>
-
       <div className="space-x-2">
         <Button label="Clear" onClick={clear} />
         {order.findIndex((character) => character.active) !== -1 ? (
@@ -298,6 +328,7 @@ export default function Initiative() {
               ? "Start"
               : "Next"
           }
+          disabled={order.length === 0}
           onClick={next}
         />
         <label>

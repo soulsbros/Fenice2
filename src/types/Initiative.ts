@@ -4,6 +4,7 @@ export interface Character {
   active: boolean;
   player: string;
   isPlayer: boolean;
+  isEnemy: boolean;
   totalHealth: number;
   currentHealth: number;
 }
