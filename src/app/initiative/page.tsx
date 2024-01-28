@@ -33,12 +33,16 @@ export default function Initiative() {
     let enemy = document.querySelector(
       "#newCharacterEnemy"
     ) as HTMLInputElement;
+    let notes = document.querySelector(
+      "#newCharacterNotes"
+    ) as HTMLInputElement;
 
-    return { name, score, currentHealth, totalHealth, enemy };
+    return { name, score, currentHealth, totalHealth, enemy, notes };
   };
 
   const addCharacter = () => {
-    const { name, score, currentHealth, totalHealth, enemy } = getFields();
+    const { name, score, currentHealth, totalHealth, enemy, notes } =
+      getFields();
     if (order.find((character) => character.name === name.value)) {
       alert(`Character ${name.value} already exists`);
       console.error("Character already exists", name.value, score.value);
@@ -68,6 +72,7 @@ export default function Initiative() {
         isEnemy: enemy.checked,
         currentHealth: parseInt(currentHealth.value) || 0,
         totalHealth: parseInt(totalHealth.value) || 0,
+        notes: notes.value,
       },
     ].toSorted(comparator);
 
@@ -76,6 +81,7 @@ export default function Initiative() {
     currentHealth.value = "";
     totalHealth.value = "";
     enemy.checked = false;
+    notes.value = "";
     save({ order: newOrder, turn: turn });
     setIsEditing(false);
   };
@@ -88,7 +94,8 @@ export default function Initiative() {
 
   const editCharacter = (currentCharacter: string) => {
     setIsEditing(true);
-    const { name, score, currentHealth, totalHealth, enemy } = getFields();
+    const { name, score, currentHealth, totalHealth, enemy, notes } =
+      getFields();
 
     const character =
       order[order.findIndex((character) => character.name == currentCharacter)];
@@ -97,6 +104,7 @@ export default function Initiative() {
     currentHealth.value = character.currentHealth.toString();
     totalHealth.value = character.totalHealth.toString();
     enemy.checked = character.isEnemy;
+    notes.value = character.notes;
 
     document
       .querySelector("#newCharacterName")
@@ -189,7 +197,11 @@ export default function Initiative() {
               <p
                 className={`text-lg ${character.isEnemy ? "text-red-600" : ""}`}
               >
-                {character.name}
+                {character.name}{" "}
+                {character.notes &&
+                (session.data?.user.roles.includes("dm") || character.isPlayer)
+                  ? `(${character.notes})`
+                  : ""}
               </p>
               <p className="text-sm italic flex space-x-2">
                 <ChevronsRight /> {character.score}
@@ -309,9 +321,9 @@ export default function Initiative() {
           placeholder="Total health"
           type="number"
         />
+        <Textfield id="newCharacterNotes" placeholder="Notes" type="text" />
         <label>
-          Enemy
-          <input type="checkbox" className="m-2" id="newCharacterEnemy" />
+          Enemy <input type="checkbox" className="m-2" id="newCharacterEnemy" />
         </label>
         <Button label={isEditing ? "Update" : "Add"} onClick={addCharacter} />
       </div>

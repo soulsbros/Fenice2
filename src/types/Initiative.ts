@@ -7,6 +7,7 @@ export interface Character {
   isEnemy: boolean;
   totalHealth: number;
   currentHealth: number;
+  notes: string;
 }
 
 export interface GameData {
