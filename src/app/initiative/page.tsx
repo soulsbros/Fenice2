@@ -80,7 +80,6 @@ export default function Initiative() {
     score.value = "";
     currentHealth.value = "";
     totalHealth.value = "";
-    enemy.checked = false;
     notes.value = "";
     save({ order: newOrder, turn: turn });
     setIsEditing(false);
