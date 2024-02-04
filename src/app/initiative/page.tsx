@@ -6,7 +6,7 @@ import { advanceCharacter, getHealthDescription } from "@/lib/initiative";
 import { Character, GameData } from "@/types/Initiative";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { ChevronsRight, Edit, Heart, Trash2 } from "react-feather";
+import { ChevronsRight, Crosshair, Edit, Heart, Trash2 } from "react-feather";
 import io from "socket.io-client";
 
 let socket: any;
@@ -132,6 +132,24 @@ export default function Initiative() {
     });
   };
 
+  const damageCharacter = (currentCharacter: string, isHealing = false) => {
+    const damage = prompt(isHealing ? "How much healing?" : "How much damage?");
+    if (damage) {
+      let parsedDamage = Number.parseInt(damage);
+      if (isHealing) {
+        parsedDamage = -parsedDamage;
+      }
+      if (Number.isInteger(parsedDamage)) {
+        const newOrder = [...order];
+        const pos = newOrder.findIndex(
+          (character) => character.name === currentCharacter
+        );
+        newOrder[pos].currentHealth -= parsedDamage;
+        save({ order: newOrder, turn: turn });
+      }
+    }
+  };
+
   const clear = () => {
     if (confirm(`Do you want to clear the entire initiative?`)) {
       save({ order: [], turn: 1 });
@@ -190,7 +208,7 @@ export default function Initiative() {
             key={character.name}
             className={`m-2 flex justify-between items-center ${
               character.active ? "bg-lime-500 font-semibold" : ""
-            }`}
+            } transition-all duration-200`}
           >
             <div>
               <p
@@ -210,18 +228,34 @@ export default function Initiative() {
             </div>
 
             <div className="flex gap-x-1">
-              {session.data?.user.roles.includes("dm") || character.isPlayer ? (
+              {(session.data?.user.roles.includes("dm") ||
+                character.isPlayer) &&
+              !session.data?.user.roles.includes("table") ? (
+                <>
+                  <Button
+                    onClick={() => damageCharacter(character.name, true)}
+                    tooltip="Heal character"
+                    icon={<Heart />}
+                  />
+                  <Button
+                    onClick={() => damageCharacter(character.name)}
+                    tooltip="Damage character"
+                    icon={<Crosshair />}
+                  />
+                  <Button
+                    onClick={() => editCharacter(character.name)}
+                    tooltip="Edit character"
+                    icon={<Edit />}
+                  />
+                </>
+              ) : null}
+              {session.data?.user.roles.includes("dm") ? (
                 <Button
-                  onClick={() => editCharacter(character.name)}
-                  tooltip="Edit character"
-                  icon={<Edit />}
+                  onClick={() => removeCharacter(character.name)}
+                  tooltip="Remove character"
+                  icon={<Trash2 />}
                 />
               ) : null}
-              <Button
-                onClick={() => removeCharacter(character.name)}
-                tooltip="Remove character"
-                icon={<Trash2 />}
-              />
             </div>
           </div>
         );
@@ -321,8 +355,8 @@ export default function Initiative() {
           type="number"
         />
         <Textfield id="newCharacterNotes" placeholder="Notes" type="text" />
-        <label>
-          Enemy <input type="checkbox" className="m-2" id="newCharacterEnemy" />
+        <label className="mx-2">
+          <input type="checkbox" id="newCharacterEnemy" /> Enemy
         </label>
         <Button label={isEditing ? "Update" : "Add"} onClick={addCharacter} />
       </div>
