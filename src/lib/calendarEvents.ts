@@ -1,4 +1,4 @@
-const INITIAL_EVENTS = [
+export const INITIAL_EVENTS = [
   {
     title: "Arrived at Voluse",
     start: "2022-08-17",
@@ -9,6 +9,4 @@ const INITIAL_EVENTS = [
   },
 ];
 
-const today = "2022-09-14T00:00:00";
-
-export { INITIAL_EVENTS, today };
+export const today = "2022-09-14T00:00:00";

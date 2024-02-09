@@ -133,7 +133,11 @@ export default function Initiative() {
   };
 
   const damageCharacter = (currentCharacter: string, isHealing = false) => {
-    const damage = prompt(isHealing ? "How much healing?" : "How much damage?");
+    const damage = prompt(
+      isHealing
+        ? "How much healing?"
+        : "How much damage?\nTip: enter a negative value for healing"
+    );
     if (damage) {
       let parsedDamage = Number.parseInt(damage);
       if (isHealing) {
@@ -184,7 +188,7 @@ export default function Initiative() {
     }
   };
 
-  function getHealthValue(character: Character) {
+  const getHealthValue = (character: Character) => {
     const health = getHealthDescription(character);
     // show numerical HPs only to the DM or if it's a player character
     if (session.data?.user.roles.includes("dm") || character.isPlayer) {
@@ -195,7 +199,26 @@ export default function Initiative() {
     } else {
       return health;
     }
-  }
+  };
+
+  const countEnemies = () => {
+    let enemies = 0;
+    for (let character of order) {
+      if (character.isEnemy) {
+        // handles "Orc 1&2" and adds a minimum one
+        enemies += character.name.split("&").length;
+        // handles "Orcs 1-4"
+        if (character.name.includes("-")) {
+          for (let chunk of character.name.split("&")) {
+            const pos = chunk.indexOf("-");
+            enemies +=
+              Number.parseInt(chunk[pos + 1]) - Number.parseInt(chunk[pos - 1]);
+          }
+        }
+      }
+    }
+    return enemies;
+  };
 
   const renderOrder =
     order.length === 0 ? (
@@ -208,7 +231,7 @@ export default function Initiative() {
             key={character.name}
             className={`m-2 flex justify-between items-center ${
               character.active ? "bg-lime-500 font-semibold" : ""
-            } transition-all duration-200`}
+            } transition-all duration-500`}
           >
             <div>
               <p
@@ -231,23 +254,11 @@ export default function Initiative() {
               {(session.data?.user.roles.includes("dm") ||
                 character.isPlayer) &&
               !session.data?.user.roles.includes("table") ? (
-                <>
-                  <Button
-                    onClick={() => damageCharacter(character.name, true)}
-                    tooltip="Heal character"
-                    icon={<Heart />}
-                  />
-                  <Button
-                    onClick={() => damageCharacter(character.name)}
-                    tooltip="Damage character"
-                    icon={<Crosshair />}
-                  />
-                  <Button
-                    onClick={() => editCharacter(character.name)}
-                    tooltip="Edit character"
-                    icon={<Edit />}
-                  />
-                </>
+                <Button
+                  onClick={() => editCharacter(character.name)}
+                  tooltip="Edit character"
+                  icon={<Edit />}
+                />
               ) : null}
               {session.data?.user.roles.includes("dm") ? (
                 <Button
@@ -256,6 +267,11 @@ export default function Initiative() {
                   icon={<Trash2 />}
                 />
               ) : null}
+              <Button
+                onClick={() => damageCharacter(character.name)}
+                tooltip="Damage character"
+                icon={<Crosshair />}
+              />
             </div>
           </div>
         );
@@ -317,69 +333,78 @@ export default function Initiative() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const enemies = order.filter((e) => e.isEnemy).length;
+  const enemies = countEnemies();
+  const allies = order.filter((character) => !character.isEnemy).length;
+  const isCombatOngoing =
+    order.findIndex((character) => character.active) !== -1;
 
   return (
     <>
       <p className="title">Initiative order</p>
-      <p className="text-lg">Turn {turn}</p>
+      <p className="text-lg">
+        {isCombatOngoing ? `Turn ${turn}` : "Preparing..."}
+      </p>
+
       <div className="m-4 border-solid border-2" id="order">
         {renderOrder}
       </div>
 
       <div className="mb-4">
-        {enemies} enemies vs {order.length - enemies} allies
+        {enemies} enemies vs {allies} allies
         {isEditing ? " (editing...)" : ""}
       </div>
 
-      <p className="subtitle">{isEditing ? "Edit" : "Add"} character</p>
-      <div className="m-4">
-        <Textfield
-          id="newCharacterName"
-          placeholder="Character name"
-          required
-        />
-        <Textfield
-          id="newCharacterScore"
-          placeholder="Initiative score"
-          required
-        />
-        <Textfield
-          id="newCharacterCurrentHealth"
-          placeholder="Current health"
-          type="number"
-        />
-        <Textfield
-          id="newCharacterTotalHealth"
-          placeholder="Total health"
-          type="number"
-        />
-        <Textfield id="newCharacterNotes" placeholder="Notes" type="text" />
-        <label className="mx-2">
-          <input type="checkbox" id="newCharacterEnemy" /> Enemy
-        </label>
-        <Button label={isEditing ? "Update" : "Add"} onClick={addCharacter} />
-      </div>
+      {!session.data?.user.roles.includes("table") ? (
+        <>
+          <p className="subtitle">{isEditing ? "Edit" : "Add"} character</p>
+          <div className="m-4">
+            <Textfield
+              id="newCharacterName"
+              placeholder="Character name"
+              required
+            />
+            <Textfield
+              id="newCharacterScore"
+              placeholder="Initiative score"
+              required
+            />
+            <Textfield
+              id="newCharacterCurrentHealth"
+              placeholder="Current health"
+              type="number"
+            />
+            <Textfield
+              id="newCharacterTotalHealth"
+              placeholder="Total health"
+              type="number"
+            />
+            <Textfield id="newCharacterNotes" placeholder="Notes" type="text" />
+            <label className="mx-2">
+              <input type="checkbox" id="newCharacterEnemy" /> Enemy
+            </label>
+            <Button
+              label={isEditing ? "Update" : "Add"}
+              onClick={addCharacter}
+            />
+          </div>
 
-      <p className="subtitle">Controls</p>
-      <div className="space-x-2">
-        <Button label="Clear" onClick={clear} />
-        {order.findIndex((character) => character.active) !== -1 ? (
-          <Button label="Restart" onClick={restart} />
-        ) : null}
-        <Button
-          label={
-            order.findIndex((character) => character.active) === -1
-              ? "Start"
-              : "Next"
-          }
-          disabled={order.length === 0}
-          onClick={next}
-        />
-        <label>
-          <input type="checkbox" id="autoAdvance" defaultChecked /> Scroll
-        </label>
-      </div>
+          <p className="subtitle">Controls</p>
+          <div className="space-x-2">
+            <Button label="Clear" onClick={clear} />
+            {isCombatOngoing ? (
+              <Button label="Restart" onClick={restart} />
+            ) : null}
+            <Button
+              label={isCombatOngoing ? "Next" : "Start"}
+              disabled={order.length === 0}
+              onClick={next}
+            />
+            <label>
+              <input type="checkbox" id="autoAdvance" defaultChecked /> Scroll
+            </label>
+          </div>
+        </>
+      ) : null}
     </>
   );
 }

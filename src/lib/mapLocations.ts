@@ -105,7 +105,7 @@ export const markers = [
     position: [39.77557811645709, -4.724121093750001],
     description: `Back to where we met Kienzou, to deliver 890 gnomes`,
     marker: "Blue",
-    dateVisited: "9th of Arodus",
+    dateVisited: "26th - 28th of Erastus and 9th of Arodus",
   },
   {
     name: `Sauerton`,

@@ -4,6 +4,7 @@ import { editions } from "@/lib/skills";
 import Image from "next/image";
 import Link from "next/link";
 import {
+  Calendar,
   File,
   Grid,
   Home,
@@ -29,12 +30,8 @@ export default function Sidebar() {
           path="/alignment"
           icon={<Octagon />}
         /> */}
+        <SidebarLink name="Calendar" path="/calendar" icon={<Calendar />} />
         <SidebarLink name="Characters" path="/characters" icon={<Users />} />
-        {/* <SidebarLink
-          name="DA Calendar"
-          path="/calendar"
-          icon={<Calendar />}
-        /> */}
         <SidebarLink name="DA Itinerary" path="/itinerary" icon={<MapPin />} />
         <SidebarLink
           name="Documents"
