@@ -6,7 +6,7 @@ import { Character } from "@/types/API";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
-import { getCharacters } from "../actions";
+import { getCharacters } from "../../actions/characters";
 
 export default async function Profile() {
   const session = await getServerSession(authOptions);

@@ -1,4 +1,4 @@
-import { getCharacters } from "@/app/actions";
+import { getCharacters } from "@/actions/characters";
 import CharacterButtons from "@/components/characterButtons";
 import CharacterInfo from "@/components/characterInfo";
 import { authOptions } from "@/lib/authConfig";

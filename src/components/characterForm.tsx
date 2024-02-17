@@ -1,6 +1,6 @@
 "use client";
 
-import { insertCharacter, updateCharacter } from "@/app/actions";
+import { insertCharacter, updateCharacter } from "@/actions/characters";
 import { Character } from "@/types/API";
 import { useFormState, useFormStatus } from "react-dom";
 import Textfield from "./textfield";

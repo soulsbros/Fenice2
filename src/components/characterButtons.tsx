@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteCharacter } from "@/app/actions";
+import { deleteCharacter } from "@/actions/characters";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";

@@ -1,6 +1,6 @@
 import CharacterInfo from "@/components/characterInfo";
 import { Character } from "@/types/API";
-import { getCharacters } from "../actions";
+import { getCharacters } from "../../actions/characters";
 
 export default async function Characters() {
   const result = await getCharacters({
