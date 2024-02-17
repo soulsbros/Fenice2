@@ -1,12 +1,26 @@
 "use client";
 
+import { loadInitiative, saveInitiative } from "@/actions/initiative";
 import Button from "@/components/button";
 import Textfield from "@/components/textfield";
 import { advanceCharacter, getHealthDescription } from "@/lib/initiative";
 import { Character, GameData } from "@/types/Initiative";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { ChevronsRight, Crosshair, Edit, Heart, Trash2 } from "react-feather";
+import {
+  Check,
+  ChevronsRight,
+  Crosshair,
+  Edit,
+  FastForward,
+  Heart,
+  Play,
+  Plus,
+  RefreshCw,
+  Save,
+  Trash2,
+  Upload,
+} from "react-feather";
 import io from "socket.io-client";
 
 let socket: any;
@@ -18,6 +32,9 @@ export default function Initiative() {
   const [isEditing, setIsEditing] = useState(false);
   const comparator = (characterA: Character, characterB: Character) =>
     characterB.score - characterA.score;
+  const isAdmin = session.data?.user.roles.includes("admin");
+  const isTable = session.data?.user.roles.includes("table");
+  const isDM = session.data?.user.roles.includes("dm");
 
   const getFields = () => {
     let name = document.querySelector("#newCharacterName") as HTMLInputElement;
@@ -68,7 +85,7 @@ export default function Initiative() {
         score: parseFloat(score.value),
         active: false,
         player: session.data?.user.email ?? "",
-        isPlayer: !session.data?.user.roles.includes("dm"),
+        isPlayer: !isDM,
         isEnemy: enemy.checked,
         currentHealth: parseInt(currentHealth.value) || 0,
         totalHealth: parseInt(totalHealth.value) || 0,
@@ -155,7 +172,10 @@ export default function Initiative() {
   };
 
   const clear = () => {
-    if (confirm(`Do you want to clear the entire initiative?`)) {
+    if (
+      confirm(`Do you want to clear the entire initiative?
+        \nWARNING: this will remove every character from the party!`)
+    ) {
       save({ order: [], turn: 1 });
     }
   };
@@ -165,7 +185,6 @@ export default function Initiative() {
       const newOrder = [...order];
       newOrder[newOrder.findIndex((character) => character.active)].active =
         false;
-      newOrder[0].active = true;
       save({ order: newOrder, turn: 1 });
     }
   };
@@ -181,7 +200,10 @@ export default function Initiative() {
     if (sendUpdate) {
       socket.emit("characters-change", newData);
     }
-    if ((document.querySelector("#autoAdvance") as HTMLInputElement)?.checked) {
+    if (
+      (document.querySelector("#autoAdvance") as HTMLInputElement)?.checked ||
+      isTable
+    ) {
       document
         .querySelector("div .bg-lime-500")
         ?.scrollIntoView({ behavior: "smooth" });
@@ -191,7 +213,7 @@ export default function Initiative() {
   const getHealthValue = (character: Character) => {
     const health = getHealthDescription(character);
     // show numerical HPs only to the DM or if it's a player character
-    if (session.data?.user.roles.includes("dm") || character.isPlayer) {
+    if (isDM || character.isPlayer) {
       return {
         text: `${character.currentHealth} / ${character.totalHealth}`,
         color: health.color,
@@ -220,6 +242,22 @@ export default function Initiative() {
     return enemies;
   };
 
+  const loadOrder = async () => {
+    if (
+      confirm(`Do you want load the default party?
+        \nWARNING: this will overwrite the current order!`)
+    ) {
+      const newOrder = await loadInitiative();
+      save({ order: newOrder, turn: 1 });
+    }
+  };
+
+  const saveOrder = async () => {
+    if (confirm(`Do you want save this party as default?`)) {
+      await saveInitiative(order);
+    }
+  };
+
   const renderOrder =
     order.length === 0 ? (
       <p className="p-2">The party seems a little empty...</p>
@@ -238,8 +276,7 @@ export default function Initiative() {
                 className={`text-lg ${character.isEnemy ? "text-red-600" : ""}`}
               >
                 {character.name}{" "}
-                {character.notes &&
-                (session.data?.user.roles.includes("dm") || character.isPlayer)
+                {character.notes && (isDM || character.isPlayer)
                   ? `(${character.notes})`
                   : ""}
               </p>
@@ -251,16 +288,14 @@ export default function Initiative() {
             </div>
 
             <div className="flex gap-x-1">
-              {(session.data?.user.roles.includes("dm") ||
-                character.isPlayer) &&
-              !session.data?.user.roles.includes("table") ? (
+              {(isDM || character.isPlayer) && !isTable ? (
                 <Button
                   onClick={() => editCharacter(character.name)}
                   tooltip="Edit character"
                   icon={<Edit />}
                 />
               ) : null}
-              {session.data?.user.roles.includes("dm") ? (
+              {isDM ? (
                 <Button
                   onClick={() => removeCharacter(character.name)}
                   tooltip="Remove character"
@@ -354,7 +389,7 @@ export default function Initiative() {
         {isEditing ? " (editing...)" : ""}
       </div>
 
-      {!session.data?.user.roles.includes("table") ? (
+      {!isTable ? (
         <>
           <p className="subtitle">{isEditing ? "Edit" : "Add"} character</p>
           <div className="m-4">
@@ -379,30 +414,51 @@ export default function Initiative() {
               type="number"
             />
             <Textfield id="newCharacterNotes" placeholder="Notes" type="text" />
-            <label className="mx-2">
-              <input type="checkbox" id="newCharacterEnemy" /> Enemy
-            </label>
-            <Button
-              label={isEditing ? "Update" : "Add"}
-              onClick={addCharacter}
-            />
+            <div className="text-center">
+              <label className="mx-2">
+                <input type="checkbox" id="newCharacterEnemy" /> Enemy
+              </label>
+              <Button
+                label={isEditing ? "Update" : "Add"}
+                icon={isEditing ? <Check /> : <Plus />}
+                onClick={addCharacter}
+              />
+            </div>
           </div>
 
-          <p className="subtitle">Controls</p>
-          <div className="space-x-2">
-            <Button label="Clear" onClick={clear} />
-            {isCombatOngoing ? (
-              <Button label="Restart" onClick={restart} />
-            ) : null}
+          <div className="space-x-2 sticky bottom-0 pb-2 bg-main-bg text-right">
             <Button
               label={isCombatOngoing ? "Next" : "Start"}
+              icon={isCombatOngoing ? <FastForward /> : <Play />}
               disabled={order.length === 0}
               onClick={next}
             />
-            <label>
-              <input type="checkbox" id="autoAdvance" defaultChecked /> Scroll
-            </label>
           </div>
+
+          {isDM || isAdmin ? (
+            <>
+              <p className="subtitle">DM controls</p>
+              <div className="space-x-2">
+                <Button label="Clear" icon={<Trash2 />} onClick={clear} />
+                {isCombatOngoing ? (
+                  <Button
+                    label="Restart"
+                    icon={<RefreshCw />}
+                    onClick={restart}
+                  />
+                ) : null}
+              </div>
+              <div className="space-x-2 my-2">
+                <Button label="Load" icon={<Upload />} onClick={loadOrder} />
+                <Button label="Save" icon={<Save />} onClick={saveOrder} />
+              </div>
+            </>
+          ) : null}
+
+          <label>
+            <input type="checkbox" id="autoAdvance" defaultChecked />{" "}
+            Auto-scroll
+          </label>
         </>
       ) : null}
     </>

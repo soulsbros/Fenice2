@@ -27,11 +27,12 @@ export default function Button({
 }: Readonly<ButtonProps>) {
   return (
     <button
-      className={`${disabled ? "disabled" : "primary"} button`}
+      className={`${disabled ? "disabled" : "primary"} button space-x-3`}
       onClick={disabled ? () => {} : onClick}
       title={tooltip}
     >
-      {icon} {label}
+      {icon}
+      {label ? <span>{label}</span> : null}
     </button>
   );
 }

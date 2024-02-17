@@ -4,7 +4,6 @@
 
 body {
   color: rgba(0, 0, 0, 0.87);
-  background: #f6f6f6;
   height: 100vh;
 }
 
@@ -40,7 +39,7 @@ body {
 }
 
 .button {
-  @apply text-white font-bold py-[10px] px-4 rounded inline-block;
+  @apply text-white font-bold py-[10px] px-4 rounded inline-flex align-middle;
 }
 
 .title {

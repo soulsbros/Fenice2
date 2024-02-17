@@ -21,7 +21,7 @@ export function getHealthDescription(character: Character) {
   }
 
   const hpRatio = character.currentHealth / character.totalHealth;
-  if (hpRatio == 1) {
+  if (hpRatio >= 1) {
     return { text: "Untouched", color: "text-green-800" };
   } else if (hpRatio > 0.8) {
     return { text: "Barely injured", color: "text-green-500" };

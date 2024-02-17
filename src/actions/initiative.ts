@@ -21,7 +21,7 @@ export async function loadInitiative() {
     },
     {
       name: "Rok",
-      score: 0.1,
+      score: 0.2,
       active: false,
       player: "andrea.britesma@gmail.com",
       isPlayer: true,

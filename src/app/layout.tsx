@@ -38,7 +38,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} flex flex-col min-w-[300px]`}>
+      <body
+        className={`${inter.className} flex flex-col min-w-[300px] bg-main-bg`}
+      >
         <header className="bg-red-600 p-3 text-white flex justify-between items-center">
           <MenuButton />
 
