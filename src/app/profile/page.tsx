@@ -57,6 +57,10 @@ export default async function Profile() {
 
       <p className="title mt-8">Your characters</p>
 
+      <Link href={`/characters/new`} className="primary button mb-4">
+        Create
+      </Link>
+
       {result.success
         ? result?.data.map((character: Character) => (
             <CharacterInfo
@@ -65,10 +69,6 @@ export default async function Profile() {
             />
           ))
         : result.message}
-
-      <Link href={`/characters/new`} className="primary button mt-4">
-        Create
-      </Link>
     </>
   );
 }

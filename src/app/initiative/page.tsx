@@ -156,15 +156,18 @@ export default function Initiative() {
         : "How much damage?\nTip: enter a negative value for healing"
     );
     if (damage) {
+      const newOrder = [...order];
+      const pos = newOrder.findIndex(
+        (character) => character.name === currentCharacter
+      );
       let parsedDamage = Number.parseInt(damage);
       if (isHealing) {
         parsedDamage = -parsedDamage;
       }
-      if (Number.isInteger(parsedDamage)) {
-        const newOrder = [...order];
-        const pos = newOrder.findIndex(
-          (character) => character.name === currentCharacter
-        );
+      if (damage.toLowerCase() === "full") {
+        newOrder[pos].currentHealth = newOrder[pos].totalHealth;
+        save({ order: newOrder, turn: turn });
+      } else if (Number.isInteger(parsedDamage)) {
         newOrder[pos].currentHealth -= parsedDamage;
         save({ order: newOrder, turn: turn });
       }
@@ -248,7 +251,12 @@ export default function Initiative() {
         \nWARNING: this will overwrite the current order!`)
     ) {
       const newOrder = await loadInitiative();
-      save({ order: newOrder, turn: 1 });
+      if (newOrder.success) {
+        save({ order: newOrder.data[0].order, turn: 1 });
+      } else {
+        console.error(newOrder.message);
+        alert("Couldn't load default party");
+      }
     }
   };
 
@@ -258,60 +266,58 @@ export default function Initiative() {
     }
   };
 
-  const renderOrder =
-    order.length === 0 ? (
-      <p className="p-2">The party seems a little empty...</p>
-    ) : (
-      order.map((character) => {
-        const health = getHealthValue(character);
-        return (
-          <div
-            key={character.name}
-            className={`m-2 flex justify-between items-center ${
-              character.active ? "bg-lime-500 font-semibold" : ""
-            } transition-all duration-500`}
-          >
-            <div>
-              <p
-                className={`text-lg ${character.isEnemy ? "text-red-600" : ""}`}
-              >
-                {character.name}{" "}
-                {character.notes && (isDM || character.isPlayer)
-                  ? `(${character.notes})`
-                  : ""}
-              </p>
-              <p className="text-sm italic flex space-x-2">
-                <ChevronsRight /> {character.score}
-                <Heart />
-                <span className={health.color}>{health.text}</span>
-              </p>
-            </div>
-
-            <div className="flex gap-x-1">
-              {(isDM || character.isPlayer) && !isTable ? (
-                <Button
-                  onClick={() => editCharacter(character.name)}
-                  tooltip="Edit character"
-                  icon={<Edit />}
-                />
-              ) : null}
-              {isDM ? (
-                <Button
-                  onClick={() => removeCharacter(character.name)}
-                  tooltip="Remove character"
-                  icon={<Trash2 />}
-                />
-              ) : null}
-              <Button
-                onClick={() => damageCharacter(character.name)}
-                tooltip="Damage character"
-                icon={<Crosshair />}
-              />
-            </div>
+  const renderOrder = () => {
+    if (order.length === 0) {
+      return <p className="p-2">The party seems a little empty...</p>;
+    }
+    return order.map((character) => {
+      const health = getHealthValue(character);
+      return (
+        <div
+          key={character.name}
+          className={`my-2 p-2 flex justify-between items-center ${
+            character.active ? "bg-lime-500 font-semibold" : ""
+          } transition-all duration-500 bor border-solid border-2 border-slate-800`}
+        >
+          <div>
+            <p className={`text-lg ${character.isEnemy ? "text-red-600" : ""}`}>
+              {character.name}{" "}
+              {character.notes && (isDM || character.isPlayer)
+                ? `(${character.notes})`
+                : ""}
+            </p>
+            <p className="text-sm italic flex space-x-2">
+              <ChevronsRight /> {character.score}
+              <Heart />
+              <span className={health.color}>{health.text}</span>
+            </p>
           </div>
-        );
-      })
-    );
+
+          <div className="flex gap-x-1">
+            {(isDM || character.isPlayer) && !isTable ? (
+              <Button
+                onClick={() => editCharacter(character.name)}
+                tooltip="Edit character"
+                icon={<Edit />}
+              />
+            ) : null}
+            {isDM ? (
+              <Button
+                onClick={() => removeCharacter(character.name)}
+                tooltip="Remove character"
+                icon={<Trash2 />}
+              />
+            ) : null}
+            <Button
+              onClick={() => damageCharacter(character.name)}
+              tooltip="Damage character"
+              icon={<Crosshair />}
+            />
+          </div>
+        </div>
+      );
+    });
+  };
 
   const initializeSocket = async () => {
     await fetch("/api/socket");
@@ -380,8 +386,8 @@ export default function Initiative() {
         {isCombatOngoing ? `Turn ${turn}` : "Preparing..."}
       </p>
 
-      <div className="m-4 border-solid border-2" id="order">
-        {renderOrder}
+      <div className="m-4" id="order">
+        {renderOrder()}
       </div>
 
       <div className="mb-4">
@@ -459,6 +465,16 @@ export default function Initiative() {
             <input type="checkbox" id="autoAdvance" defaultChecked />{" "}
             Auto-scroll
           </label>
+
+          <p className="subtitle mt-4">HP color scale</p>
+          <div>
+            <p className="text-green-800">&gt;100% - Untouched</p>
+            <p className="text-green-500">&gt;80% - Barely injured</p>
+            <p className="text-yellow-600">&gt;60% - Lightly injured</p>
+            <p className="text-orange-500">&gt;40% - Injured</p>
+            <p className="text-red-600">&gt;20% - Gravely injured</p>
+            <p className="text-red-800">&lt;20% - Near death</p>
+          </div>
         </>
       ) : null}
     </>
