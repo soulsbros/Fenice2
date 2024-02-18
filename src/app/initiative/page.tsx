@@ -22,6 +22,7 @@ import {
   Upload,
 } from "react-feather";
 import io from "socket.io-client";
+import swal from "sweetalert";
 
 let socket: any;
 
@@ -57,23 +58,54 @@ export default function Initiative() {
     return { name, score, currentHealth, totalHealth, enemy, notes };
   };
 
-  const addCharacter = () => {
+  const addCharacter = async () => {
     const { name, score, currentHealth, totalHealth, enemy, notes } =
       getFields();
+    let parsedScore = parseFloat(score.value);
+
     if (order.find((character) => character.name === name.value)) {
-      alert(`Character ${name.value} already exists`);
+      swal({
+        title: "Invalid input",
+        text: `Character ${name.value} already exists`,
+        icon: "warning",
+      });
       console.error("Character already exists", name.value, score.value);
       return;
     }
 
-    if (order.find((character) => character.score == parseFloat(score.value))) {
-      alert(`Initiative value ${score.value} already exists`);
-      console.error("Score already exists", name.value, score.value);
-      return;
+    if (order.find((character) => character.score == parsedScore)) {
+      const oldIndex = order.findIndex(
+        (character) => character.score == parsedScore
+      );
+      const confirmValue = await swal({
+        title: "Conflict found",
+        text: `Initiative value ${score.value} already exists. Who goes first?`,
+        icon: "warning",
+        buttons: [order[oldIndex].name, name.value],
+        closeOnClickOutside: false,
+        closeOnEsc: false,
+      });
+      if (confirmValue) {
+        // the new one goes first -> put them higher
+        // take the midpoint between the conflicting and its previous one
+        parsedScore =
+          order[oldIndex].score +
+          (order[oldIndex - 1]?.score || 99 - order[oldIndex].score) / 2;
+      } else {
+        // the already present one goes first -> put the new one lower
+        // take the midpoint between the conflicting and its next one
+        parsedScore =
+          order[oldIndex].score -
+          (order[oldIndex].score - order[oldIndex + 1]?.score || 1) / 2;
+      }
     }
 
     if (!name.value || !score.value) {
-      alert("Invalid input");
+      swal({
+        title: "Invalid input",
+        text: "Name or initiative value are missing",
+        icon: "warning",
+      });
       console.error("Invalid input", name.value, score.value);
       return;
     }
@@ -82,7 +114,7 @@ export default function Initiative() {
       ...order,
       {
         name: name.value,
-        score: parseFloat(score.value),
+        score: parsedScore,
         active: false,
         player: session.data?.user.email ?? "",
         isPlayer: !isDM,
@@ -103,9 +135,17 @@ export default function Initiative() {
   };
 
   const removeCharacter = (name: string) => {
-    if (confirm(`Do you want to remove ${name} from the initiative?`)) {
-      deleteCharacter(name);
-    }
+    swal({
+      title: "Remove character?",
+      text: `Do you want to remove ${name} from the initiative?`,
+      icon: "warning",
+      buttons: ["Cancel", "Delete"],
+      dangerMode: true,
+    }).then((hasConfirmed) => {
+      if (hasConfirmed) {
+        deleteCharacter(name);
+      }
+    });
   };
 
   const editCharacter = (currentCharacter: string) => {
@@ -175,21 +215,35 @@ export default function Initiative() {
   };
 
   const clear = () => {
-    if (
-      confirm(`Do you want to clear the entire initiative?
-        \nWARNING: this will remove every character from the party!`)
-    ) {
-      save({ order: [], turn: 1 });
-    }
+    swal({
+      title: "Clear initiative?",
+      text: `Do you want to clear the entire initiative?
+      \nThis will remove every character from the party!`,
+      icon: "warning",
+      buttons: ["Cancel", "Clear"],
+      dangerMode: true,
+    }).then((hasConfirmed) => {
+      if (hasConfirmed) {
+        save({ order: [], turn: 1 });
+      }
+    });
   };
 
   const restart = () => {
-    if (confirm(`Do you want to restart the combat?`)) {
-      const newOrder = [...order];
-      newOrder[newOrder.findIndex((character) => character.active)].active =
-        false;
-      save({ order: newOrder, turn: 1 });
-    }
+    swal({
+      title: "Restart combat?",
+      text: "Do you want to restart the combat? This will bring you back to the preparation phase",
+      icon: "warning",
+      buttons: ["Cancel", "Restart"],
+      dangerMode: true,
+    }).then((hasConfirmed) => {
+      if (hasConfirmed) {
+        const newOrder = [...order];
+        newOrder[newOrder.findIndex((character) => character.active)].active =
+          false;
+        save({ order: newOrder, turn: 1 });
+      }
+    });
   };
 
   const next = () => {
@@ -246,24 +300,42 @@ export default function Initiative() {
   };
 
   const loadOrder = async () => {
-    if (
-      confirm(`Do you want load the default party?
-        \nWARNING: this will overwrite the current order!`)
-    ) {
-      const newOrder = await loadInitiative();
-      if (newOrder.success) {
-        save({ order: newOrder.data[0].order, turn: 1 });
-      } else {
-        console.error(newOrder.message);
-        alert("Couldn't load default party");
+    swal({
+      title: "Load default?",
+      text: `Do you want load the default party?
+      \nThis will overwrite the current order!`,
+      icon: "warning",
+      buttons: ["Cancel", "Load"],
+      dangerMode: true,
+    }).then(async (hasConfirmed) => {
+      if (hasConfirmed) {
+        const newOrder = await loadInitiative();
+        if (newOrder.success) {
+          save({ order: newOrder.data[0].order, turn: 1 });
+        } else {
+          console.error(newOrder.message);
+          swal({
+            title: "Error",
+            text: "Couldn't load default party",
+            icon: "error",
+          });
+        }
       }
-    }
+    });
   };
 
   const saveOrder = async () => {
-    if (confirm(`Do you want save this party as default?`)) {
-      await saveInitiative(order);
-    }
+    swal({
+      title: "Save default?",
+      text: "Do you want save this party as default?",
+      icon: "warning",
+      buttons: ["Cancel", "Load"],
+      dangerMode: true,
+    }).then(async (hasConfirmed) => {
+      if (hasConfirmed) {
+        await saveInitiative(order);
+      }
+    });
   };
 
   const renderOrder = () => {
