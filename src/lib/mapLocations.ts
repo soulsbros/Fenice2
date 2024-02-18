@@ -140,7 +140,7 @@ export const markers = [
     position: [49.174501046221586, 3.6968994140625004],
     description: "A small castle, now home for Alan'divir's family",
     marker: "Red",
-    dateVisited: "31th of Arodus - 2nd of Rova",
+    dateVisited: "31th of Arodus - 2nd of Rova and 19th of Lamashan - now",
   },
   {
     name: `Heibarr`,
@@ -168,7 +168,7 @@ export const markers = [
     position: [57.810164, 1.604004],
     description: "A dwarven city, home of Agna Ironbreaker",
     marker: "Red",
-    dateVisited: "4th - 5th and 16th of Lamashan - now",
+    dateVisited: "4th - 5th and 16th - 18th of Lamashan",
   },
   {
     name: "Krygandom",

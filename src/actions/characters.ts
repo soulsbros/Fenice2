@@ -1,5 +1,6 @@
 "use server";
 
+import { getValueFromAlignment } from "@/lib/alignment";
 import { authOptions } from "@/lib/authConfig";
 import { deleteDoc, getWithFilter, insertDocs, updateDoc } from "@/lib/mongo";
 import { Character } from "@/types/API";
@@ -29,24 +30,26 @@ export async function insertCharacter(prevState: any, formData: FormData) {
     return { message: "Error: missing required data" };
   }
 
+  const alignment = formData.get("alignment")?.toString() ?? "";
+
   const char: Character = {
-    name: formData.get("name")?.toString() ?? "",
-    // TODO fix those
-    characterId: 999,
-    image: "",
-    // --
     campaignId: new ObjectId(formData.get("campaignId")?.toString() ?? ""),
     player: userData?.user.name?.split(" ")[0] ?? "",
     playerEmail: userData?.user.email ?? "",
+    name: formData.get("name")?.toString() ?? "",
+    race: formData.get("race")?.toString() ?? "",
+    genre: formData.get("genre")?.toString() ?? "",
     pronouns: formData.get("pronouns")?.toString() ?? "",
     orientation: formData.get("orientation")?.toString() ?? "",
-    genre: formData.get("genre")?.toString() ?? "",
-    race: formData.get("race")?.toString() ?? "",
     class: formData.get("class")?.toString() ?? "",
-    startAlignment: formData.get("alignment")?.toString() ?? "",
-    actualAlignment: formData.get("alignment")?.toString() ?? "",
+    startAlignment: alignment,
+    actualAlignment: alignment,
+    actionsHistory: [],
+    lawfulChaoticValue: getValueFromAlignment(alignment, "LC"),
+    goodEvilValue: getValueFromAlignment(alignment, "GE"),
     backstory: formData.get("backstory")?.toString() ?? "",
     personality: formData.get("personality")?.toString() ?? "",
+    image: "", // TODO fix
     createdAt: new Date(),
     updatedAt: new Date(),
   };

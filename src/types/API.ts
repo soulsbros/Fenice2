@@ -1,8 +1,8 @@
 import { ObjectId } from "mongodb";
 
 export interface Character {
-  _id?: string | ObjectId;
-  characterId: number;
+  _id?: ObjectId;
+  characterId?: number; // legacy ID
   campaignId: ObjectId;
   player: string;
   playerEmail: string;
@@ -14,6 +14,9 @@ export interface Character {
   class: string;
   startAlignment: string;
   actualAlignment: string;
+  actionsHistory: [];
+  lawfulChaoticValue: number;
+  goodEvilValue: number;
   backstory: string;
   personality: string;
   createdAt: Date;

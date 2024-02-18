@@ -53,9 +53,9 @@ export default async function CharacterInfo({
           <ImageWithFallback
             // TODO remove this check once legacy image API is not needed anymore
             src={
-              character.characterId == 999
-                ? character.image
-                : `https://lafenice.soulsbros.ch/img/pg/${character.characterId}.jpg`
+              character.characterId
+                ? `https://lafenice.soulsbros.ch/img/pg/${character.characterId}.jpg`
+                : character.image
             }
             fallbackSrc={deafultUser}
             alt="Character image"

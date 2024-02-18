@@ -232,7 +232,8 @@ export default function Initiative() {
   const restart = () => {
     swal({
       title: "Restart combat?",
-      text: "Do you want to restart the combat? This will bring you back to the preparation phase",
+      text: `Do you want to restart the combat?
+      \nThis will bring you back to the preparation phase.`,
       icon: "warning",
       buttons: ["Cancel", "Restart"],
       dangerMode: true,
@@ -302,7 +303,7 @@ export default function Initiative() {
   const loadOrder = async () => {
     swal({
       title: "Load default?",
-      text: `Do you want load the default party?
+      text: `Do you want to load the default party?
       \nThis will overwrite the current order!`,
       icon: "warning",
       buttons: ["Cancel", "Load"],
@@ -329,7 +330,7 @@ export default function Initiative() {
       title: "Save default?",
       text: "Do you want save this party as default?",
       icon: "warning",
-      buttons: ["Cancel", "Load"],
+      buttons: ["Cancel", "Save"],
       dangerMode: true,
     }).then(async (hasConfirmed) => {
       if (hasConfirmed) {

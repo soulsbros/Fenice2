@@ -9,8 +9,8 @@ export const INITIAL_EVENTS = [
   },
   {
     title: "The Algamat War",
-    start: "2022-10-16",
+    start: "2022-10-18",
   },
 ];
 
-export const today = "2022-10-16T00:00:00";
+export const today = "2022-10-19T00:00:00";
