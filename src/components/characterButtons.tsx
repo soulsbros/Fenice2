@@ -4,7 +4,7 @@ import { deleteCharacter } from "@/actions/characters";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import swal from "sweetalert";
+import Swal from "sweetalert2";
 import Button from "./button";
 
 interface CharacterButtonsProps {
@@ -19,14 +19,15 @@ export default function CharacterButtons({
   const router = useRouter();
 
   async function handleDelete() {
-    swal({
+    Swal.fire({
       title: "Delete character?",
       text: `Do you really want to delete ${name}? This operation is irreversible!`,
       icon: "warning",
-      buttons: ["Cancel", "Delete"],
-      dangerMode: true,
-    }).then(async (hasConfirmed) => {
-      if (hasConfirmed) {
+      reverseButtons: true,
+      showCancelButton: true,
+      confirmButtonText: "Delete",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
         await deleteCharacter(id);
         router.push("/characters");
       }

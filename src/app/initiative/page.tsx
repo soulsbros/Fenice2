@@ -22,7 +22,7 @@ import {
   Upload,
 } from "react-feather";
 import io from "socket.io-client";
-import swal from "sweetalert";
+import Swal from "sweetalert2";
 
 let socket: any;
 
@@ -64,10 +64,10 @@ export default function Initiative() {
     let parsedScore = parseFloat(score.value);
 
     if (order.find((character) => character.name === name.value)) {
-      swal({
+      Swal.fire({
         title: "Invalid input",
         text: `Character ${name.value} already exists`,
-        icon: "warning",
+        icon: "error",
       });
       console.error("Character already exists", name.value, score.value);
       return;
@@ -77,15 +77,19 @@ export default function Initiative() {
       const oldIndex = order.findIndex(
         (character) => character.score == parsedScore
       );
-      const confirmValue = await swal({
+      const result = await Swal.fire({
         title: "Conflict found",
         text: `Initiative value ${score.value} already exists. Who goes first?`,
-        icon: "warning",
-        buttons: [order[oldIndex].name, name.value],
-        closeOnClickOutside: false,
-        closeOnEsc: false,
+        icon: "question",
+        reverseButtons: true,
+        showCancelButton: true,
+        cancelButtonText: order[oldIndex].name,
+        confirmButtonText: name.value,
+        allowOutsideClick: false,
+        allowEnterKey: false,
+        allowEscapeKey: false,
       });
-      if (confirmValue) {
+      if (result.isConfirmed) {
         // the new one goes first -> put them higher
         // take the midpoint between the conflicting and its previous one
         parsedScore =
@@ -101,10 +105,10 @@ export default function Initiative() {
     }
 
     if (!name.value || !score.value) {
-      swal({
+      Swal.fire({
         title: "Invalid input",
         text: "Name or initiative value are missing",
-        icon: "warning",
+        icon: "error",
       });
       console.error("Invalid input", name.value, score.value);
       return;
@@ -135,14 +139,15 @@ export default function Initiative() {
   };
 
   const removeCharacter = (name: string) => {
-    swal({
+    Swal.fire({
       title: "Remove character?",
       text: `Do you want to remove ${name} from the initiative?`,
       icon: "warning",
-      buttons: ["Cancel", "Delete"],
-      dangerMode: true,
-    }).then((hasConfirmed) => {
-      if (hasConfirmed) {
+      reverseButtons: true,
+      showCancelButton: true,
+      confirmButtonText: "Remove",
+    }).then((result) => {
+      if (result.isConfirmed) {
         deleteCharacter(name);
       }
     });
@@ -189,21 +194,25 @@ export default function Initiative() {
     });
   };
 
-  const damageCharacter = (currentCharacter: string, isHealing = false) => {
-    const damage = prompt(
-      isHealing
-        ? "How much healing?"
-        : "How much damage?\nTip: enter a negative value for healing"
-    );
+  const damageCharacter = async (currentCharacter: string) => {
+    const { value: damage } = await Swal.fire({
+      title: "Enter damage",
+      inputLabel: "How much damage? Tip: enter a negative value for healing",
+      input: "text",
+      reverseButtons: true,
+      showCancelButton: true,
+      inputValidator: (value) => {
+        if (!value) {
+          return "You need to write something!";
+        }
+      },
+    });
     if (damage) {
       const newOrder = [...order];
       const pos = newOrder.findIndex(
         (character) => character.name === currentCharacter
       );
       let parsedDamage = Number.parseInt(damage);
-      if (isHealing) {
-        parsedDamage = -parsedDamage;
-      }
       if (damage.toLowerCase() === "full") {
         newOrder[pos].currentHealth = newOrder[pos].totalHealth;
         save({ order: newOrder, turn: turn });
@@ -215,30 +224,30 @@ export default function Initiative() {
   };
 
   const clear = () => {
-    swal({
+    Swal.fire({
       title: "Clear initiative?",
-      text: `Do you want to clear the entire initiative?
-      \nThis will remove every character from the party!`,
+      text: `Do you want to clear the entire initiative? This will remove every character from the party!`,
       icon: "warning",
-      buttons: ["Cancel", "Clear"],
-      dangerMode: true,
-    }).then((hasConfirmed) => {
-      if (hasConfirmed) {
+      reverseButtons: true,
+      showCancelButton: true,
+      confirmButtonText: "Clear",
+    }).then((result) => {
+      if (result.isConfirmed) {
         save({ order: [], turn: 1 });
       }
     });
   };
 
   const restart = () => {
-    swal({
+    Swal.fire({
       title: "Restart combat?",
-      text: `Do you want to restart the combat?
-      \nThis will bring you back to the preparation phase.`,
+      text: `Do you want to restart the combat? This will bring you back to the preparation phase.`,
       icon: "warning",
-      buttons: ["Cancel", "Restart"],
-      dangerMode: true,
-    }).then((hasConfirmed) => {
-      if (hasConfirmed) {
+      reverseButtons: true,
+      showCancelButton: true,
+      confirmButtonText: "Restart",
+    }).then((result) => {
+      if (result.isConfirmed) {
         const newOrder = [...order];
         newOrder[newOrder.findIndex((character) => character.active)].active =
           false;
@@ -301,21 +310,21 @@ export default function Initiative() {
   };
 
   const loadOrder = async () => {
-    swal({
+    Swal.fire({
       title: "Load default?",
-      text: `Do you want to load the default party?
-      \nThis will overwrite the current order!`,
+      text: `Do you want to load the default party? This will overwrite the current order!`,
       icon: "warning",
-      buttons: ["Cancel", "Load"],
-      dangerMode: true,
-    }).then(async (hasConfirmed) => {
-      if (hasConfirmed) {
+      reverseButtons: true,
+      showCancelButton: true,
+      confirmButtonText: "Load",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
         const newOrder = await loadInitiative();
         if (newOrder.success) {
           save({ order: newOrder.data[0].order, turn: 1 });
         } else {
           console.error(newOrder.message);
-          swal({
+          Swal.fire({
             title: "Error",
             text: "Couldn't load default party",
             icon: "error",
@@ -326,14 +335,15 @@ export default function Initiative() {
   };
 
   const saveOrder = async () => {
-    swal({
+    Swal.fire({
       title: "Save default?",
       text: "Do you want save this party as default?",
       icon: "warning",
-      buttons: ["Cancel", "Save"],
-      dangerMode: true,
-    }).then(async (hasConfirmed) => {
-      if (hasConfirmed) {
+      reverseButtons: true,
+      showCancelButton: true,
+      confirmButtonText: "Save",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
         await saveInitiative(order);
       }
     });
