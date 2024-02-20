@@ -9,6 +9,7 @@ interface ButtonProps {
   label?: string;
   tooltip?: string;
   disabled?: boolean;
+  className?: string;
   onClick?: () => void;
 }
 
@@ -22,12 +23,13 @@ export default function Button({
   label,
   icon,
   tooltip,
+  className,
   disabled = false,
   onClick,
 }: Readonly<ButtonProps>) {
   return (
     <button
-      className={`${disabled ? "disabled" : "primary"} button space-x-3`}
+      className={`${disabled ? "disabled" : "primary"} button ${className ?? null}`}
       onClick={disabled ? () => {} : onClick}
       title={tooltip}
     >

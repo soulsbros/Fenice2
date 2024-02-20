@@ -8,6 +8,11 @@ const nextConfig = {
         hostname: "lafenice.soulsbros.ch",
         pathname: "/img/**",
       },
+      {
+        protocol: "https",
+        hostname: "gravatar.com",
+        pathname: "/avatar/*",
+      },
     ],
   },
 };

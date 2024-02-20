@@ -1,12 +1,13 @@
+import { getCharacters } from "@/actions/characters";
 import { LogoutButton } from "@/components/button";
 import CharacterInfo from "@/components/characterInfo";
+import ImageWithFallback from "@/components/imageWithFallback";
 import defaultImage from "@/img/defaultUser.png";
 import { authOptions } from "@/lib/authConfig";
 import { Character } from "@/types/API";
+import { createHash } from "crypto";
 import { getServerSession } from "next-auth";
-import Image from "next/image";
 import Link from "next/link";
-import { getCharacters } from "../../actions/characters";
 
 export default async function Profile() {
   const session = await getServerSession(authOptions);
@@ -23,13 +24,19 @@ export default async function Profile() {
     }
   );
 
+  // https://docs.gravatar.com/general/hash
+  const hash = createHash("sha256")
+    .update(session?.user.email?.trim().toLowerCase() ?? "")
+    .digest("hex");
+
   return (
     <>
       <p className="title">Your profile</p>
 
       <div className="flex items-center gap-8">
-        <Image
-          src={user?.image ? user?.image : defaultImage}
+        <ImageWithFallback
+          src={`https://gravatar.com/avatar/${hash}?s=200`}
+          fallbackSrc={defaultImage}
           width={100}
           height={100}
           alt={`Profile picture of ${user?.name}`}
@@ -44,7 +51,14 @@ export default async function Profile() {
         </div>
       </div>
 
-      <div className="mt-4 space-x-2">
+      <div className="mt-4">
+        <Link
+          href={"https://gravatar.com/profile/avatars"}
+          target="_blank"
+          className="primary button"
+        >
+          Change picture
+        </Link>
         <Link
           href={`${issuer}/account`}
           target="_blank"

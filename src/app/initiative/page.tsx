@@ -376,12 +376,13 @@ export default function Initiative() {
             </p>
           </div>
 
-          <div className="flex gap-x-1">
+          <div className="flex">
             {(isDM || character.isPlayer) && !isTable ? (
               <Button
                 onClick={() => editCharacter(character.name)}
                 tooltip="Edit character"
                 icon={<Edit />}
+                className="!mb-0"
               />
             ) : null}
             {isDM ? (
@@ -389,12 +390,14 @@ export default function Initiative() {
                 onClick={() => removeCharacter(character.name)}
                 tooltip="Remove character"
                 icon={<Trash2 />}
+                className="!mb-0"
               />
             ) : null}
             <Button
               onClick={() => damageCharacter(character.name)}
               tooltip="Damage character"
               icon={<Crosshair />}
+              className="!mb-0"
             />
           </div>
         </div>
@@ -515,7 +518,7 @@ export default function Initiative() {
             </div>
           </div>
 
-          <div className="space-x-2 sticky bottom-0 pb-2 bg-main-bg text-right">
+          <div className="sticky bottom-0 pb-2 bg-main-bg text-right">
             <Button
               label={isCombatOngoing ? "Next" : "Start"}
               icon={isCombatOngoing ? <FastForward /> : <Play />}
@@ -527,7 +530,7 @@ export default function Initiative() {
           {isDM || isAdmin ? (
             <>
               <p className="subtitle">DM controls</p>
-              <div className="space-x-2">
+              <div>
                 <Button label="Clear" icon={<Trash2 />} onClick={clear} />
                 {isCombatOngoing ? (
                   <Button
@@ -537,7 +540,7 @@ export default function Initiative() {
                   />
                 ) : null}
               </div>
-              <div className="space-x-2 my-2">
+              <div>
                 <Button label="Load" icon={<Upload />} onClick={loadOrder} />
                 <Button label="Save" icon={<Save />} onClick={saveOrder} />
               </div>
