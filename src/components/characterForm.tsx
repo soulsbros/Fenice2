@@ -51,7 +51,7 @@ export default function CharacterForm({
           value={previousData?.pronouns}
         />
         <Textfield
-          placeholder="Genre"
+          placeholder="Gender"
           name="genre"
           value={previousData?.genre}
         />
