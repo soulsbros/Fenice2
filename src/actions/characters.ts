@@ -31,6 +31,12 @@ export async function insertCharacter(prevState: any, formData: FormData) {
   }
 
   const alignment = formData.get("alignment")?.toString() ?? "";
+  let image = "";
+  const imageFile = formData.get("image") as File;
+  const buffer = await imageFile.arrayBuffer();
+  if (buffer.byteLength > 0) {
+    image = "data:image/jpeg;base64," + Buffer.from(buffer).toString("base64");
+  }
 
   const char: Character = {
     campaignId: new ObjectId(formData.get("campaignId")?.toString() ?? ""),
@@ -49,7 +55,7 @@ export async function insertCharacter(prevState: any, formData: FormData) {
     goodEvilValue: getValueFromAlignment(alignment, "GE"),
     backstory: formData.get("backstory")?.toString() ?? "",
     personality: formData.get("personality")?.toString() ?? "",
-    image: "", // TODO fix
+    image: image,
     createdAt: new Date(),
     updatedAt: new Date(),
   };

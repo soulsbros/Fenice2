@@ -91,6 +91,12 @@ export default function CharacterForm({
           value={previousData?.campaignId.toString()}
         />
         <span>← Ask Steeven for this one</span>
+
+        <div className="inline-block ml-6">
+          Character image
+          <br />
+          <input type="file" name="image" />
+        </div>
       </div>
 
       <div className="mb-2">
