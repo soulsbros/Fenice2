@@ -19,3 +19,15 @@ export function getValueFromAlignment(alignment: string, type: string) {
   }
   return 50;
 }
+
+export const alignments = [
+  "Chaotic Good",
+  "Chaotic Neutral",
+  "Chaotic Evil",
+  "Neutral Good",
+  "Neutral",
+  "Neutral Evil",
+  "Lawful Good",
+  "Lawful Neutral",
+  "Lawful Evil",
+];

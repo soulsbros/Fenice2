@@ -1,8 +1,15 @@
 "use client";
 
-import { insertCharacter, updateCharacter } from "@/actions/characters";
-import { Character } from "@/types/API";
+import {
+  getCampaigns,
+  insertCharacter,
+  updateCharacter,
+} from "@/actions/characters";
+import { alignments } from "@/lib/alignment";
+import { Campaign, Character } from "@/types/API";
+import { useEffect, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
+import Select from "./select";
 import Textfield from "./textfield";
 
 interface CharacterFormProps {
@@ -34,6 +41,16 @@ export default function CharacterForm({
     previousData ? updateCharacter : insertCharacter,
     initialState
   );
+
+  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await getCampaigns();
+      setCampaigns(response.data.reverse() as Campaign[]);
+    }
+    fetchData();
+  }, []);
 
   return (
     <form action={formAction}>
@@ -75,22 +92,35 @@ export default function CharacterForm({
           required
           value={previousData?.class}
         />
-        <Textfield
+        <Select
           placeholder="Alignment"
           name="alignment"
+          options={alignments.map((alignment) => {
+            return { name: alignment, value: alignment };
+          })}
           required
-          value={previousData?.actualAlignment}
+          selectedItem={previousData?.actualAlignment}
         />
       </div>
 
       <div>
-        <Textfield
-          placeholder="Campaign ID"
-          name="campaignId"
-          required
-          value={previousData?.campaignId.toString()}
-        />
-        <span>← Ask Steeven for this one</span>
+        {campaigns.length === 0 ? (
+          <div className="inline-block">
+            Campaign
+            <br />
+            Loading...
+          </div>
+        ) : (
+          <Select
+            placeholder="Campaign"
+            name="campaignId"
+            options={campaigns.map((campaign) => {
+              return { name: campaign.name, value: campaign._id };
+            })}
+            required
+            selectedItem={previousData?.campaignId.toString()}
+          />
+        )}
 
         <div className="inline-block ml-6">
           Character image
