@@ -1,25 +1,35 @@
-import CharacterInfo from "@/components/characterInfo";
-import { Character } from "@/types/API";
-import { getCharacters } from "../../actions/characters";
+import { Campaign } from "@/types/API";
+import Link from "next/link";
+import { getCampaigns } from "../../actions/characters";
 
 export default async function Characters() {
-  const result = await getCharacters({
-    field: "campaignId",
-    direction: "DESC",
-  });
+  const result = await getCampaigns();
 
   return (
     <>
       <div className="title">Characters</div>
 
-      {result.success
-        ? result?.data.map((character: Character) => (
-            <CharacterInfo
-              character={character}
-              key={character._id?.toString()}
-            />
-          ))
-        : result.message}
+      <div>
+        {result.success
+          ? result?.data.reverse().map((campaign: Campaign) => (
+              <div key={campaign._id?.toString()} className="mb-2">
+                <Link
+                  href={`/characters/by-campaign/${campaign._id}`}
+                  className="font-bold"
+                >
+                  {campaign.name}
+                </Link>
+                <br />
+                {campaign.type} - from{" "}
+                {campaign.startDate
+                  ? campaign.startDate.toLocaleDateString("en-CH")
+                  : "?"}{" "}
+                to {campaign.endDate?.toLocaleDateString("en-CH") || "?"} (
+                {campaign.status})
+              </div>
+            ))
+          : result.message}
+      </div>
     </>
   );
 }

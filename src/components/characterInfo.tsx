@@ -1,4 +1,4 @@
-import deafultUser from "@/img/defaultUser.png";
+import defaultUser from "@/img/defaultUser.png";
 import { getWithFilter } from "@/lib/mongo";
 import { Character } from "@/types/API";
 import Link from "next/link";
@@ -57,7 +57,7 @@ export default async function CharacterInfo({
                 ? `https://lafenice.soulsbros.ch/img/pg/${character.characterId}.jpg`
                 : character.image
             }
-            fallbackSrc={deafultUser}
+            fallbackSrc={defaultUser}
             alt="Character image"
             width={trimTexts ? 150 : 300}
             height={trimTexts ? 150 : 300}

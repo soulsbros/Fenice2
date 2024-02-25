@@ -1,6 +1,6 @@
 import { getCharacters } from "@/actions/characters";
 import { LogoutButton } from "@/components/button";
-import CharacterInfo from "@/components/characterInfo";
+import CharacterCard from "@/components/characterCard";
 import ImageWithFallback from "@/components/imageWithFallback";
 import defaultImage from "@/img/defaultUser.png";
 import { authOptions } from "@/lib/authConfig";
@@ -75,14 +75,17 @@ export default async function Profile() {
         Create
       </Link>
 
-      {result.success
-        ? result?.data.map((character: Character) => (
-            <CharacterInfo
-              character={character}
-              key={character._id?.toString()}
-            />
-          ))
-        : result.message}
+      <div className="flex flex-wrap justify-around m-5">
+        {result.success
+          ? result?.data.map((character: Character) => (
+              <CharacterCard
+                character={character}
+                showPlayer={false}
+                key={character._id?.toString()}
+              />
+            ))
+          : result.message}
+      </div>
     </>
   );
 }

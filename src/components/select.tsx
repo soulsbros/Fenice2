@@ -4,7 +4,7 @@ interface SelectProps {
   placeholder?: string;
   selectedItem?: string;
   options: any[];
-  required: boolean;
+  required?: boolean;
 }
 
 export default function Select({
