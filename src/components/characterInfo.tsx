@@ -43,7 +43,7 @@ export default async function CharacterInfo({
     const campaignInfo = await getWithFilter("campaigns", undefined, {
       _id: character.campaignId,
     });
-    campaign = campaignInfo?.data[0].name;
+    campaign = campaignInfo?.data[0];
   }
 
   return (
@@ -80,7 +80,12 @@ export default async function CharacterInfo({
           {CharacterAttribute("Player", character.player)}
           {!trimTexts ? (
             <>
-              {CharacterAttribute("Campaign", campaign)}
+              {CharacterAttribute(
+                "Campaign",
+                <Link href={`/characters/by-campaign/${campaign._id}`}>
+                  {campaign.name}
+                </Link>
+              )}
               {CharacterAttribute("Class", character.class)}
               {CharacterAttribute("Race", character.race)}
               {CharacterAttribute("Alignment", character.actualAlignment)}
