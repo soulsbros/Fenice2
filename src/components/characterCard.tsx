@@ -40,7 +40,7 @@ export default function CharacterCard({
         {showPlayer ? (
           <p className="flex mt-2">
             <User />
-            &nbsp; {character.player.split(" ")[0]}
+            &nbsp; {character.player}
           </p>
         ) : null}
       </Link>

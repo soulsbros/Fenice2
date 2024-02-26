@@ -37,11 +37,7 @@ export default async function CharacterPage({
         ) : null}
       </div>
 
-      {result.success ? (
-        <CharacterInfo character={char} trimTexts={false} />
-      ) : (
-        result.message
-      )}
+      {result.success ? <CharacterInfo character={char} /> : result.message}
     </>
   );
 }

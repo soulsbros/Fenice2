@@ -7,123 +7,67 @@ import ImageWithFallback from "./imageWithFallback";
 
 interface CharacterInfoProps {
   character: Character;
-  trimTexts?: boolean;
 }
 
 function CharacterAttribute(key: string, value: string | ReactElement) {
   return (
-    <span className="inline-block text-center min-w-[200px] mb-2">
-      <p className="font-extrabold">{value || `Unknown ${key}`}</p>
-      <p>{key}</p>
-    </span>
+    <div className="flex mb-2">
+      <div className="font-extrabold flex-1">{key}</div>
+      <div className="flex-[2]">{value || `Unknown ${key}`}</div>
+    </div>
   );
 }
 
 export default async function CharacterInfo({
   character,
-  trimTexts = true,
 }: Readonly<CharacterInfoProps>) {
-  const MAX_TEXT_LENGTH = 300;
-  let backstory = trimTexts
-    ? character.backstory.substring(0, MAX_TEXT_LENGTH)
-    : character.backstory;
-  if (trimTexts && character.backstory.length > MAX_TEXT_LENGTH) {
-    backstory += "... ";
-  }
-
-  let personality = trimTexts
-    ? character.personality.substring(0, MAX_TEXT_LENGTH)
-    : character.personality;
-  if (trimTexts && character.personality.length > MAX_TEXT_LENGTH) {
-    personality += "... ";
-  }
-
-  let campaign;
-  if (!trimTexts) {
-    const campaignInfo = await getWithFilter("campaigns", undefined, {
-      _id: character.campaignId,
-    });
-    campaign = campaignInfo?.data[0];
-  }
+  const campaignInfo = await getWithFilter("campaigns", undefined, {
+    _id: character.campaignId,
+  });
+  const campaign = campaignInfo?.data[0];
 
   return (
-    <div className="mb-10">
-      <div className="flex mb-2">
-        <Link href={`/characters/${character._id}`} className={`min-w-[150px]`}>
-          <ImageWithFallback
-            // TODO remove this check once legacy image API is not needed anymore
-            src={
-              character.characterId
-                ? `https://lafenice.soulsbros.ch/img/pg/${character.characterId}.jpg`
-                : character.image
-            }
-            fallbackSrc={defaultUser}
-            alt="Character image"
-            width={trimTexts ? 150 : 300}
-            height={trimTexts ? 150 : 300}
-          />
-        </Link>
-
-        <div className="flex flex-wrap items-center justify-center">
-          {CharacterAttribute(
-            "Name",
-            <Link
-              href={`/characters/${character._id}`}
-              className={`min-w-[150px]`}
-            >
-              {character.name}
-              {character.pronouns ? (
-                <span className="text-sm"> ({character.pronouns})</span>
-              ) : null}
-            </Link>
-          )}
-          {CharacterAttribute("Player", character.player)}
-          {!trimTexts ? (
-            <>
-              {CharacterAttribute(
-                "Campaign",
-                <Link href={`/characters/by-campaign/${campaign._id}`}>
-                  {campaign.name}
-                </Link>
-              )}
-              {CharacterAttribute("Class", character.class)}
-              {CharacterAttribute("Race", character.race)}
-              {CharacterAttribute("Alignment", character.actualAlignment)}
-            </>
-          ) : null}
-        </div>
+    <div className="mb-5 p-5 border rounded-md shadow-md">
+      <div className="text-center">
+        <ImageWithFallback
+          // TODO remove this check once legacy image API is not needed anymore
+          src={
+            character.characterId
+              ? `https://lafenice.soulsbros.ch/img/pg/${character.characterId}.jpg`
+              : character.image
+          }
+          fallbackSrc={defaultUser}
+          alt="Character image"
+          width={300}
+          height={300}
+          className="rounded inline-block"
+        />
       </div>
 
-      <div className="flex">
-        <div className="w-[48%] mr-[2%]">
-          <p className="font-extrabold">Backstory</p>
-          <p className="break-words">
-            {backstory || "No data"}
-            {trimTexts && character.backstory.length > MAX_TEXT_LENGTH ? (
-              <Link
-                href={`characters/${character._id}`}
-                className="text-blue-700"
-              >
-                Read more
-              </Link>
-            ) : null}
-          </p>
-        </div>
-
-        <div className="w-[50%]">
-          <p className="font-extrabold">Personality</p>
-          <p className="break-words">
-            {personality || "No data"}
-            {trimTexts && character.personality.length > MAX_TEXT_LENGTH ? (
-              <Link
-                href={`characters/${character._id}`}
-                className="text-blue-700"
-              >
-                Read more
-              </Link>
-            ) : null}
-          </p>
-        </div>
+      <div className="mt-4">
+        {CharacterAttribute(
+          "Player",
+          <Link
+            href={`/characters/by-user/${character.playerEmail}`}
+            className="hover:underline"
+          >
+            {character.player}
+          </Link>
+        )}
+        {CharacterAttribute(
+          "Campaign",
+          <Link
+            href={`/characters/by-campaign/${campaign._id}`}
+            className="hover:underline"
+          >
+            {campaign.name}
+          </Link>
+        )}
+        {CharacterAttribute("Class", character.class)}
+        {CharacterAttribute("Race", character.race)}
+        {CharacterAttribute("Alignment", character.actualAlignment)}
+        {CharacterAttribute("Personality", character.personality || "-")}
+        {CharacterAttribute("Backstory", character.backstory || "-")}
       </div>
     </div>
   );
