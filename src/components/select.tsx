@@ -18,6 +18,7 @@ export default function Select({
   return (
     <div className="inline-block">
       {placeholder}
+      {required ? "*" : null}
       <br />
       <select
         name={name}

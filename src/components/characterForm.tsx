@@ -7,6 +7,7 @@ import {
 } from "@/actions/characters";
 import { alignments } from "@/lib/alignment";
 import { Campaign, Character } from "@/types/API";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import Select from "./select";
@@ -41,6 +42,9 @@ export default function CharacterForm({
     previousData ? updateCharacter : insertCharacter,
     initialState
   );
+
+  const searchParams = useSearchParams();
+  const campaignParam = searchParams?.get("c") ?? "";
 
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
 
@@ -118,7 +122,7 @@ export default function CharacterForm({
               return { name: campaign.name, value: campaign._id };
             })}
             required
-            selectedItem={previousData?.campaignId.toString()}
+            selectedItem={previousData?.campaignId.toString() ?? campaignParam}
           />
         )}
 

@@ -4,6 +4,7 @@ import { deleteCharacter } from "@/actions/characters";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Edit, Trash2 } from "react-feather";
 import Swal from "sweetalert2";
 import Button from "./button";
 
@@ -35,11 +36,11 @@ export default function CharacterButtons({
   }
 
   return (
-    <>
+    <div className="text-right">
       <Link href={`/characters/${id}/edit`} className="primary button mr-2">
-        Edit
+        <Edit />
       </Link>
-      <Button onClick={handleDelete} label="Delete" />
-    </>
+      <Button onClick={handleDelete} icon={<Trash2 />} />
+    </div>
   );
 }

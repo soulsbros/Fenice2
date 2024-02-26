@@ -8,6 +8,7 @@ import { Character } from "@/types/API";
 import { createHash } from "crypto";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
+import { Plus } from "react-feather";
 
 export default async function Profile() {
   const session = await getServerSession(authOptions);
@@ -51,7 +52,7 @@ export default async function Profile() {
         </div>
       </div>
 
-      <div className="mt-4">
+      <div className="my-4">
         <Link
           href={"https://gravatar.com/profile/avatars"}
           target="_blank"
@@ -69,11 +70,12 @@ export default async function Profile() {
         <LogoutButton />
       </div>
 
-      <p className="title mt-8">Your characters</p>
-
-      <Link href={`/characters/new`} className="primary button mb-4">
-        Create
-      </Link>
+      <div className="flex justify-between items-center">
+        <span className="title">Your characters</span>
+        <Link href={`/characters/new`} className="primary button mb-4">
+          <Plus />
+        </Link>
+      </div>
 
       <div className="flex flex-wrap justify-around m-5">
         {result.success

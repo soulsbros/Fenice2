@@ -18,6 +18,7 @@ export default function Textfield({
   return (
     <div className="inline-block">
       {placeholder}
+      {required ? "*" : null}
       <br />
       <input
         className="p-2 m-2"
