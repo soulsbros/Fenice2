@@ -11,7 +11,7 @@ interface CharacterInfoProps {
 
 function CharacterAttribute(key: string, value: string | ReactElement) {
   return (
-    <div className="flex mb-2">
+    <div className="flex mb-4">
       <div className="font-extrabold flex-1">{key}</div>
       <div className="flex-[2]">{value || `Unknown ${key}`}</div>
     </div>
