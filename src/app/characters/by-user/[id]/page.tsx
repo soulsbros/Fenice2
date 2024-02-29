@@ -1,15 +1,16 @@
 import { getCharacters } from "@/actions/characters";
 import CharacterCard from "@/components/characterCard";
+import { decrypt } from "@/lib/mongo";
 import { Character } from "@/types/API";
 import { notFound } from "next/navigation";
 
 export default async function CharacterPage({
   params,
 }: Readonly<{
-  params: { email: string };
+  params: { id: string };
 }>) {
-  let { email } = params;
-  const parsedEmail = decodeURIComponent(email);
+  let { id } = params;
+  const parsedEmail = decrypt(id);
   const result = await getCharacters(undefined, { playerEmail: parsedEmail });
 
   if (result.data.length === 0) {

@@ -148,3 +148,19 @@ export async function deleteDoc(
     };
   }
 }
+
+// just to avoid having clear emails in links
+
+const crypto = require("crypto");
+const algorithm = "aes256";
+const key = process.env.CRYPTO_SECRET ?? "";
+
+export function encrypt(text: string) {
+  const cipher = crypto.createCipher(algorithm, key);
+  return cipher.update(text, "utf8", "hex") + cipher.final("hex");
+}
+
+export function decrypt(text: string) {
+  const decipher = crypto.createDecipher(algorithm, key);
+  return decipher.update(text, "hex", "utf8") + decipher.final("utf8");
+}

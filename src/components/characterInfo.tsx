@@ -1,5 +1,5 @@
 import defaultUser from "@/img/defaultUser.png";
-import { getWithFilter } from "@/lib/mongo";
+import { encrypt, getWithFilter } from "@/lib/mongo";
 import { Character } from "@/types/API";
 import Link from "next/link";
 import { ReactElement } from "react";
@@ -48,7 +48,7 @@ export default async function CharacterInfo({
         {CharacterAttribute(
           "Player",
           <Link
-            href={`/characters/by-user/${character.playerEmail}`}
+            href={`/characters/by-user/${encrypt(character.playerEmail)}`}
             className="hover:underline"
           >
             {character.player}
