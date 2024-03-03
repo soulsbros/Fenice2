@@ -1,6 +1,6 @@
 import contactLogo from "@/img/icon_contact.png";
 import githubLogo from "@/img/icon_github.png";
-import { editions } from "@/lib/skills";
+import { defaultEdition } from "@/lib/skills";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -34,12 +34,16 @@ export default function Sidebar() {
         <SidebarLink name="DA Itinerary" path="/itinerary" icon={<MapPin />} />
         <SidebarLink
           name="Documents"
-          path={`/documents/${editions[2].id}`}
+          path={`/documents/${defaultEdition}`}
           icon={<File />}
         />
         <SidebarLink name="Golarion map" path="/map" icon={<Map />} />
         <SidebarLink name="Initiative" path="/initiative" icon={<List />} />
-        <SidebarLink name="Skills" path="/skills/pf2" icon={<Zap />} />
+        <SidebarLink
+          name="Skills"
+          path={`/skills/${defaultEdition}`}
+          icon={<Zap />}
+        />
         {/* <SidebarLink name="Table" path="/table" icon={<Grid />} /> */}
         <SidebarLink
           name="Old site &#x2197;"

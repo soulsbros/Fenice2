@@ -1,7 +1,7 @@
 import { ObjectId } from "mongodb";
 
 export interface Character {
-  _id?: ObjectId;
+  _id: ObjectId;
   characterId?: number; // legacy ID
   campaignId: ObjectId;
   player: string;
@@ -25,7 +25,7 @@ export interface Character {
 }
 
 export interface Campaign {
-  _id?: ObjectId;
+  _id: ObjectId;
   campaignId: number;
   name: string;
   type: string;

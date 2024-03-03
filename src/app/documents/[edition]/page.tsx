@@ -1,5 +1,5 @@
 import Card from "@/components/card";
-import EditionChanger from "@/components/editionChanger";
+import Select from "@/components/select";
 import { editions } from "@/lib/skills";
 import { Document } from "@/types/API";
 
@@ -20,12 +20,19 @@ export default async function DocumentsEdition({
     <>
       <div className="title">Documents {editionString}</div>
 
-      <EditionChanger currentEdition={edition} type="documents" />
+      <Select
+        placeholder="Edition"
+        options={editions.map((edition) => {
+          return { name: edition.name, value: edition.id };
+        })}
+        redirectPath="/documents"
+        selectedItem={edition}
+      />
 
       {docs.length == 0 ? (
         "No documents found"
       ) : (
-        <div className="flex flex-wrap justify-center sm:justify-between">
+        <div className="flex flex-wrap justify-center sm:justify-between mt-4">
           {docs.map((doc: Document) => (
             <Card
               links={[{ text: "Read", url: doc.url }]}

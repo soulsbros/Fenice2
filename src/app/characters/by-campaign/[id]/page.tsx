@@ -1,7 +1,7 @@
 import { getCampaigns, getCharacters } from "@/actions/characters";
 import CharacterCard from "@/components/characterCard";
 import Select from "@/components/select";
-import { Character } from "@/types/API";
+import { Campaign, Character } from "@/types/API";
 import { ObjectId } from "mongodb";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -30,8 +30,8 @@ export default async function CharacterPage({
   );
 
   const campaigns = await getCampaigns();
-  const campaign = campaigns.data.filter(
-    (campaign) => campaign._id === parsedId
+  const campaign = campaigns.data.filter((campaign: Campaign) =>
+    parsedId.equals(campaign._id)
   );
   if (campaign.length === 0) {
     notFound();
@@ -40,7 +40,7 @@ export default async function CharacterPage({
   return (
     <>
       <div className="flex justify-between items-center">
-        <span className="title">{campaign[0].name}</span>
+        <span className="title">Characters</span>
         <Link
           href={`/characters/new?c=${campaign[0]._id}`}
           className="primary button mb-4"
@@ -49,7 +49,14 @@ export default async function CharacterPage({
         </Link>
       </div>
 
-      <Select placeholder="Campaign" options={campaigns.data} />
+      <Select
+        placeholder="Campaign"
+        redirectPath="/characters/by-campaign"
+        selectedItem={parsedId.toString()}
+        options={campaigns.data.reverse().map((el) => {
+          return { name: el.name, value: el._id.toString() };
+        })}
+      />
 
       <div className="flex flex-wrap justify-around mt-2">
         {result.success

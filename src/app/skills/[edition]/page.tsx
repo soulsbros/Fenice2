@@ -1,5 +1,5 @@
 import { SubtextButton } from "@/components/button";
-import EditionChanger from "@/components/editionChanger";
+import Select from "@/components/select";
 import { editions } from "@/lib/skills";
 
 export default function SkillsEdition({
@@ -17,9 +17,16 @@ export default function SkillsEdition({
     <>
       <p className="title">Skills {editionData.name}</p>
 
-      <EditionChanger currentEdition={edition} type="skills" />
+      <Select
+        placeholder="Edition"
+        options={editions.map((edition) => {
+          return { name: edition.name, value: edition.id };
+        })}
+        redirectPath="/skills"
+        selectedItem={edition}
+      />
 
-      <div className="flex flex-wrap justify-center sm:justify-between">
+      <div className="flex flex-wrap justify-center sm:justify-between mt-4">
         {editionData.skills.map((skill) => (
           <SubtextButton
             url={`/skills/${editionData.id}/${skill.name}`}

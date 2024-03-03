@@ -27,6 +27,8 @@ export const getWikiURL = (skillName: string, edition: string) => {
   }
 };
 
+export const defaultEdition = "pf2";
+
 export const editions: Edition[] = [
   {
     id: "DnD3.5",
