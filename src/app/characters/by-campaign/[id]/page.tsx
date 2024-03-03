@@ -1,5 +1,6 @@
 import { getCampaigns, getCharacters } from "@/actions/characters";
 import CharacterCard from "@/components/characterCard";
+import Select from "@/components/select";
 import { Character } from "@/types/API";
 import { ObjectId } from "mongodb";
 import Link from "next/link";
@@ -12,7 +13,7 @@ export default async function CharacterPage({
   params: { id: string };
 }>) {
   let { id } = params;
-  let parsedId;
+  let parsedId: ObjectId;
   try {
     parsedId = new ObjectId(id);
   } catch (err) {
@@ -28,24 +29,29 @@ export default async function CharacterPage({
     { campaignId: parsedId }
   );
 
-  const campaign = await getCampaigns(undefined, { _id: parsedId });
-  if (campaign.data.length === 0) {
+  const campaigns = await getCampaigns();
+  const campaign = campaigns.data.filter(
+    (campaign) => campaign._id === parsedId
+  );
+  if (campaign.length === 0) {
     notFound();
   }
 
   return (
     <>
       <div className="flex justify-between items-center">
-        <span className="title">{campaign.data[0].name}</span>
+        <span className="title">{campaign[0].name}</span>
         <Link
-          href={`/characters/new?c=${campaign.data[0]._id}`}
+          href={`/characters/new?c=${campaign[0]._id}`}
           className="primary button mb-4"
         >
           <Plus />
         </Link>
       </div>
 
-      <div className="flex flex-wrap justify-around">
+      <Select placeholder="Campaign" options={campaigns.data} />
+
+      <div className="flex flex-wrap justify-around mt-2">
         {result.success
           ? result?.data.map((character: Character) => (
               <CharacterCard
