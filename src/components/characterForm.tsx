@@ -119,7 +119,7 @@ export default function CharacterForm({
             placeholder="Campaign"
             name="campaignId"
             options={campaigns.map((campaign) => {
-              return { name: campaign.name, value: campaign._id?.toString() };
+              return { name: campaign.name, value: campaign._id!.toString() };
             })}
             required
             selectedItem={previousData?.campaignId.toString() ?? campaignParam}
