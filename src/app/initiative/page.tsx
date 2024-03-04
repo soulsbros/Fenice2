@@ -73,6 +73,16 @@ export default function Initiative() {
       return;
     }
 
+    if (!name.value || !score.value) {
+      Swal.fire({
+        title: "Invalid input",
+        text: "Name or initiative value are missing",
+        icon: "error",
+      });
+      console.error("Invalid input", name.value, score.value);
+      return;
+    }
+
     if (order.find((character) => character.score == parsedScore)) {
       const oldIndex = order.findIndex(
         (character) => character.score == parsedScore
@@ -89,29 +99,26 @@ export default function Initiative() {
         allowEnterKey: false,
         allowEscapeKey: false,
       });
+
+      let modifier: number;
       if (result.isConfirmed) {
         // the new one goes first -> put them higher
-        // take the midpoint between the conflicting and its previous one
-        parsedScore =
-          order[oldIndex].score +
-          (order[oldIndex - 1]?.score || 99 - order[oldIndex].score) / 2;
+        modifier = 0.01;
       } else {
         // the already present one goes first -> put the new one lower
-        // take the midpoint between the conflicting and its next one
-        parsedScore =
-          order[oldIndex].score -
-          (order[oldIndex].score - order[oldIndex + 1]?.score || 1) / 2;
+        modifier = -0.01;
       }
-    }
 
-    if (!name.value || !score.value) {
-      Swal.fire({
-        title: "Invalid input",
-        text: "Name or initiative value are missing",
-        icon: "error",
-      });
-      console.error("Invalid input", name.value, score.value);
-      return;
+      // increase or decrease modifier until they have a unique value
+      while (
+        order.findIndex(
+          (character) => character.score == parsedScore + modifier
+        ) !== -1
+      ) {
+        modifier += modifier;
+      }
+
+      parsedScore = order[oldIndex].score + modifier;
     }
 
     const newOrder = [
