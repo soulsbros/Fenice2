@@ -49,7 +49,7 @@ export default function RootLayout({
               src={icon}
               width={32}
               alt="Image of a dice"
-              className="mr-2"
+              className="mx-2"
             />
             La Compagnia della Fenice
           </div>

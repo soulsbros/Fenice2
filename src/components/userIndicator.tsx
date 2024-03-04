@@ -13,22 +13,19 @@ export default async function UserIndicator() {
     .digest("hex");
 
   return (
-    <div className="flex items-center space-x-2">
-      <Link
-        href={session ? "/profile" : "/api/auth/signin"}
-        className="flex items-center"
-      >
-        <span className="mr-2">
-          {session ? session?.user?.name?.split(" ")[0] : "Login"}
-        </span>
-        <ImageWithFallback
-          src={`https://gravatar.com/avatar/${hash}?s=200`}
-          fallbackSrc={defaultImage}
-          width={40}
-          height={40}
-          alt={`Profile picture of ${session?.user?.name}`}
-        />
-      </Link>
-    </div>
+    <Link
+      href={session ? "/profile" : "/api/auth/signin"}
+      className="flex items-center"
+    >
+      <span>{session ? session?.user?.name?.split(" ")[0] : "Login"}</span>
+      <ImageWithFallback
+        src={`https://gravatar.com/avatar/${hash}?s=200`}
+        fallbackSrc={defaultImage}
+        width={40}
+        height={40}
+        alt={`Profile picture of ${session?.user?.name}`}
+        className="mx-2"
+      />
+    </Link>
   );
 }
