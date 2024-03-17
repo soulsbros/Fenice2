@@ -424,6 +424,10 @@ export default function Initiative() {
       console.info("Received update");
       save(data, false);
     });
+
+    socket.on("reload", () => {
+      location.reload();
+    });
   };
 
   const handleVisibilityChange = () => {
@@ -452,6 +456,11 @@ export default function Initiative() {
     } catch (err) {
       console.error("Cannot acquire Wake Lock", err);
     }
+  };
+
+  const forceReload = () => {
+    socket.emit("force-refresh");
+    location.reload();
   };
 
   useEffect(() => {
@@ -550,6 +559,11 @@ export default function Initiative() {
               <div>
                 <Button label="Load" icon={<Upload />} onClick={loadOrder} />
                 <Button label="Save" icon={<Save />} onClick={saveOrder} />
+                <Button
+                  label="Reload"
+                  icon={<RefreshCw />}
+                  onClick={forceReload}
+                />
               </div>
             </>
           ) : null}

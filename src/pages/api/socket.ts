@@ -19,6 +19,11 @@ export default function SocketHandler(req: Request, res: any) {
         initiativeData = data;
         socket.broadcast.emit("update-characters", data);
       });
+
+      socket.on("force-refresh", () => {
+        console.info(`Force refresh from ${socket.id}`);
+        socket.broadcast.emit("reload");
+      });
     });
   }
   res.end();
