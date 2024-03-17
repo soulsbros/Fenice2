@@ -35,3 +35,32 @@ export function getHealthDescription(character: Character) {
     return { text: "Near death", color: "text-red-800" };
   }
 }
+
+// name, init value, current hp, total hp[, enemy]
+export function parseBlock(inputText: string, player: string) {
+  const players: Character[] = [];
+  for (let line of inputText.split("\n")) {
+    // ignore comments
+    if (line.startsWith("#") || line.startsWith("/")) {
+      continue;
+    }
+
+    const values = line.split(",");
+    if (values.length < 2 || Number.isNaN(Number.parseFloat(values[1]))) {
+      console.error(`Invalid input: ${line}`);
+      continue;
+    }
+    players.push({
+      name: values[0],
+      score: Number.parseFloat(values[1]),
+      currentHealth: Number.parseInt(values[2]) || 0,
+      totalHealth: Number.parseInt(values[3]) || 0,
+      active: false,
+      isPlayer: false,
+      isEnemy: values.length > 4 && values[4].toLowerCase() === "true",
+      player: player,
+      notes: "",
+    });
+  }
+  return players;
+}

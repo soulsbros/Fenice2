@@ -3,7 +3,11 @@
 import { loadInitiative, saveInitiative } from "@/actions/initiative";
 import Button from "@/components/button";
 import Textfield from "@/components/textfield";
-import { advanceCharacter, getHealthDescription } from "@/lib/initiative";
+import {
+  advanceCharacter,
+  getHealthDescription,
+  parseBlock,
+} from "@/lib/initiative";
 import { Character, GameData } from "@/types/Initiative";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -14,6 +18,7 @@ import {
   Edit,
   FastForward,
   Heart,
+  Loader,
   Play,
   Plus,
   RefreshCw,
@@ -463,6 +468,24 @@ export default function Initiative() {
     location.reload();
   };
 
+  const bulkAdd = async () => {
+    const { value: text } = await Swal.fire({
+      input: "textarea",
+      inputLabel:
+        "Bulk add characters\nFormat: name, initiative, current hp, total hp[, enemy]",
+      inputPlaceholder: "Zombie,20,190,210,true\nLaura,25,150,150",
+      showCancelButton: true,
+      reverseButtons: true,
+    });
+    if (!text) {
+      return;
+    }
+
+    const parsedText = parseBlock(text, session.data?.user.email!);
+    const newOrder = [...order, ...parsedText].toSorted(comparator);
+    save({ order: newOrder, turn: turn });
+  };
+
   useEffect(() => {
     initializeSocket();
     requestWakeLock();
@@ -547,6 +570,7 @@ export default function Initiative() {
             <>
               <p className="subtitle">DM controls</p>
               <div>
+                <Button label="Bulk add" icon={<Plus />} onClick={bulkAdd} />
                 <Button label="Clear" icon={<Trash2 />} onClick={clear} />
                 {isCombatOngoing ? (
                   <Button
@@ -560,8 +584,8 @@ export default function Initiative() {
                 <Button label="Load" icon={<Upload />} onClick={loadOrder} />
                 <Button label="Save" icon={<Save />} onClick={saveOrder} />
                 <Button
-                  label="Reload"
-                  icon={<RefreshCw />}
+                  label="Resync"
+                  icon={<Loader />}
                   onClick={forceReload}
                 />
               </div>
