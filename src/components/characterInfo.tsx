@@ -13,7 +13,7 @@ function CharacterAttribute(key: string, value: string | ReactElement) {
   return (
     <div className="flex mb-4">
       <div className="font-extrabold flex-1">{key}</div>
-      <div className="flex-[2] m-auto">{value || `Unknown ${key}`}</div>
+      <div className="flex-[2] m-auto">{value || "Unknown"}</div>
     </div>
   );
 }
@@ -68,11 +68,11 @@ export default async function CharacterInfo({
         {CharacterAttribute("Alignment", character.actualAlignment)}
         {CharacterAttribute(
           "Gender and pronouns",
-          `${character.genre}, ${character.pronouns}`
+          `${character.genre}${character.pronouns ? ", " : ""}${character.pronouns}`
         )}
         {CharacterAttribute("Sexual orientation", character.orientation)}
-        {CharacterAttribute("Personality", character.personality || "-")}
-        {CharacterAttribute("Backstory", character.backstory || "-")}
+        {CharacterAttribute("Personality", character.personality)}
+        {CharacterAttribute("Backstory", character.backstory)}
       </div>
     </div>
   );

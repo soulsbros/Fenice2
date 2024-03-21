@@ -355,6 +355,7 @@ export const itineraryPoints = [
     [60.780618803458935, 3.90597742900046],
     markers[23].position, // krygandom
     markers[22].position, // algamat
+    markers[18].position, // surana mansion
   ],
 ];
 

@@ -6,6 +6,7 @@ export default function GeneralLoading() {
     <div className="flex items-center">
       <Image
         src={loading}
+        unoptimized
         alt="Loading animation"
         width={60}
         className="mr-2"
