@@ -9,7 +9,6 @@ import {
   Home,
   List,
   Map,
-  MapPin,
   SkipBack,
   Users,
   Zap,
@@ -31,14 +30,13 @@ export default function Sidebar() {
         /> */}
         <SidebarLink name="Calendar" path="/calendar" icon={<Calendar />} />
         <SidebarLink name="Characters" path="/characters" icon={<Users />} />
-        <SidebarLink name="DA Itinerary" path="/itinerary" icon={<MapPin />} />
         <SidebarLink
           name="Documents"
           path={`/documents/${defaultEdition}`}
           icon={<File />}
         />
-        <SidebarLink name="Golarion map" path="/map" icon={<Map />} />
         <SidebarLink name="Initiative" path="/initiative" icon={<List />} />
+        <SidebarLink name="Map" path="/map" icon={<Map />} />
         <SidebarLink
           name="Skills"
           path={`/skills/${defaultEdition}`}
