@@ -1,6 +1,6 @@
 import { itineraryPoints, markers, teleportPoints } from "@/lib/mapLocations";
 import { LinesList, MapLocation } from "@/types/Map";
-import { LatLngBoundsExpression, LatLngTuple } from "leaflet";
+import { LatLngTuple } from "leaflet";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -46,20 +46,15 @@ export default async function SingleMapPage({
   if (params.map == "brightAge") {
     const layers = [
       {
-        url: "https://lafenice.soulsbros.ch/img/mappe/The%20Bright%20Age%20-%20Vegras'%20Archipelago.jpg",
+        url: "https://lafenice.soulsbros.ch/img/mappe/tiles2/{z}/tile_{x}_{y}.jpg",
         attribution: "Map data &copy; Sasha Toscano",
-        image: true,
-        bounds: [
-          [8192, 0],
-          [0, 6144],
-        ] as LatLngBoundsExpression,
       },
     ];
 
     return (
       <>
         <MapButtons map={params.map} />
-        <LeafletMap position={[4096, 3072]} zoom={5} layers={layers} />
+        <LeafletMap position={[4096, 3072]} zoom={2} layers={layers} />
       </>
     );
   }
