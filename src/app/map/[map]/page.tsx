@@ -1,10 +1,13 @@
 import { itineraryPoints, markers, teleportPoints } from "@/lib/mapLocations";
 import { LinesList, MapLocation } from "@/types/Map";
-import { LatLngTuple } from "leaflet";
+import { LatLngBoundsExpression, LatLngTuple } from "leaflet";
 import dynamic from "next/dynamic";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+
+const LeafletMap = dynamic(() => import("@/components/leafletMap"), {
+  ssr: false,
+});
 
 interface MapButtonsProps {
   map: string;
@@ -41,32 +44,44 @@ export default async function SingleMapPage({
   params: { map: string };
 }>) {
   if (params.map == "brightAge") {
+    const layers = [
+      {
+        url: "https://lafenice.soulsbros.ch/img/mappe/The%20Bright%20Age%20-%20Vegras'%20Archipelago.jpg",
+        attribution: "Map data &copy; Sasha Toscano",
+        image: true,
+        bounds: [
+          [8192, 0],
+          [0, 6144],
+        ] as LatLngBoundsExpression,
+      },
+    ];
+
     return (
       <>
         <MapButtons map={params.map} />
-        <Image
-          src="https://lafenice.soulsbros.ch/img/mappe/The%20Bright%20Age%20-%20Vegras'%20Archipelago.jpg"
-          alt="Map"
-          width={0}
-          height={0}
-          sizes="100vw"
-          style={{ width: "100%", height: "auto" }}
-        />
+        <LeafletMap position={[4096, 3072]} zoom={5} layers={layers} />
       </>
     );
   }
 
   if (params.map == "darkAge") {
-    const LeafletMap = dynamic(() => import("@/components/leafletMap"), {
-      ssr: false,
-    });
-
     const lines: LinesList[] = [
       {
         points: itineraryPoints as LatLngTuple[][],
         options: { color: "blue" },
       },
       { points: teleportPoints as LatLngTuple[][], options: { color: "red" } },
+    ];
+
+    const layers = [
+      {
+        url: "https://oznogon.com/golarion-tile/tiles/{z}/{x}/{y}",
+        attribution:
+          'Map data &copy; <a href="https://www.dungeonetics.com/golarion-geography">John Mechalas</a>, <a href="https://paizo.com/community/communityuse">Paizo CUP</a>',
+      },
+      {
+        url: "https://oznogon.com/golarion-tile/tiles-relief/{z}/{x}/{y}",
+      },
     ];
 
     return (
@@ -77,6 +92,7 @@ export default async function SingleMapPage({
           zoom={5}
           markers={markers as MapLocation[]}
           lines={lines}
+          layers={layers}
         />
       </>
     );

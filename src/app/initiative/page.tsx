@@ -141,11 +141,29 @@ export default function InitiativePage() {
       },
     ].toSorted(comparator);
 
-    name.value = "";
+    if (
+      (document.querySelector("#newCharacterPersist") as HTMLInputElement)
+        .checked
+    ) {
+      if (/\d/.test(name.value)) {
+        const digit = RegExp(/\d+/).exec(name.value);
+        if (digit != null && !name.value.includes("-")) {
+          name.value = name.value.replace(
+            digit[0],
+            (Number.parseInt(digit[0]) + 1).toString()
+          );
+        }
+      } else {
+        name.value += " 1";
+      }
+    } else {
+      name.value = "";
+      currentHealth.value = "";
+      totalHealth.value = "";
+      notes.value = "";
+    }
     score.value = "";
-    currentHealth.value = "";
-    totalHealth.value = "";
-    notes.value = "";
+
     save({ order: newOrder, turn: turn });
     setIsEditing(false);
   };
@@ -472,7 +490,7 @@ export default function InitiativePage() {
     const { value: text } = await Swal.fire({
       input: "textarea",
       inputLabel:
-        "Bulk add characters\nFormat: name, initiative, current hp, total hp[, enemy]",
+        "Bulk add characters\nFormat: name, initiative, current hp, total hp[, enemy]\nNames MUST be unique!",
       inputPlaceholder: "Zombie,20,190,210,true\nLaura,25,150,150",
       showCancelButton: true,
       reverseButtons: true,
@@ -482,6 +500,14 @@ export default function InitiativePage() {
     }
 
     const parsedText = parseBlock(text, session.data?.user.email!);
+
+    // validate that there are no duplicate names
+    for (let character of parsedText) {
+      if (order.find((char) => char.name === character.name)) {
+        console.error(`Duplicated entry: ${character.name}`);
+        return;
+      }
+    }
     const newOrder = [...order, ...parsedText].toSorted(comparator);
     save({ order: newOrder, turn: turn });
   };
@@ -546,9 +572,16 @@ export default function InitiativePage() {
             />
             <Textfield id="newCharacterNotes" placeholder="Notes" type="text" />
             <div className="text-center">
-              <label className="mx-2">
-                <input type="checkbox" id="newCharacterEnemy" /> Enemy
-              </label>
+              {isDM ? (
+                <>
+                  <label className="mx-2">
+                    <input type="checkbox" id="newCharacterEnemy" /> Enemy
+                  </label>
+                  <label className="mx-2">
+                    <input type="checkbox" id="newCharacterPersist" /> Persist
+                  </label>
+                </>
+              ) : null}
               <Button
                 label={isEditing ? "Update" : "Add"}
                 icon={isEditing ? <Check /> : <Plus />}
@@ -561,7 +594,7 @@ export default function InitiativePage() {
             <Button
               label={isCombatOngoing ? "Next" : "Start"}
               icon={isCombatOngoing ? <FastForward /> : <Play />}
-              disabled={order.length === 0}
+              disabled={order.length === 0 || (!isDM && !isCombatOngoing)}
               onClick={next}
             />
           </div>

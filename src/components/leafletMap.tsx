@@ -1,11 +1,12 @@
 "use client";
 
 import { LinesList, MapLocation } from "@/types/Map";
-import { Icon } from "leaflet";
+import { Icon, LatLngBoundsExpression } from "leaflet";
 import "leaflet-defaulticon-compatibility";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet/dist/leaflet.css";
 import {
+  ImageOverlay,
   MapContainer,
   Marker,
   Polyline,
@@ -14,9 +15,17 @@ import {
   useMapEvents,
 } from "react-leaflet";
 
+interface LeafletLayers {
+  url: string;
+  attribution?: string;
+  image?: boolean;
+  bounds?: LatLngBoundsExpression;
+}
+
 interface LeafletMapProps {
   position: [number, number];
   zoom: number;
+  layers: LeafletLayers[];
   markers?: MapLocation[];
   lines?: LinesList[];
 }
@@ -24,6 +33,7 @@ interface LeafletMapProps {
 export default function LeafletMap({
   position,
   zoom,
+  layers,
   markers = [],
   lines = [],
 }: Readonly<LeafletMapProps>) {
@@ -74,17 +84,27 @@ export default function LeafletMap({
 
   return (
     <MapContainer center={position} zoom={zoom} className="h-full">
-      <TileLayer
-        attribution='Map data &copy; <a href="https://www.dungeonetics.com/golarion-geography">John Mechalas</a>, <a href="https://paizo.com/community/communityuse">Paizo CUP</a>'
-        url="https://oznogon.com/golarion-tile/tiles/{z}/{x}/{y}"
-        {...mapOptions}
-      />
-      <TileLayer
-        url="https://oznogon.com/golarion-tile/tiles-relief/{z}/{x}/{y}"
-        {...mapOptions}
-        opacity={0.4}
-        maxNativeZoom={6}
-      />
+      {layers.map((layer) => {
+        if (layer.image) {
+          return (
+            <ImageOverlay
+              url={layer.url}
+              key={layer.url}
+              crossOrigin="anonymous"
+              bounds={layer.bounds!}
+            />
+          );
+        } else {
+          return (
+            <TileLayer
+              attribution={layer.attribution}
+              url={layer.url}
+              key={layer.url}
+              {...mapOptions}
+            />
+          );
+        }
+      })}
       {markersList}
       {linesList}
       <MapPositionLogger />
