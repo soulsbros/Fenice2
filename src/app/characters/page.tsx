@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCampaigns } from "../../actions/characters";
 
-export default async function Characters() {
+export default async function CharactersRootPage() {
   const result = await getCampaigns();
   const campaign = result?.data.reverse()[0];
 

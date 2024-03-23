@@ -7,7 +7,7 @@ import { ObjectId } from "mongodb";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 
-export default async function CharacterPage({
+export default async function SingleCharacterPage({
   params,
 }: Readonly<{
   params: { id: string };

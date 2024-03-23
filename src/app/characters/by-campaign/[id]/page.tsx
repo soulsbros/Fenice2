@@ -7,7 +7,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Plus } from "react-feather";
 
-export default async function CharacterPage({
+export default async function CampaignCharactersPage({
   params,
 }: Readonly<{
   params: { id: string };

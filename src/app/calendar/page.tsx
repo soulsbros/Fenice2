@@ -6,7 +6,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 
-export default function Calendar() {
+export default function CalendarPage() {
   function renderEventContent(eventInfo: any) {
     return (
       <>

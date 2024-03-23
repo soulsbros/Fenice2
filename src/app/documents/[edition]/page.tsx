@@ -3,7 +3,7 @@ import Select from "@/components/select";
 import { editions } from "@/lib/skills";
 import { Document } from "@/types/API";
 
-export default async function DocumentsEdition({
+export default async function DocumentsPage({
   params,
 }: Readonly<{
   params: { edition: string };

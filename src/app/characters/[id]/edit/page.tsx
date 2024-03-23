@@ -5,7 +5,7 @@ import { Character } from "@/types/API";
 import { ObjectId } from "mongodb";
 import { getServerSession } from "next-auth";
 
-export default async function EditCharacter({
+export default async function EditCharacterPage({
   params,
 }: Readonly<{
   params: { id: string };

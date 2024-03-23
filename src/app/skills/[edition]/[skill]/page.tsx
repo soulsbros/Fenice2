@@ -1,7 +1,7 @@
 import { findSkill, getWikiURL } from "@/lib/skills";
 import { AlertTriangle, Book } from "react-feather";
 
-export default function Skill({
+export default function SingleSkillPage({
   params,
 }: Readonly<{
   params: { skill: string; edition: string };

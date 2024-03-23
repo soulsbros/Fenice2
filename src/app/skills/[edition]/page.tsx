@@ -2,7 +2,7 @@ import { SubtextButton } from "@/components/button";
 import Select from "@/components/select";
 import { editions } from "@/lib/skills";
 
-export default function SkillsEdition({
+export default function SkillsPage({
   params,
 }: Readonly<{
   params: { edition: string };

@@ -4,7 +4,7 @@ import { decrypt } from "@/lib/mongo";
 import { Character } from "@/types/API";
 import { notFound } from "next/navigation";
 
-export default async function CharacterPage({
+export default async function UserCharactersPage({
   params,
 }: Readonly<{
   params: { id: string };

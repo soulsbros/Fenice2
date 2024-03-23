@@ -31,7 +31,7 @@ import Swal from "sweetalert2";
 
 let socket: any;
 
-export default function Initiative() {
+export default function InitiativePage() {
   const session = useSession();
   const [order, setOrder] = useState<Character[]>([]);
   const [turn, setTurn] = useState(1);

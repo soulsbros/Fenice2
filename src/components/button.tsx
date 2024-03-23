@@ -57,6 +57,6 @@ export function SubtextButton({
   );
 }
 
-export const LogoutButton = () => {
+export function LogoutButton() {
   return <Button onClick={signOut} label="Logout" />;
-};
+}

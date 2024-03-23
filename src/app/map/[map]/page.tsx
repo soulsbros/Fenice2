@@ -35,7 +35,7 @@ const MapButtons = ({ map }: MapButtonsProps) => {
   );
 };
 
-export default async function MapPage({
+export default async function SingleMapPage({
   params,
 }: Readonly<{
   params: { map: string };

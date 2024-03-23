@@ -10,7 +10,7 @@ import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { Plus } from "react-feather";
 
-export default async function Profile() {
+export default async function ProfilePage() {
   const session = await getServerSession(authOptions);
   const user = session?.user;
   const issuer = process.env.KEYCLOAK_ISSUER ?? "";
