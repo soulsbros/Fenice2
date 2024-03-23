@@ -5,8 +5,9 @@ import {
   insertCharacter,
   updateCharacter,
 } from "@/actions/characters";
+import { insertNpc, updateNpc } from "@/actions/npcs";
 import { alignments } from "@/lib/alignment";
-import { Campaign, Character } from "@/types/API";
+import { Campaign, Character, NPC } from "@/types/API";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
@@ -14,7 +15,8 @@ import Select from "./select";
 import Textfield from "./textfield";
 
 interface CharacterFormProps {
-  previousData?: Character;
+  previousData?: Character | NPC;
+  isNpc?: boolean;
 }
 
 const initialState = {
@@ -37,9 +39,12 @@ function SubmitButton({ previousData }: Readonly<CharacterFormProps>) {
 
 export default function CharacterForm({
   previousData,
+  isNpc = false,
 }: Readonly<CharacterFormProps>) {
+  const updateAction = isNpc ? updateNpc : updateCharacter;
+  const insertAction = isNpc ? insertNpc : insertCharacter;
   const [state, formAction] = useFormState(
-    previousData ? updateCharacter : insertCharacter,
+    previousData ? updateAction : insertAction,
     initialState
   );
 
@@ -127,7 +132,7 @@ export default function CharacterForm({
         )}
 
         <div className="inline-block ml-6">
-          Character image
+          Image
           <br />
           <input type="file" name="image" />
         </div>

@@ -2,6 +2,7 @@
 
 import { deleteCharacter } from "@/actions/characters";
 
+import { deleteNpc } from "@/actions/npcs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Edit, Trash2 } from "react-feather";
@@ -11,17 +12,19 @@ import Button from "./button";
 interface CharacterButtonsProps {
   id: string;
   name: string;
+  isNpc?: boolean;
 }
 
 export default function CharacterButtons({
   id,
   name,
+  isNpc = false,
 }: Readonly<CharacterButtonsProps>) {
   const router = useRouter();
 
   async function handleDelete() {
     Swal.fire({
-      title: "Delete character?",
+      title: `Delete ${isNpc ? "NPC" : "character"}?`,
       text: `Do you really want to delete ${name}? This operation is irreversible!`,
       icon: "warning",
       reverseButtons: true,
@@ -29,15 +32,23 @@ export default function CharacterButtons({
       confirmButtonText: "Delete",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        await deleteCharacter(id);
-        router.push("/characters");
+        if (isNpc) {
+          await deleteNpc(id);
+          router.push("/npcs");
+        } else {
+          await deleteCharacter(id);
+          router.push("/characters");
+        }
       }
     });
   }
 
   return (
     <div className="text-right">
-      <Link href={`/characters/${id}/edit`} className="primary button mr-2">
+      <Link
+        href={`/${isNpc ? "npcs" : "characters"}/${id}/edit`}
+        className="primary button mr-2"
+      >
         <Edit />
       </Link>
       <Button onClick={handleDelete} icon={<Trash2 />} />

@@ -1,13 +1,14 @@
-import { getCampaigns, getCharacters } from "@/actions/characters";
-import CharacterCard from "@/components/characterCard";
+import { getCampaigns } from "@/actions/characters";
+import { getNpcs } from "@/actions/npcs";
+import NpcCard from "@/components/npcCard";
 import Select from "@/components/select";
-import { Campaign, Character } from "@/types/API";
+import { Campaign, NPC } from "@/types/API";
 import { ObjectId } from "mongodb";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Plus } from "react-feather";
 
-export default async function CampaignCharactersPage({
+export default async function CampaignNpcsPage({
   params,
 }: Readonly<{
   params: { id: string };
@@ -21,7 +22,7 @@ export default async function CampaignCharactersPage({
     notFound();
   }
 
-  const result = await getCharacters(
+  const result = await getNpcs(
     {
       field: "name",
       direction: "ASC",
@@ -40,9 +41,9 @@ export default async function CampaignCharactersPage({
   return (
     <>
       <div className="flex justify-between items-center">
-        <span className="title">Characters</span>
+        <span className="title">NPCs</span>
         <Link
-          href={`/characters/new?c=${campaign[0]._id}`}
+          href={`/npcs/new?c=${campaign[0]._id}`}
           className="primary button mb-4"
         >
           <Plus />
@@ -51,7 +52,7 @@ export default async function CampaignCharactersPage({
 
       <Select
         placeholder="Campaign"
-        redirectPath="/characters/by-campaign"
+        redirectPath="/npcs/by-campaign"
         selectedItem={parsedId.toString()}
         options={campaigns.data.reverse().map((el) => {
           return { name: el.name, value: el._id.toString() };
@@ -60,14 +61,11 @@ export default async function CampaignCharactersPage({
 
       <div className="flex flex-wrap justify-around mt-2">
         {result.success
-          ? result?.data.map((character: Character) => (
-              <CharacterCard
-                character={character}
-                key={character._id?.toString()}
-              />
+          ? result?.data.map((npc: NPC) => (
+              <NpcCard npc={npc} key={npc._id?.toString()} />
             ))
           : result.message}
-        {result.data.length == 0 ? "No characters found" : ""}
+        {result.data.length == 0 ? "No NPCs found" : ""}
       </div>
     </>
   );

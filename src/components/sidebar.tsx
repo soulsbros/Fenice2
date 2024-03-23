@@ -37,6 +37,7 @@ export default function Sidebar() {
         />
         <SidebarLink name="Initiative" path="/initiative" icon={<List />} />
         <SidebarLink name="Map" path="/map" icon={<Map />} />
+        <SidebarLink name="NPCs" path="/npcs" icon={<Users />} />
         <SidebarLink
           name="Skills"
           path={`/skills/${defaultEdition}`}

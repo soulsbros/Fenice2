@@ -32,6 +32,7 @@ export default async function UserCharactersPage({
                 />
               ))
           : result.message}
+        {result.data.length == 0 ? "No characters found" : ""}
       </div>
     </>
   );

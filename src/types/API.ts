@@ -25,6 +25,28 @@ export interface Character {
   image: string;
 }
 
+export interface NPC {
+  // ID must be optional for when we save a new one
+  _id?: ObjectId;
+  campaignId: ObjectId;
+  name: string;
+  race: string;
+  genre: string;
+  pronouns: string;
+  orientation: string;
+  class: string;
+  startAlignment: string;
+  actualAlignment: string;
+  actionsHistory: [];
+  lawfulChaoticValue: number;
+  goodEvilValue: number;
+  backstory: string;
+  personality: string;
+  createdAt: Date;
+  updatedAt: Date;
+  image: string;
+}
+
 export interface Campaign {
   _id?: ObjectId;
   campaignId: number;
