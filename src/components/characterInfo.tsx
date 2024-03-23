@@ -68,7 +68,7 @@ export default async function CharacterInfo({
         {CharacterAttribute("Alignment", character.actualAlignment)}
         {CharacterAttribute(
           "Gender and pronouns",
-          `${character.genre}${character.pronouns ? ", " : ""}${character.pronouns}`
+          `${character.gender}${character.pronouns ? ", " : ""}${character.pronouns}`
         )}
         {CharacterAttribute("Sexual orientation", character.orientation)}
         {CharacterAttribute("Personality", character.personality)}

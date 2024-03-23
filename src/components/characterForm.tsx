@@ -78,8 +78,8 @@ export default function CharacterForm({
         />
         <Textfield
           placeholder="Gender"
-          name="genre"
-          value={previousData?.genre}
+          name="gender"
+          value={previousData?.gender}
         />
         <Textfield
           placeholder="Sexual orientation"

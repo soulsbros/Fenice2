@@ -42,7 +42,7 @@ export async function insertNpc(prevState: any, formData: FormData) {
     campaignId: new ObjectId(formData.get("campaignId")?.toString() ?? ""),
     name: formData.get("name")?.toString() ?? "",
     race: formData.get("race")?.toString() ?? "",
-    genre: formData.get("genre")?.toString() ?? "",
+    gender: formData.get("gender")?.toString() ?? "",
     pronouns: formData.get("pronouns")?.toString() ?? "",
     orientation: formData.get("orientation")?.toString() ?? "",
     class: formData.get("class")?.toString() ?? "",
@@ -96,7 +96,7 @@ export async function updateNpc(prevState: any, formData: FormData) {
   npc.name = formData.get("name")?.toString() ?? npc.name;
   npc.pronouns = formData.get("pronouns")?.toString() ?? npc.pronouns;
   npc.orientation = formData.get("orientation")?.toString() ?? npc.orientation;
-  npc.genre = formData.get("genre")?.toString() ?? npc.genre;
+  npc.gender = formData.get("gender")?.toString() ?? npc.gender;
   npc.race = formData.get("race")?.toString() ?? npc.race;
   npc.class = formData.get("class")?.toString() ?? npc.class;
   npc.actualAlignment =

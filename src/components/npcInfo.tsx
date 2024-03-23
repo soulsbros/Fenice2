@@ -52,7 +52,7 @@ export default async function NpcInfo({ npc }: Readonly<NpcInfoProps>) {
         {NpcAttribute("Alignment", npc.actualAlignment)}
         {NpcAttribute(
           "Gender and pronouns",
-          `${npc.genre}${npc.pronouns ? ", " : ""}${npc.pronouns}`
+          `${npc.gender}${npc.pronouns ? ", " : ""}${npc.pronouns}`
         )}
         {NpcAttribute("Sexual orientation", npc.orientation)}
         {NpcAttribute("Personality", npc.personality)}

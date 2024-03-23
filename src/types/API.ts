@@ -9,7 +9,7 @@ export interface Character {
   playerEmail: string;
   name: string;
   race: string;
-  genre: string;
+  gender: string;
   pronouns: string;
   orientation: string;
   class: string;
@@ -31,7 +31,7 @@ export interface NPC {
   campaignId: ObjectId;
   name: string;
   race: string;
-  genre: string;
+  gender: string;
   pronouns: string;
   orientation: string;
   class: string;

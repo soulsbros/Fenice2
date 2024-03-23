@@ -51,7 +51,7 @@ export async function insertCharacter(prevState: any, formData: FormData) {
     playerEmail: userData?.user.email ?? "",
     name: formData.get("name")?.toString() ?? "",
     race: formData.get("race")?.toString() ?? "",
-    genre: formData.get("genre")?.toString() ?? "",
+    gender: formData.get("gender")?.toString() ?? "",
     pronouns: formData.get("pronouns")?.toString() ?? "",
     orientation: formData.get("orientation")?.toString() ?? "",
     class: formData.get("class")?.toString() ?? "",
@@ -109,7 +109,7 @@ export async function updateCharacter(prevState: any, formData: FormData) {
   char.pronouns = formData.get("pronouns")?.toString() ?? char.pronouns;
   char.orientation =
     formData.get("orientation")?.toString() ?? char.orientation;
-  char.genre = formData.get("genre")?.toString() ?? char.genre;
+  char.gender = formData.get("gender")?.toString() ?? char.gender;
   char.race = formData.get("race")?.toString() ?? char.race;
   char.class = formData.get("class")?.toString() ?? char.class;
   char.actualAlignment =
