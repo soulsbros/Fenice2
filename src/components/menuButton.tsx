@@ -10,7 +10,11 @@ export default function MenuButton() {
   const pathname = usePathname();
 
   function toggleMenu() {
-    document.querySelector("#menuPanel")?.classList.toggle("hidden");
+    let divs = document.querySelectorAll("main > div");
+
+    divs[0].classList.toggle("hidden");
+    divs[1].classList.toggle("hidden");
+
     setIsMenuClosed(!isMenuClosed);
   }
 
