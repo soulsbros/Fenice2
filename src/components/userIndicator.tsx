@@ -19,7 +19,7 @@ export default async function UserIndicator() {
     >
       <span>{session ? session?.user?.name?.split(" ")[0] : "Login"}</span>
       <ImageWithFallback
-        src={`https://gravatar.com/avatar/${hash}?s=200`}
+        src={`https://gravatar.com/avatar/${hash}?s=200&d=mp`}
         fallbackSrc={defaultImage}
         width={40}
         height={40}
