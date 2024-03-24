@@ -13,8 +13,8 @@ type SidebarLinkProps = {
 
 function closeMenu() {
   let divs = document.querySelectorAll("main > div");
-  divs[0].classList.toggle("hidden");
-  divs[1].classList.toggle("hidden");
+  divs[0].classList.add("hidden");
+  divs[1].classList.remove("hidden");
 }
 
 export default function SidebarLink({
