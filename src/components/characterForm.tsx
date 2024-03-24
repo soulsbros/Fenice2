@@ -71,6 +71,13 @@ export default function CharacterForm({
           value={previousData?.name}
           required
         />
+        {isNpc ? (
+          <Textfield
+            placeholder="Status"
+            name="status"
+            value={(previousData as NPC)?.status}
+          />
+        ) : null}
         <Textfield
           placeholder="Pronouns"
           name="pronouns"

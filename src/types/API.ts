@@ -1,12 +1,9 @@
 import { ObjectId } from "mongodb";
 
-export interface Character {
+interface BaseCharacter {
   // ID must be optional for when we save a new one
   _id?: ObjectId;
-  characterId?: number; // legacy ID
   campaignId: ObjectId;
-  player: string;
-  playerEmail: string;
   name: string;
   race: string;
   gender: string;
@@ -25,26 +22,14 @@ export interface Character {
   image: string;
 }
 
-export interface NPC {
-  // ID must be optional for when we save a new one
-  _id?: ObjectId;
-  campaignId: ObjectId;
-  name: string;
-  race: string;
-  gender: string;
-  pronouns: string;
-  orientation: string;
-  class: string;
-  startAlignment: string;
-  actualAlignment: string;
-  actionsHistory: [];
-  lawfulChaoticValue: number;
-  goodEvilValue: number;
-  backstory: string;
-  personality: string;
-  createdAt: Date;
-  updatedAt: Date;
-  image: string;
+export interface Character extends BaseCharacter {
+  characterId?: number; // legacy ID
+  player: string;
+  playerEmail: string;
+}
+
+export interface NPC extends BaseCharacter {
+  status: string;
 }
 
 export interface Campaign {

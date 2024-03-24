@@ -3,7 +3,7 @@
 import { getValueFromAlignment } from "@/lib/alignment";
 import { authOptions } from "@/lib/authConfig";
 import { deleteDoc, getWithFilter, insertDocs, updateDoc } from "@/lib/mongo";
-import { Character, NPC } from "@/types/API";
+import { NPC } from "@/types/API";
 import { Document, Filter, ObjectId } from "mongodb";
 import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
@@ -46,6 +46,7 @@ export async function insertNpc(prevState: any, formData: FormData) {
     pronouns: formData.get("pronouns")?.toString() ?? "",
     orientation: formData.get("orientation")?.toString() ?? "",
     class: formData.get("class")?.toString() ?? "",
+    status: formData.get("status")?.toString() ?? "",
     startAlignment: alignment,
     actualAlignment: alignment,
     actionsHistory: [],
@@ -69,7 +70,7 @@ export async function updateNpc(prevState: any, formData: FormData) {
   const oldData = await getNpcs(undefined, {
     _id: id,
   });
-  const npc = oldData.data[0] as Character;
+  const npc = oldData.data[0] as NPC;
 
   if (!oldData.success) {
     return { message: "Error: invalid NPC ID" };
@@ -99,6 +100,7 @@ export async function updateNpc(prevState: any, formData: FormData) {
   npc.gender = formData.get("gender")?.toString() ?? npc.gender;
   npc.race = formData.get("race")?.toString() ?? npc.race;
   npc.class = formData.get("class")?.toString() ?? npc.class;
+  npc.status = formData.get("status")?.toString() ?? npc.status;
   npc.actualAlignment =
     formData.get("alignment")?.toString() ?? npc.actualAlignment;
   npc.backstory = formData.get("backstory")?.toString() ?? npc.backstory;

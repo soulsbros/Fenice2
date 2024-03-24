@@ -47,6 +47,7 @@ export default async function NpcInfo({ npc }: Readonly<NpcInfoProps>) {
             {campaign.name}
           </Link>
         )}
+        {NpcAttribute("Status", npc.status)}
         {NpcAttribute("Class", npc.class)}
         {NpcAttribute("Race", npc.race)}
         {NpcAttribute("Alignment", npc.actualAlignment)}
