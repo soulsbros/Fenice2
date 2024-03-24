@@ -46,8 +46,12 @@ export default async function SingleMapPage({
   if (params.map == "brightAge") {
     const layers = [
       {
-        url: "https://lafenice.soulsbros.ch/img/mappe/brightAge/{z}/tile_{x}_{-y}.jpg",
+        url: "https://lafenice.soulsbros.ch/img/mappe/brightAge/{z}/tile_{x}_{y}.jpg",
         attribution: "Map data &copy; Sasha Toscano",
+        options: {
+          maxZoom: 5,
+          tms: false,
+        },
       },
     ];
 

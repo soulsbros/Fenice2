@@ -20,6 +20,7 @@ interface LeafletLayers {
   attribution?: string;
   image?: boolean;
   bounds?: LatLngBoundsExpression;
+  options?: Object;
 }
 
 interface LeafletMapProps {
@@ -101,6 +102,7 @@ export default function LeafletMap({
               url={layer.url}
               key={layer.url}
               {...mapOptions}
+              {...layer.options}
             />
           );
         }
