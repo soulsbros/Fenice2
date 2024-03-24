@@ -46,7 +46,7 @@ export default async function SingleMapPage({
   if (params.map == "brightAge") {
     const layers = [
       {
-        url: "https://lafenice.soulsbros.ch/img/mappe/tiles2/{z}/tile_{x}_{y}.jpg",
+        url: "https://lafenice.soulsbros.ch/img/mappe/brightAge/{z}/tile_{x}_{y}.jpg",
         attribution: "Map data &copy; Sasha Toscano",
       },
     ];
@@ -54,7 +54,11 @@ export default async function SingleMapPage({
     return (
       <>
         <MapButtons map={params.map} />
-        <LeafletMap position={[4096, 3072]} zoom={2} layers={layers} />
+        <LeafletMap
+          position={[7.013667927566642, 2897.5038463698356]}
+          zoom={2}
+          layers={layers}
+        />
       </>
     );
   }
