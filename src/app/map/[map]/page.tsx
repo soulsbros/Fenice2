@@ -60,7 +60,7 @@ export default async function SingleMapPage({
       <>
         <MapButtons map={params.map} />
         <LeafletMap
-          position={[7.013667927566642, 2897.5038463698356]}
+          position={[-9.79567758282973, 6.651439946725858]}
           zoom={2}
           layers={layers}
         />
