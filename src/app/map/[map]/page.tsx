@@ -51,6 +51,7 @@ export default async function SingleMapPage({
         options: {
           maxZoom: 5,
           tms: false,
+          noWrap: true,
         },
       },
     ];
