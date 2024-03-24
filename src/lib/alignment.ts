@@ -21,6 +21,7 @@ export function getValueFromAlignment(alignment: string, type: string) {
 }
 
 export const alignments = [
+  "Unknown",
   "Chaotic Good",
   "Chaotic Neutral",
   "Chaotic Evil",
