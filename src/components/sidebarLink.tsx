@@ -12,7 +12,9 @@ type SidebarLinkProps = {
 };
 
 function closeMenu() {
-  document.querySelector("#menuPanel")?.classList.add("hidden");
+  let divs = document.querySelectorAll("main > div");
+  divs[0].classList.toggle("hidden");
+  divs[1].classList.toggle("hidden");
 }
 
 export default function SidebarLink({
