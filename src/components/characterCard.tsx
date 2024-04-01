@@ -19,7 +19,7 @@ export default function CharacterCard({
         <ImageWithFallback
           src={character.image}
           fallbackSrc={defaultUser}
-          alt="Character image"
+          alt={`Image for ${character.name}`}
           width={300}
           height={300}
           className="rounded-md object-cover h-[revert-layer]"

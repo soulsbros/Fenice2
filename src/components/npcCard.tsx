@@ -15,10 +15,10 @@ export default function NpcCard({ npc }: Readonly<NpcCardProps>) {
         <ImageWithFallback
           src={npc.image}
           fallbackSrc={defaultUser}
-          alt="NPC image"
+          alt={`Image for ${npc.name}`}
           width={300}
           height={300}
-          className="rounded-md"
+          className="rounded-md object-cover h-[revert-layer]"
         />
         <h2 className="subtitle mt-4">{npc.name}</h2>
         <p>
