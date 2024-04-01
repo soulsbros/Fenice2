@@ -30,12 +30,7 @@ export default async function CharacterInfo({
     <div className="mb-5 p-5 border rounded-md shadow-md">
       <div className="text-center">
         <ImageWithFallback
-          // TODO remove this check once legacy image API is not needed anymore
-          src={
-            character.characterId
-              ? `https://lafenice.soulsbros.ch/img/pg/${character.characterId}.jpg`
-              : character.image
-          }
+          src={character.image}
           fallbackSrc={defaultUser}
           alt="Character image"
           width={300}

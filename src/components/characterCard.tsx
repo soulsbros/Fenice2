@@ -17,17 +17,12 @@ export default function CharacterCard({
     <div className="character-card w-[300px] m-3 p-4 rounded-md shadow-md">
       <Link href={`/characters/${character._id}`}>
         <ImageWithFallback
-          // TODO remove this check once legacy image API is not needed anymore
-          src={
-            character.characterId
-              ? `https://lafenice.soulsbros.ch/img/pg/${character.characterId}.jpg`
-              : character.image
-          }
+          src={character.image}
           fallbackSrc={defaultUser}
           alt="Character image"
           width={300}
           height={300}
-          className="rounded-md"
+          className="rounded-md object-cover h-[revert-layer]"
         />
         <h2 className="subtitle mt-4">{character.name}</h2>
         <p>
