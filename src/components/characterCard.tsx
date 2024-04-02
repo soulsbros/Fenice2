@@ -22,7 +22,7 @@ export default function CharacterCard({
           alt={`Image for ${character.name}`}
           width={300}
           height={300}
-          className="rounded-md object-cover h-[revert-layer]"
+          className="rounded-md object-cover h-[revert-layer] object-top"
         />
         <h2 className="subtitle mt-4">{character.name}</h2>
         <p>

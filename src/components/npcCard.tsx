@@ -18,7 +18,7 @@ export default function NpcCard({ npc }: Readonly<NpcCardProps>) {
           alt={`Image for ${npc.name}`}
           width={300}
           height={300}
-          className="rounded-md object-cover h-[revert-layer]"
+          className="rounded-md object-cover h-[revert-layer] object-top"
         />
         <h2 className="subtitle mt-4">{npc.name}</h2>
         <p>
