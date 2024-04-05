@@ -23,7 +23,7 @@ interface BaseCharacter {
 }
 
 export interface Character extends BaseCharacter {
-  characterId?: number; // legacy ID
+  legacyCharacterId?: number;
   player: string;
   playerEmail: string;
 }
@@ -34,7 +34,7 @@ export interface NPC extends BaseCharacter {
 
 export interface Campaign {
   _id?: ObjectId;
-  campaignId: number;
+  legacyCampaignId?: number;
   name: string;
   type: string;
   dm: string;
@@ -42,6 +42,8 @@ export interface Campaign {
   status: string;
   startDate: Date;
   endDate: Date;
+  endLevel: number | null;
+  ruleset: string;
 }
 
 export interface Document {

@@ -1,4 +1,5 @@
 import { getCampaigns, getCharacters } from "@/actions/characters";
+import CampaignInfo from "@/components/campaignInfo";
 import CharacterCard from "@/components/characterCard";
 import Select from "@/components/select";
 import { Campaign, Character } from "@/types/API";
@@ -32,8 +33,8 @@ export default async function CampaignCharactersPage({
   const campaigns = await getCampaigns();
   const campaign = campaigns.data.filter((campaign: Campaign) =>
     parsedId.equals(campaign._id)
-  );
-  if (campaign.length === 0) {
+  )[0] as Campaign;
+  if (!campaign) {
     notFound();
   }
 
@@ -42,7 +43,7 @@ export default async function CampaignCharactersPage({
       <div className="flex justify-between items-center">
         <span className="title">Characters</span>
         <Link
-          href={`/characters/new?c=${campaign[0]._id}`}
+          href={`/characters/new?c=${campaign._id}`}
           className="primary button mb-4"
         >
           <Plus />
@@ -58,7 +59,9 @@ export default async function CampaignCharactersPage({
         })}
       />
 
-      <div className="flex flex-wrap justify-around mt-2">
+      <CampaignInfo campaign={campaign} />
+
+      <div className="flex flex-wrap justify-around">
         {result.success
           ? result?.data.map((character: Character) => (
               <CharacterCard

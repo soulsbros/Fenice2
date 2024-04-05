@@ -1,6 +1,6 @@
 import { getCampaigns } from "@/actions/characters";
 import defaultUser from "@/img/defaultUser.png";
-import { Character } from "@/types/API";
+import { Campaign, Character } from "@/types/API";
 import Link from "next/link";
 import { AlertCircle, Compass, User, Users } from "react-feather";
 import ImageWithFallback from "./imageWithFallback";
@@ -34,7 +34,7 @@ export default async function CharacterCard({
 }: Readonly<CharacterCardProps>) {
   const emptyFields = countEmptyFields(character);
   const campaign = await getCampaigns(undefined, { _id: character.campaignId });
-  const campaignName = campaign.data[0].name;
+  const campaignName = (campaign.data[0] as Campaign).name;
 
   return (
     <div className="character-card w-[300px] m-3 p-4 rounded-md shadow-md">

@@ -1,5 +1,6 @@
 import { getCampaigns } from "@/actions/characters";
 import { getNpcs } from "@/actions/npcs";
+import CampaignInfo from "@/components/campaignInfo";
 import NpcCard from "@/components/npcCard";
 import Select from "@/components/select";
 import { Campaign, NPC } from "@/types/API";
@@ -33,8 +34,8 @@ export default async function CampaignNpcsPage({
   const campaigns = await getCampaigns();
   const campaign = campaigns.data.filter((campaign: Campaign) =>
     parsedId.equals(campaign._id)
-  );
-  if (campaign.length === 0) {
+  )[0] as Campaign;
+  if (!campaign) {
     notFound();
   }
 
@@ -43,7 +44,7 @@ export default async function CampaignNpcsPage({
       <div className="flex justify-between items-center">
         <span className="title">NPCs</span>
         <Link
-          href={`/npcs/new?c=${campaign[0]._id}`}
+          href={`/npcs/new?c=${campaign._id}`}
           className="primary button mb-4"
         >
           <Plus />
@@ -58,6 +59,8 @@ export default async function CampaignNpcsPage({
           return { name: el.name, value: el._id.toString() };
         })}
       />
+
+      <CampaignInfo campaign={campaign} />
 
       <div className="flex flex-wrap justify-around mt-2">
         {result.success
