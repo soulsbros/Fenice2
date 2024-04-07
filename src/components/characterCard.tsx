@@ -48,7 +48,7 @@ export default async function CharacterCard({
           className="rounded-md object-cover h-[revert-layer] object-top"
         />
         <h2 className="subtitle mt-4">{character.name}</h2>
-        <p className="break-words">
+        <p className="break-all">
           {character.race} {character.class}
         </p>
         <p className="flex mt-2" title="Alignment">
