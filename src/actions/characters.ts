@@ -74,7 +74,7 @@ export async function insertCharacter(prevState: any, formData: FormData) {
   revalidatePath("/characters");
 
   if (result.success) {
-    redirect("/characters");
+    redirect(`/characters/${char.campaignId}`);
   }
   return { message: result.message };
 }
@@ -130,7 +130,7 @@ export async function updateCharacter(prevState: any, formData: FormData) {
   revalidatePath("/characters");
 
   if (result.success) {
-    redirect("/characters");
+    redirect(`/characters/${char.campaignId}`);
   }
   return { message: result.message };
 }
@@ -158,7 +158,7 @@ export async function deleteCharacter(id: string) {
   revalidatePath("/characters");
 
   if (result.success) {
-    redirect("/characters");
+    redirect(`/characters/${char.campaignId}`);
   }
   return { message: result.message };
 }

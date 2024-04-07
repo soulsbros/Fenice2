@@ -66,7 +66,7 @@ export async function insertNpc(prevState: any, formData: FormData) {
   revalidatePath("/npcs");
 
   if (result.success) {
-    redirect("/npcs");
+    redirect(`/npcs/${npc.campaignId}`);
   }
   return { message: result.message };
 }
@@ -118,7 +118,7 @@ export async function updateNpc(prevState: any, formData: FormData) {
   revalidatePath("/npcs");
 
   if (result.success) {
-    redirect("/npcs");
+    redirect(`/npcs/${npc.campaignId}`);
   }
   return { message: result.message };
 }
@@ -128,6 +128,7 @@ export async function deleteNpc(id: string) {
   const oldData = await getNpcs(undefined, {
     _id: new ObjectId(id),
   });
+  const npc = oldData.data[0] as NPC;
 
   if (!oldData.success) {
     return { message: "Error: invalid NPC ID" };
@@ -142,7 +143,7 @@ export async function deleteNpc(id: string) {
   revalidatePath("/npcs");
 
   if (result.success) {
-    redirect("/npcs");
+    redirect(`/npcs/${npc.campaignId}`);
   }
   return { message: result.message };
 }
