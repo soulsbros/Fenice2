@@ -2,7 +2,7 @@ interface TextfieldProps {
   id?: string;
   name?: string;
   placeholder?: string;
-  value?: string;
+  defaultValue?: string;
   type?: string;
   required?: boolean;
 }
@@ -11,7 +11,7 @@ export default function Textfield({
   id,
   name,
   placeholder,
-  value,
+  defaultValue,
   type = "text",
   required = false,
 }: Readonly<TextfieldProps>) {
@@ -25,7 +25,7 @@ export default function Textfield({
         id={id}
         name={name}
         type={type}
-        defaultValue={value}
+        defaultValue={defaultValue}
         placeholder={placeholder}
         required={required}
       />

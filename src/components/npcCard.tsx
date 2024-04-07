@@ -13,7 +13,7 @@ export default function NpcCard({ npc }: Readonly<NpcCardProps>) {
     <div className="character-card w-[300px] m-3 p-4 rounded-md shadow-md">
       <Link href={`/npcs/${npc._id}`}>
         <ImageWithFallback
-          src={npc.image}
+          src={npc.images[0]}
           fallbackSrc={defaultUser}
           alt={`Image for ${npc.name}`}
           width={300}

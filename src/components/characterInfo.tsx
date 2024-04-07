@@ -1,6 +1,6 @@
 import defaultUser from "@/img/defaultUser.png";
 import { encrypt, getWithFilter } from "@/lib/mongo";
-import { Character } from "@/types/API";
+import { Campaign, Character } from "@/types/API";
 import Link from "next/link";
 import { ReactElement } from "react";
 import ImageWithFallback from "./imageWithFallback";
@@ -24,19 +24,23 @@ export default async function CharacterInfo({
   const campaignInfo = await getWithFilter("campaigns", undefined, {
     _id: character.campaignId,
   });
-  const campaign = campaignInfo?.data[0];
+  const campaign = campaignInfo?.data[0] as Campaign;
 
   return (
     <div className="mb-5 p-5 border rounded-md shadow-md">
       <div className="text-center">
-        <ImageWithFallback
-          src={character.image}
-          fallbackSrc={defaultUser}
-          alt="Character image"
-          width={300}
-          height={300}
-          className="rounded inline-block"
-        />
+        {character.images.length === 0 ? "No character image(s)" : null}
+        {character.images.map((image) => (
+          <ImageWithFallback
+            src={image}
+            fallbackSrc={defaultUser}
+            alt={`Image for ${character.name}`}
+            width={300}
+            height={300}
+            className="rounded inline-block m-2"
+            key={image.substring(25)}
+          />
+        ))}
       </div>
 
       <div className="mt-4">
@@ -44,7 +48,7 @@ export default async function CharacterInfo({
           "Player",
           <Link
             href={`/characters/by-user/${encrypt(character.playerEmail)}`}
-            className="hover:underline"
+            className="hover:text-blue-900 underline"
           >
             {character.player}
           </Link>
@@ -53,7 +57,7 @@ export default async function CharacterInfo({
           "Campaign",
           <Link
             href={`/characters/by-campaign/${campaign._id}`}
-            className="hover:underline"
+            className="hover:text-blue-900 underline"
           >
             {campaign.name}
           </Link>
@@ -63,7 +67,7 @@ export default async function CharacterInfo({
         {CharacterAttribute("Alignment", character.actualAlignment)}
         {CharacterAttribute(
           "Gender and pronouns",
-          `${character.gender}${character.pronouns ? ", " : ""}${character.pronouns}`
+          `${character.gender}${character.gender && character.pronouns ? ", " : ""}${character.pronouns}`
         )}
         {CharacterAttribute("Sexual orientation", character.orientation)}
         {CharacterAttribute("Personality", character.personality)}

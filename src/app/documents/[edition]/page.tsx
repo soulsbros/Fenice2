@@ -1,4 +1,4 @@
-import Card from "@/components/card";
+import { SubtextButton } from "@/components/button";
 import Select from "@/components/select";
 import { editions } from "@/lib/skills";
 import { Document } from "@/types/API";
@@ -34,10 +34,10 @@ export default async function DocumentsPage({
       ) : (
         <div className="flex flex-wrap justify-center sm:justify-between mt-4">
           {docs.map((doc: Document) => (
-            <Card
-              links={[{ text: "Read", url: doc.url }]}
+            <SubtextButton
+              url={doc.url}
               title={doc.filename}
-              text={doc.category}
+              subtitle={doc.category}
               key={doc.category + doc.filename}
             />
           ))}

@@ -2,7 +2,7 @@ import { Db, Document, Filter, MongoClient } from "mongodb";
 
 const mongoURI =
   process.env.MONGODB_URI ?? "mongodb://user:password@localhost:27017";
-const dbName = "fenice2";
+const dbName = process.env.DB_NAME ?? "fenice2";
 
 const client = new MongoClient(mongoURI, {
   connectTimeoutMS: 5000,
@@ -18,10 +18,10 @@ export async function ourMongo(collection: string) {
   try {
     await client.connect();
     database = client.db(dbName);
-    console.info(" ✓ Connected to mongoDB database");
+    console.info(` ✓ Connected to mongoDB database ${dbName}`);
     return database.collection(collection);
   } catch (err) {
-    console.error(" x Failed to connect to the mongoDB database!");
+    console.error(` x Failed to connect to the mongoDB database ${dbName}!`);
     console.error(err);
   }
 }
@@ -147,6 +147,19 @@ export async function deleteDoc(
       message: `Error deleting ${collection}: ${err}`,
     };
   }
+}
+
+export async function parseImageFiles(dataArray: File[]) {
+  const result = [];
+  for (let image of dataArray) {
+    const buffer = await image.arrayBuffer();
+    if (buffer.byteLength > 0) {
+      result.push(
+        "data:image/jpeg;base64," + Buffer.from(buffer).toString("base64")
+      );
+    }
+  }
+  return result;
 }
 
 // just to avoid having clear emails in links

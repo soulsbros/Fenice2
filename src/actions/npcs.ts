@@ -2,11 +2,18 @@
 
 import { getValueFromAlignment } from "@/lib/alignment";
 import { authOptions } from "@/lib/authConfig";
-import { deleteDoc, getWithFilter, insertDocs, updateDoc } from "@/lib/mongo";
+import {
+  deleteDoc,
+  getWithFilter,
+  insertDocs,
+  parseImageFiles,
+  updateDoc,
+} from "@/lib/mongo";
 import { NPC } from "@/types/API";
 import { Document, Filter, ObjectId } from "mongodb";
 import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export async function getNpcs(
   sortingParam?: { field: string; direction: string },
@@ -31,12 +38,8 @@ export async function insertNpc(prevState: any, formData: FormData) {
   }
 
   const alignment = formData.get("alignment")?.toString() ?? "";
-  let image = "";
-  const imageFile = formData.get("image") as File;
-  const buffer = await imageFile.arrayBuffer();
-  if (buffer.byteLength > 0) {
-    image = "data:image/jpeg;base64," + Buffer.from(buffer).toString("base64");
-  }
+  const formImages = formData.getAll("images") as File[];
+  let images = await parseImageFiles(formImages);
 
   const npc: NPC = {
     campaignId: new ObjectId(formData.get("campaignId")?.toString() ?? ""),
@@ -54,13 +57,17 @@ export async function insertNpc(prevState: any, formData: FormData) {
     goodEvilValue: getValueFromAlignment(alignment, "GE"),
     backstory: formData.get("backstory")?.toString() ?? "",
     personality: formData.get("personality")?.toString() ?? "",
-    image: image,
+    images: images,
     createdAt: new Date(),
     updatedAt: new Date(),
   };
 
   const result = await insertDocs("npcs", [npc]);
+  revalidatePath("/npcs");
 
+  if (result.success) {
+    redirect("/npcs");
+  }
   return { message: result.message };
 }
 
@@ -87,12 +94,8 @@ export async function updateNpc(prevState: any, formData: FormData) {
     return { message: "Error: missing one or more required fields" };
   }
 
-  const imageFile = formData.get("image") as File;
-  const buffer = await imageFile.arrayBuffer();
-  let image = npc.image;
-  if (buffer.byteLength > 0) {
-    image = "data:image/jpeg;base64," + Buffer.from(buffer).toString("base64");
-  }
+  const formImages = formData.getAll("images") as File[];
+  let images = [...npc.images, ...(await parseImageFiles(formImages))];
 
   npc.name = formData.get("name")?.toString() ?? npc.name;
   npc.pronouns = formData.get("pronouns")?.toString() ?? npc.pronouns;
@@ -107,13 +110,16 @@ export async function updateNpc(prevState: any, formData: FormData) {
   npc.personality = formData.get("personality")?.toString() ?? npc.personality;
   npc.campaignId = new ObjectId(formData.get("campaignId")?.toString());
   npc.updatedAt = new Date();
-  npc.image = image;
+  npc.images = images;
 
   const result = await updateDoc("npcs", npc, {
     _id: id,
   });
   revalidatePath("/npcs");
 
+  if (result.success) {
+    redirect("/npcs");
+  }
   return { message: result.message };
 }
 
@@ -135,5 +141,8 @@ export async function deleteNpc(id: string) {
   });
   revalidatePath("/npcs");
 
+  if (result.success) {
+    redirect("/npcs");
+  }
   return { message: result.message };
 }

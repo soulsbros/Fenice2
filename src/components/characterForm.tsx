@@ -11,6 +11,8 @@ import { Campaign, Character, NPC } from "@/types/API";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
+import { Info } from "react-feather";
+import Swal from "sweetalert2";
 import Select from "./select";
 import Textfield from "./textfield";
 
@@ -68,46 +70,49 @@ export default function CharacterForm({
         <Textfield
           placeholder="Name"
           name="name"
-          value={previousData?.name}
+          defaultValue={previousData?.name}
           required
         />
-        {isNpc ? (
-          <Textfield
-            placeholder="Status"
-            name="status"
-            value={(previousData as NPC)?.status}
-          />
-        ) : null}
-        <Textfield
-          placeholder="Pronouns"
-          name="pronouns"
-          value={previousData?.pronouns}
-        />
-        <Textfield
-          placeholder="Gender"
-          name="gender"
-          value={previousData?.gender}
-        />
-        <Textfield
-          placeholder="Sexual orientation"
-          name="orientation"
-          value={previousData?.orientation}
-        />
-      </div>
-
-      <div>
         <Textfield
           placeholder="Race"
           name="race"
           required
-          value={previousData?.race}
+          defaultValue={previousData?.race}
         />
         <Textfield
           placeholder="Class"
           name="class"
           required
-          value={previousData?.class}
+          defaultValue={previousData?.class}
         />
+      </div>
+
+      <div>
+        <Textfield
+          placeholder="Pronouns"
+          name="pronouns"
+          defaultValue={previousData?.pronouns}
+        />
+        <Textfield
+          placeholder="Gender"
+          name="gender"
+          defaultValue={previousData?.gender}
+        />
+        <Textfield
+          placeholder="Sexual orientation"
+          name="orientation"
+          defaultValue={previousData?.orientation}
+        />
+        {isNpc ? (
+          <Textfield
+            placeholder="Status"
+            name="status"
+            defaultValue={(previousData as NPC)?.status}
+          />
+        ) : null}
+      </div>
+
+      <div>
         <Select
           placeholder="Alignment"
           name="alignment"
@@ -117,9 +122,6 @@ export default function CharacterForm({
           required
           selectedItem={previousData?.actualAlignment}
         />
-      </div>
-
-      <div>
         {campaigns.length === 0 ? (
           <div className="inline-block">
             Campaign
@@ -137,11 +139,28 @@ export default function CharacterForm({
             selectedItem={previousData?.campaignId.toString() ?? campaignParam}
           />
         )}
-
-        <div className="inline-block ml-6">
-          Image
+        <div className="inline-block">
+          Image(s)
+          <Info
+            size={18}
+            className="inline-block ml-1"
+            onClick={() => {
+              Swal.fire(
+                undefined,
+                `You can add multiple images.<br> If you're editing a character,
+                  any image you upload here will be added to the already existing ones.<br>
+                  Contact Steeven if you need to remove an image.`
+              );
+            }}
+          />
           <br />
-          <input type="file" name="image" />
+          <input
+            type="file"
+            name="images"
+            className="p-2 m-2"
+            multiple
+            accept="image/png, image/jpeg, image/gif"
+          />
         </div>
       </div>
 

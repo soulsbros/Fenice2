@@ -19,7 +19,7 @@ interface BaseCharacter {
   personality: string;
   createdAt: Date;
   updatedAt: Date;
-  image: string;
+  images: string[];
 }
 
 export interface Character extends BaseCharacter {

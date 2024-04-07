@@ -40,7 +40,7 @@ export default async function CharacterCard({
     <div className="character-card w-[300px] m-3 p-4 rounded-md shadow-md">
       <Link href={`/characters/${character._id}`}>
         <ImageWithFallback
-          src={character.image}
+          src={character.images[0]}
           fallbackSrc={defaultUser}
           alt={`Image for ${character.name}`}
           width={300}
