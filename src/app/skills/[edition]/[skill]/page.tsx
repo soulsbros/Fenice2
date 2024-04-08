@@ -1,4 +1,5 @@
 import { findSkill, getWikiURL } from "@/lib/skills";
+import { notFound } from "next/navigation";
 import { AlertTriangle, Book } from "react-feather";
 
 export default function SingleSkillPage({
@@ -10,7 +11,7 @@ export default function SingleSkillPage({
   skill = decodeURIComponent(skill);
 
   if (!findSkill(skill, edition)) {
-    return "Not found";
+    notFound();
   }
 
   return (

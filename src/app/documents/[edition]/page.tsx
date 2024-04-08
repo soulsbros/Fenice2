@@ -2,6 +2,7 @@ import { SubtextButton } from "@/components/button";
 import Select from "@/components/select";
 import { editions } from "@/lib/skills";
 import { Document } from "@/types/API";
+import { notFound } from "next/navigation";
 
 export default async function DocumentsPage({
   params,
@@ -13,8 +14,11 @@ export default async function DocumentsPage({
     `https://lafenice.soulsbros.ch/api/docs.php?folder=${edition}`
   );
   const docs = await result.json();
-  const editionString =
-    editions.find((ed) => ed.id === edition)?.name ?? edition;
+
+  const editionString = editions.find((ed) => ed.id === edition)?.name;
+  if (!editionString) {
+    notFound();
+  }
 
   return (
     <>

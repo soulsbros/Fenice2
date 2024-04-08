@@ -66,7 +66,7 @@ export async function insertNpc(prevState: any, formData: FormData) {
   revalidatePath("/npcs");
 
   if (result.success) {
-    redirect(`/npcs/${npc.campaignId}`);
+    redirect(`/npcs/by-campaign/${npc.campaignId}`);
   }
   return { message: result.message };
 }
@@ -118,7 +118,7 @@ export async function updateNpc(prevState: any, formData: FormData) {
   revalidatePath("/npcs");
 
   if (result.success) {
-    redirect(`/npcs/${npc.campaignId}`);
+    redirect(`/npcs/by-campaign/${npc.campaignId}`);
   }
   return { message: result.message };
 }
@@ -143,7 +143,7 @@ export async function deleteNpc(id: string) {
   revalidatePath("/npcs");
 
   if (result.success) {
-    redirect(`/npcs/${npc.campaignId}`);
+    redirect(`/npcs/by-campaign/${npc.campaignId}`);
   }
   return { message: result.message };
 }

@@ -1,6 +1,7 @@
 import { SubtextButton } from "@/components/button";
 import Select from "@/components/select";
 import { editions } from "@/lib/skills";
+import { notFound } from "next/navigation";
 
 export default function SkillsPage({
   params,
@@ -10,7 +11,7 @@ export default function SkillsPage({
   let { edition } = params;
   const editionData = editions.find((e) => e.id === edition);
   if (!editionData) {
-    return "No skills found";
+    notFound();
   }
 
   return (
