@@ -18,21 +18,23 @@ const countEmptyFields = (character: Character) => {
     "pronouns",
     "orientation",
   ] as (keyof Character)[];
-  let emptyFields = 0;
+  let emptyFields = [] as string[];
+  let emptyFieldsCount = 0;
 
   for (const field of fieldsToCheck) {
     if (character[field] == "") {
-      ++emptyFields;
+      ++emptyFieldsCount;
+      emptyFields.push(field);
     }
   }
-  return emptyFields;
+  return { emptyFields, emptyFieldsCount };
 };
 
 export default async function CharacterCard({
   character,
   showPlayer = true,
 }: Readonly<CharacterCardProps>) {
-  const emptyFields = countEmptyFields(character);
+  const { emptyFields, emptyFieldsCount } = countEmptyFields(character);
   const campaign = await getCampaigns(undefined, { _id: character.campaignId });
   const campaignName = (campaign.data[0] as Campaign).name;
 
@@ -66,13 +68,13 @@ export default async function CharacterCard({
             &nbsp; {campaignName}
           </p>
         )}
-        {!showPlayer && emptyFields > 0 ? (
+        {!showPlayer && emptyFieldsCount > 0 ? (
           <p
             className="flex mt-2 justify-end text-red-600"
-            title="Empty fields"
+            title={`Missing fields: ${emptyFields.join(", ")}`}
           >
             <AlertCircle />
-            &nbsp; <span>{emptyFields}</span>
+            &nbsp; <span>{emptyFieldsCount}</span>
           </p>
         ) : null}
       </Link>
