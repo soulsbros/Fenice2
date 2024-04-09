@@ -2,6 +2,7 @@
 
 import { addAction } from "@/actions/characters";
 import { Action, Character } from "@/types/API";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import Button from "../button";
@@ -17,6 +18,13 @@ export default function CharacterAction({
   const [actionWeight, setActionWeight] = useState(1);
   const [character, setCharacter] = useState(characters[0]._id!.toString());
   const [reason, setReason] = useState("");
+
+  const session = useSession();
+  const isDM = session?.data?.user.roles.includes("dm");
+  const isAdmin = session?.data?.user.roles.includes("admin");
+  if (!isAdmin && !isDM) {
+    return;
+  }
 
   const handleClick = async (actionType: string) => {
     let val = actionWeight;
@@ -47,45 +55,50 @@ export default function CharacterAction({
   };
 
   return (
-    <div>
-      <Select
-        placeholder="Character"
-        selectedItem={character}
-        onChange={(e) => setCharacter(e.target.value)}
-        options={characters.map((el) => {
-          return { name: el.name, value: el._id!.toString() };
-        })}
-      />
-
-      <div>
-        <label htmlFor="reasonInput">Action reason</label>
-        <input
-          id="reasonInput"
-          type="text"
-          className="inputText"
-          onChange={(e) => setReason(e.target.value)}
-          value={reason}
+    <div className="max-w-[800px]">
+      <div className="flex justify-between mb-4">
+        <Select
+          placeholder="Character"
+          selectedItem={character}
+          onChange={(e) => setCharacter(e.target.value)}
+          options={characters.map((el) => {
+            return { name: el.name, value: el._id!.toString() };
+          })}
         />
+        <div className="inline-block m-2">
+          <label htmlFor="reasonInput">Action reason</label>
+          <br />
+          <input
+            id="reasonInput"
+            type="text"
+            className="p-2 m-2"
+            onChange={(e) => setReason(e.target.value)}
+            value={reason}
+          />
+        </div>
+        <div className="inline-block m-2">
+          <label htmlFor="actionWeight">Action weight</label>
+          <br />
+          <input
+            id="actionWeight"
+            min={0}
+            type="number"
+            className="p-2 m-2"
+            onChange={(e) => setActionWeight(parseFloat(e.target.value) || 0)}
+            value={actionWeight}
+          />
+        </div>
       </div>
 
-      <div>
-        <label htmlFor="actionWeight">Action weight</label>
-        <input
-          id="actionWeight"
-          min={0}
-          type="number"
-          className="inputText"
-          onChange={(e) => setActionWeight(parseFloat(e.target.value) || 0)}
-          value={actionWeight}
-        />
-      </div>
-
-      <div className="flex">
-        <Button onClick={() => handleClick("Lawful")} label="Lawful action" />
-        <Button onClick={() => handleClick("Chaotic")} label="Chaotic action" />
-      </div>
-      <div className="flex">
+      <div className="text-center w-80 m-auto">
         <Button onClick={() => handleClick("Good")} label="Good action" />
+        <div className="flex justify-between">
+          <Button onClick={() => handleClick("Lawful")} label="Lawful action" />
+          <Button
+            onClick={() => handleClick("Chaotic")}
+            label="Chaotic action"
+          />
+        </div>
         <Button onClick={() => handleClick("Evil")} label="Evil action" />
       </div>
     </div>

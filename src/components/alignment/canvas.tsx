@@ -22,8 +22,9 @@ export default function Canvas({ characters }: Readonly<CanvasProps>) {
   const [height, setHeight] = useState(0);
 
   useEffect(() => {
-    setWidth(window.innerWidth > 600 ? 800 : window.innerWidth);
-    setHeight(window.innerHeight > 600 ? 800 : window.innerHeight);
+    const dimension = window.innerWidth > 600 ? 800 : window.innerWidth;
+    setWidth(dimension);
+    setHeight(dimension);
   }, []);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -53,8 +54,6 @@ export default function Canvas({ characters }: Readonly<CanvasProps>) {
 
   useEffect(() => {
     const resizeCanvas = (canvas: HTMLCanvasElement) => {
-      //const { width, height } = canvas.getBoundingClientRect()
-
       if (canvas.width !== width || canvas.height !== height) {
         const { devicePixelRatio: ratio = 1 } = window;
         const context = canvas.getContext("2d")!;
@@ -68,8 +67,6 @@ export default function Canvas({ characters }: Readonly<CanvasProps>) {
     };
 
     const resizeCanvasToDisplaySize = (canvas: HTMLCanvasElement) => {
-      //const { width, height } = canvas.getBoundingClientRect()
-
       if (canvas.width !== width || canvas.height !== height) {
         canvas.width = width;
         canvas.height = height;
@@ -88,7 +85,6 @@ export default function Canvas({ characters }: Readonly<CanvasProps>) {
 
     context.clearRect(0, 0, canvas.width, canvas.height);
 
-    //Our draw came here
     const render = () => {
       draw(context, canvas, characters);
       animationFrameId = window.requestAnimationFrame(render);
@@ -100,9 +96,5 @@ export default function Canvas({ characters }: Readonly<CanvasProps>) {
     };
   }, [characters, height, width]);
 
-  return (
-    <div>
-      <canvas width="400px" height="400px" ref={canvasRef} />
-    </div>
-  );
+  return <canvas width={width} height={height} ref={canvasRef} />;
 }

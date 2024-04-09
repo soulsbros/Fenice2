@@ -1,4 +1,5 @@
 import { getCampaigns, getCharacters } from "@/actions/characters";
+import ActionsHistory from "@/components/alignment/actionsHistory";
 import Canvas from "@/components/alignment/canvas";
 import CharacterAction from "@/components/alignment/characterAction";
 import Select from "@/components/select";
@@ -39,17 +40,28 @@ export default async function AlignmentDetailPage({
 
   return (
     <>
-      <Select
-        placeholder="Campaign"
-        redirectPath="/alignment/by-campaign"
-        selectedItem={parsedId.toString()}
-        options={campaigns.data.reverse().map((el) => {
-          return { name: el.name, value: el._id.toString() };
-        })}
-      />
+      <div className="inline-block">
+        <Select
+          placeholder="Campaign"
+          redirectPath="/alignment/by-campaign"
+          selectedItem={parsedId.toString()}
+          options={campaigns.data.reverse().map((el) => {
+            return { name: el.name, value: el._id.toString() };
+          })}
+        />
+        {characters.length > 0 ? (
+          <>
+            <Canvas characters={characters} />
+            <CharacterAction characters={characters} />
+          </>
+        ) : (
+          <div>No characters found</div>
+        )}
+      </div>
 
-      <Canvas characters={characters} />
-      <CharacterAction characters={characters} />
+      {characters.length > 0 ? (
+        <ActionsHistory characters={characters} />
+      ) : null}
     </>
   );
 }

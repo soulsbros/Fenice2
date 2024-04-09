@@ -7,6 +7,12 @@ body {
   height: 100vh;
 }
 
+input[type="text"],
+input[type="number"],
+textarea {
+  border: 1px solid black;
+}
+
 /* Dice fixes */
 
 #dice-box canvas {

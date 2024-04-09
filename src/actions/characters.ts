@@ -203,3 +203,16 @@ export async function addAction(id: string, action: Action) {
 
   return { message: result.message, success: result.success };
 }
+
+export async function getActions(id: string) {
+  const oldData = await getCharacters(undefined, {
+    _id: new ObjectId(id),
+  });
+  const char = oldData.data[0] as Character;
+
+  if (!oldData.success) {
+    return { message: "Error: invalid character ID" };
+  }
+
+  return char.actionsHistory;
+}
