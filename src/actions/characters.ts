@@ -9,7 +9,7 @@ import {
   parseImageFiles,
   updateDoc,
 } from "@/lib/mongo";
-import { Character } from "@/types/API";
+import { Action, Character } from "@/types/API";
 import { Document, Filter, ObjectId } from "mongodb";
 import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
@@ -161,4 +161,45 @@ export async function deleteCharacter(id: string) {
     redirect(`/characters/by-campaign/${char.campaignId}`);
   }
   return { message: result.message };
+}
+
+export async function addAction(id: string, action: Action) {
+  const userData = await getServerSession(authOptions);
+  const oldData = await getCharacters(undefined, {
+    _id: new ObjectId(id),
+  });
+  const char = oldData.data[0] as Character;
+
+  if (!oldData.success) {
+    return { message: "Error: invalid character ID" };
+  }
+  if (!userData) {
+    return { message: "Error: invalid user data. Try logging out and back in" };
+  }
+
+  if (action.type === "Good" || action.type === "Evil") {
+    let newValue = char.goodEvilValue + action.value;
+    if (newValue < -100) {
+      newValue = -100;
+    } else if (newValue > 100) {
+      newValue = 100;
+    }
+    char.goodEvilValue = newValue;
+  } else {
+    let newValue = char.lawfulChaoticValue + action.value;
+    if (newValue < -100) {
+      newValue = -100;
+    } else if (newValue > 100) {
+      newValue = 100;
+    }
+    char.lawfulChaoticValue = newValue;
+  }
+  char.actionsHistory.push(action);
+
+  const result = await updateDoc("characters", char, {
+    _id: new ObjectId(id),
+  });
+  revalidatePath("/characters");
+
+  return { message: result.message, success: result.success };
 }

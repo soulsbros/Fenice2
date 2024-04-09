@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { ChangeEvent } from "react";
 
 interface KV {
   name: string;
@@ -14,6 +15,7 @@ interface SelectProps {
   selectedItem?: string;
   options: KV[];
   redirectPath?: string;
+  onChange?: (event: ChangeEvent<HTMLSelectElement>) => void;
   required?: boolean;
 }
 
@@ -24,6 +26,7 @@ export default function Select({
   selectedItem,
   options,
   redirectPath,
+  onChange,
   required = false,
 }: Readonly<SelectProps>) {
   const router = useRouter();
@@ -41,7 +44,7 @@ export default function Select({
         onChange={
           redirectPath
             ? (e) => router.push(`${redirectPath}/${e.target.value}`)
-            : undefined
+            : onChange
         }
       >
         {options.map((option) => (

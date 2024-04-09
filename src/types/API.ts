@@ -12,7 +12,7 @@ interface BaseCharacter {
   class: string;
   startAlignment: string;
   actualAlignment: string;
-  actionsHistory: [];
+  actionsHistory: Action[];
   lawfulChaoticValue: number;
   goodEvilValue: number;
   backstory: string;
@@ -50,4 +50,11 @@ export interface Document {
   url: string;
   filename: string;
   category: string;
+}
+
+export interface Action {
+  type: string;
+  timestamp: Date;
+  reason: string;
+  value: number;
 }

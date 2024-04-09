@@ -1,5 +1,6 @@
 import { getCampaigns, getCharacters } from "@/actions/characters";
 import Canvas from "@/components/alignment/canvas";
+import CharacterAction from "@/components/alignment/characterAction";
 import Select from "@/components/select";
 import { Campaign, Character } from "@/types/API";
 import { ObjectId } from "mongodb";
@@ -34,6 +35,7 @@ export default async function AlignmentDetailPage({
     },
     { campaignId: parsedId }
   );
+  const characters = result.data as Character[];
 
   return (
     <>
@@ -45,7 +47,9 @@ export default async function AlignmentDetailPage({
           return { name: el.name, value: el._id.toString() };
         })}
       />
-      <Canvas characters={result.data as Character[]} />
+
+      <Canvas characters={characters} />
+      <CharacterAction characters={characters} />
     </>
   );
 }
