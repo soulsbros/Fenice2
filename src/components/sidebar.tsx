@@ -9,6 +9,7 @@ import {
   Home,
   List,
   Map,
+  Octagon,
   SkipBack,
   Users,
   Zap,
@@ -23,11 +24,7 @@ export default function Sidebar() {
     >
       <div>
         <SidebarLink name="Home" path="/" icon={<Home />} />
-        {/* <SidebarLink
-          name="Alignment"
-          path="/alignment"
-          icon={<Octagon />}
-        /> */}
+        <SidebarLink name="Alignment" path="/alignment" icon={<Octagon />} />
         <SidebarLink name="Calendar" path="/calendar" icon={<Calendar />} />
         <SidebarLink name="Characters" path="/characters" icon={<Users />} />
         <SidebarLink

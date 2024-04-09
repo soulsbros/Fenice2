@@ -1,15 +1,21 @@
+import { Character } from "@/types/API";
+
 const BORDER_COLOR = "#000000";
 const GOOD_COLOR = "#ccf2ff";
 const EVIL_COLOR = "#ffcccc";
 const NEUTRAL_COLOR = "#fff2cc";
 
-//TODO rewrite in TS
-
-const toRadians = (deg) => {
+const toRadians = (deg: number) => {
   return (deg * Math.PI) / 180;
 };
 
-const drawAlignmentCircle = (ctx, character, r, centerX, centerY) => {
+const drawAlignmentCircle = (
+  ctx: CanvasRenderingContext2D,
+  character: Character,
+  r: number,
+  centerX: number,
+  centerY: number
+) => {
   let lawfulChaotic = character.lawfulChaoticValue / 100;
   let goodEvil = character.goodEvilValue / 100;
 
@@ -49,13 +55,25 @@ const drawAlignmentCircle = (ctx, character, r, centerX, centerY) => {
   ctx.closePath();
 };
 
-export const drawAllAlignments = (ctx, characters, r, centerX, centerY) => {
+export const drawAllAlignments = (
+  ctx: CanvasRenderingContext2D,
+  characters: Character[],
+  r: number,
+  centerX: number,
+  centerY: number
+) => {
   characters.forEach((el) => {
     drawAlignmentCircle(ctx, el, r, centerX, centerY);
   });
 };
 
-export const drawEctagon = (ctx, centerX, centerY, r, a) => {
+export const drawOctagon = (
+  ctx: CanvasRenderingContext2D,
+  centerX: number,
+  centerY: number,
+  r: number,
+  a: number
+) => {
   let angles = [];
   ctx.beginPath();
   ctx.arc(centerX, centerY, r, 0, 2 * Math.PI);
@@ -73,7 +91,13 @@ export const drawEctagon = (ctx, centerX, centerY, r, a) => {
   return angles;
 };
 
-export const drawGoodTiles = (ctx, centerX, centerY, angles, r) => {
+export const drawGoodTiles = (
+  ctx: CanvasRenderingContext2D,
+  centerX: number,
+  centerY: number,
+  _angles: any,
+  r: number
+) => {
   ctx.beginPath();
   ctx.moveTo(centerX, centerY);
   ctx.arc(centerX, centerY, r, toRadians(157.5), toRadians(337.5));
@@ -84,7 +108,13 @@ export const drawGoodTiles = (ctx, centerX, centerY, angles, r) => {
   ctx.closePath();
 };
 
-export const drawEvilTiles = (ctx, centerX, centerY, angles, r) => {
+export const drawEvilTiles = (
+  ctx: CanvasRenderingContext2D,
+  centerX: number,
+  centerY: number,
+  _angles: any,
+  r: number
+) => {
   ctx.beginPath();
   ctx.moveTo(centerX, centerY);
   ctx.arc(centerX, centerY, r, toRadians(22.5), toRadians(157.5));
@@ -95,7 +125,13 @@ export const drawEvilTiles = (ctx, centerX, centerY, angles, r) => {
   ctx.closePath();
 };
 
-export const drawNeutralTiles = (ctx, centerX, centerY, angles, r) => {
+export const drawNeutralTiles = (
+  ctx: CanvasRenderingContext2D,
+  centerX: number,
+  centerY: number,
+  _angles: any,
+  r: number
+) => {
   ctx.beginPath();
   ctx.moveTo(centerX, centerY);
   ctx.arc(centerX, centerY, r, toRadians(157.5), toRadians(202.5));
@@ -108,7 +144,10 @@ export const drawNeutralTiles = (ctx, centerX, centerY, angles, r) => {
   ctx.closePath();
 };
 
-export const drawAxesLines = (ctx, angles) => {
+export const drawAxesLines = (
+  ctx: CanvasRenderingContext2D,
+  angles: number[][]
+) => {
   ctx.strokeStyle = BORDER_COLOR;
   let axesLines = new Path2D();
   axesLines.moveTo(angles[0][0], angles[0][1]);
@@ -124,7 +163,11 @@ export const drawAxesLines = (ctx, angles) => {
   axesLines.closePath();
 };
 
-export const drawCenterCircle = (ctx, centerX, centerY) => {
+export const drawCenterCircle = (
+  ctx: CanvasRenderingContext2D,
+  centerX: number,
+  centerY: number
+) => {
   ctx.beginPath();
   ctx.arc(centerX, centerY, 75, 0, 2 * Math.PI);
   ctx.fill();
@@ -134,7 +177,13 @@ export const drawCenterCircle = (ctx, centerX, centerY) => {
   ctx.closePath();
 };
 
-export const drawSideCircle = (ctx, a, r, centerX, centerY) => {
+export const drawSideCircle = (
+  ctx: CanvasRenderingContext2D,
+  a: number,
+  r: number,
+  centerX: number,
+  centerY: number
+) => {
   const alignments = ["CN", "CE", "NE", "LE", "LN", "LG", "NG", "CG"];
   for (let i = 0; i < 8; i++) {
     const x = centerX + r * Math.cos(a * i);
