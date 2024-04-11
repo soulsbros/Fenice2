@@ -6,7 +6,7 @@ import {
   updateCharacter,
 } from "@/actions/characters";
 import { insertNpc, updateNpc } from "@/actions/npcs";
-import { alignments } from "@/lib/alignment";
+import { alignments, getActualAlignment } from "@/lib/alignment";
 import { Campaign, Character, NPC } from "@/types/API";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -113,15 +113,17 @@ export default function CharacterForm({
       </div>
 
       <div>
-        <Select
-          placeholder="Alignment"
-          name="alignment"
-          options={alignments.map((alignment) => {
-            return { name: alignment, value: alignment };
-          })}
-          required
-          selectedItem={previousData?.actualAlignment}
-        />
+        {!isNpc ? (
+          <Select
+            placeholder="Alignment"
+            name="alignment"
+            options={alignments.map((alignment) => {
+              return { name: alignment, value: alignment };
+            })}
+            required
+            selectedItem={getActualAlignment(previousData as Character)}
+          />
+        ) : null}
         {campaigns.length === 0 ? (
           <div className="inline-block">
             Campaign

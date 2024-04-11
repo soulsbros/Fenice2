@@ -51,7 +51,6 @@ export default async function NpcInfo({ npc }: Readonly<NpcInfoProps>) {
         {NpcAttribute("Status", npc.status)}
         {NpcAttribute("Class", npc.class)}
         {NpcAttribute("Race", npc.race)}
-        {NpcAttribute("Alignment", npc.actualAlignment)}
         {NpcAttribute(
           "Gender and pronouns",
           `${npc.gender}${npc.pronouns ? ", " : ""}${npc.pronouns}`

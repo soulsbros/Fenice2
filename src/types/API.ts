@@ -10,11 +10,6 @@ interface BaseCharacter {
   pronouns: string;
   orientation: string;
   class: string;
-  startAlignment: string;
-  actualAlignment: string;
-  actionsHistory: Action[];
-  lawfulChaoticValue: number;
-  goodEvilValue: number;
   backstory: string;
   personality: string;
   createdAt: Date;
@@ -26,6 +21,11 @@ export interface Character extends BaseCharacter {
   legacyCharacterId?: number;
   player: string;
   playerEmail: string;
+  // all alignment fields are exclusive to Characters
+  startAlignment: string;
+  actionsHistory: Action[];
+  lawfulChaoticValue: number;
+  goodEvilValue: number;
 }
 
 export interface NPC extends BaseCharacter {

@@ -1,5 +1,6 @@
 import { getCampaigns } from "@/actions/characters";
 import defaultUser from "@/img/defaultUser.png";
+import { getActualAlignment } from "@/lib/alignment";
 import { Campaign, Character } from "@/types/API";
 import Link from "next/link";
 import { AlertCircle, Compass, User, Users } from "react-feather";
@@ -55,7 +56,7 @@ export default async function CharacterCard({
         </p>
         <p className="flex mt-2" title="Alignment">
           <Compass />
-          &nbsp; {character.actualAlignment}
+          &nbsp; {getActualAlignment(character)}
         </p>
         {showPlayer ? (
           <p className="flex mt-2" title="Player">

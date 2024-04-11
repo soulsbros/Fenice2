@@ -1,3 +1,5 @@
+import { Character } from "@/types/API";
+
 export function getValueFromAlignment(alignment: string, type: string) {
   // lawful - chaotic scale
   if (type == "LC") {
@@ -18,6 +20,36 @@ export function getValueFromAlignment(alignment: string, type: string) {
     }
   }
   return 0;
+}
+
+export function getActualAlignment(character: Character) {
+  if (!character || !character.lawfulChaoticValue) {
+    return "Unknown";
+  }
+
+  let result = "";
+  const THRESHOLD = 33;
+
+  // -100  lawful  [-33  neutral  33]  chaotic  100
+  if (character.lawfulChaoticValue < -THRESHOLD) {
+    result += "Lawful";
+  } else if (character.lawfulChaoticValue > THRESHOLD) {
+    result += "Chaotic";
+  } else {
+    result += "Neutral";
+  }
+
+  // -100  good  [-33  neutral  33]  evil  100
+  if (character.goodEvilValue < -THRESHOLD) {
+    result += " good";
+  } else if (character.goodEvilValue > THRESHOLD) {
+    result += " evil";
+  } else if (result != "Neutral") {
+    // check to avoid "Neutral neutral" lol
+    result += " neutral";
+  }
+
+  return result;
 }
 
 export const alignments = [

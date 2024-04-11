@@ -29,6 +29,7 @@ export default async function UserCharactersPage({
                 <CharacterCard
                   character={character}
                   key={character._id?.toString()}
+                  showPlayer={false}
                 />
               ))
           : result.message}

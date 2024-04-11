@@ -1,6 +1,5 @@
 "use server";
 
-import { getValueFromAlignment } from "@/lib/alignment";
 import { authOptions } from "@/lib/authConfig";
 import {
   deleteDoc,
@@ -37,7 +36,6 @@ export async function insertNpc(prevState: any, formData: FormData) {
     return { message: "Error: missing required data" };
   }
 
-  const alignment = formData.get("alignment")?.toString() ?? "";
   const formImages = formData.getAll("images") as File[];
   let images = await parseImageFiles(formImages);
 
@@ -50,11 +48,6 @@ export async function insertNpc(prevState: any, formData: FormData) {
     orientation: formData.get("orientation")?.toString() ?? "",
     class: formData.get("class")?.toString() ?? "",
     status: formData.get("status")?.toString() ?? "",
-    startAlignment: alignment,
-    actualAlignment: alignment,
-    actionsHistory: [],
-    lawfulChaoticValue: getValueFromAlignment(alignment, "LC"),
-    goodEvilValue: getValueFromAlignment(alignment, "GE"),
     backstory: formData.get("backstory")?.toString() ?? "",
     personality: formData.get("personality")?.toString() ?? "",
     images: images,
@@ -104,8 +97,6 @@ export async function updateNpc(prevState: any, formData: FormData) {
   npc.race = formData.get("race")?.toString() ?? npc.race;
   npc.class = formData.get("class")?.toString() ?? npc.class;
   npc.status = formData.get("status")?.toString() ?? npc.status;
-  npc.actualAlignment =
-    formData.get("alignment")?.toString() ?? npc.actualAlignment;
   npc.backstory = formData.get("backstory")?.toString() ?? npc.backstory;
   npc.personality = formData.get("personality")?.toString() ?? npc.personality;
   npc.campaignId = new ObjectId(formData.get("campaignId")?.toString());

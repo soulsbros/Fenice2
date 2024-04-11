@@ -1,4 +1,5 @@
 import defaultUser from "@/img/defaultUser.png";
+import { getActualAlignment } from "@/lib/alignment";
 import { encrypt, getWithFilter } from "@/lib/mongo";
 import { Campaign, Character } from "@/types/API";
 import Link from "next/link";
@@ -64,7 +65,7 @@ export default async function CharacterInfo({
         )}
         {CharacterAttribute("Class", character.class)}
         {CharacterAttribute("Race", character.race)}
-        {CharacterAttribute("Alignment", character.actualAlignment)}
+        {CharacterAttribute("Alignment", getActualAlignment(character))}
         {CharacterAttribute(
           "Gender and pronouns",
           `${character.gender}${character.gender && character.pronouns ? ", " : ""}${character.pronouns}`

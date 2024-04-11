@@ -1,7 +1,7 @@
 import defaultUser from "@/img/defaultUser.png";
 import { NPC } from "@/types/API";
 import Link from "next/link";
-import { Compass } from "react-feather";
+import { Activity } from "react-feather";
 import ImageWithFallback from "./imageWithFallback";
 
 interface NpcCardProps {
@@ -25,8 +25,8 @@ export default function NpcCard({ npc }: Readonly<NpcCardProps>) {
           {npc.race} {npc.class}
         </p>
         <p className="flex mt-2">
-          <Compass />
-          &nbsp; {npc.actualAlignment}
+          <Activity />
+          &nbsp; {npc.status}
         </p>
       </Link>
     </div>

@@ -59,7 +59,6 @@ export async function insertCharacter(prevState: any, formData: FormData) {
     orientation: formData.get("orientation")?.toString() ?? "",
     class: formData.get("class")?.toString() ?? "",
     startAlignment: alignment,
-    actualAlignment: alignment,
     actionsHistory: [],
     lawfulChaoticValue: getValueFromAlignment(alignment, "LC"),
     goodEvilValue: getValueFromAlignment(alignment, "GE"),
@@ -105,6 +104,7 @@ export async function updateCharacter(prevState: any, formData: FormData) {
     return { message: "Error: missing one or more required fields" };
   }
 
+  const alignment = formData.get("alignment")?.toString() ?? "";
   const formImages = formData.getAll("images") as File[];
   let images = [...char.images, ...(await parseImageFiles(formImages))];
 
@@ -115,8 +115,8 @@ export async function updateCharacter(prevState: any, formData: FormData) {
   char.gender = formData.get("gender")?.toString() ?? char.gender;
   char.race = formData.get("race")?.toString() ?? char.race;
   char.class = formData.get("class")?.toString() ?? char.class;
-  char.actualAlignment =
-    formData.get("alignment")?.toString() ?? char.actualAlignment;
+  char.lawfulChaoticValue = getValueFromAlignment(alignment, "LC");
+  char.goodEvilValue = getValueFromAlignment(alignment, "GE");
   char.backstory = formData.get("backstory")?.toString() ?? char.backstory;
   char.personality =
     formData.get("personality")?.toString() ?? char.personality;
