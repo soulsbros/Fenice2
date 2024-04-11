@@ -59,6 +59,10 @@ textarea {
   @apply text-white font-bold py-[10px] px-4 rounded inline-flex align-middle space-x-3 mr-2 mb-2;
 }
 
+.link {
+  @apply hover:text-blue-700 underline;
+}
+
 .title {
   @apply font-semibold text-xl mb-4;
 }

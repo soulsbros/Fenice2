@@ -48,7 +48,7 @@ export default async function CharacterInfo({
           "Player",
           <Link
             href={`/characters/by-user/${encrypt(character.playerEmail)}`}
-            className="hover:text-blue-900 underline"
+            className="link"
           >
             {character.player}
           </Link>
@@ -57,7 +57,7 @@ export default async function CharacterInfo({
           "Campaign",
           <Link
             href={`/characters/by-campaign/${campaign._id}`}
-            className="hover:text-blue-900 underline"
+            className="link"
           >
             {campaign.name}
           </Link>

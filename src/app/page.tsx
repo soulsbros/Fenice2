@@ -14,7 +14,7 @@ export default function Home() {
         browsing the tabs on the left sidebar! More features to come ＼(＾O＾)／
         <br />
         Audio recording are still hosted on the{" "}
-        <Link href="https://lafenice.soulsbros.ch" className="underline">
+        <Link href="https://lafenice.soulsbros.ch" className="link">
           old website
         </Link>{" "}
         for now.

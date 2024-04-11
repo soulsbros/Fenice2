@@ -32,7 +32,7 @@ export default function Card({
         <a
           href={el.url}
           key={el.url}
-          className="mr-4 inline-flex items-center text-blue-600 hover:underline"
+          className="mr-4 inline-flex items-center link"
         >
           {el.text}
           <svg

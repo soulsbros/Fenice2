@@ -44,10 +44,7 @@ export default async function NpcInfo({ npc }: Readonly<NpcInfoProps>) {
       <div className="mt-4">
         {NpcAttribute(
           "Campaign",
-          <Link
-            href={`/npcs/by-campaign/${campaign._id}`}
-            className="hover:text-blue-900 underline"
-          >
+          <Link href={`/npcs/by-campaign/${campaign._id}`} className="link">
             {campaign.name}
           </Link>
         )}

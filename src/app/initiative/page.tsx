@@ -39,7 +39,7 @@ export default function InitiativePage() {
   const comparator = (characterA: Character, characterB: Character) =>
     characterB.score - characterA.score;
   const isAdmin = session.data?.user.roles.includes("admin");
-  const isTable = session.data?.user.roles.includes("table");
+  const isPlayer = session.data?.user.roles.includes("player");
   const isDM = session.data?.user.roles.includes("dm");
 
   const getFields = () => {
@@ -134,7 +134,7 @@ export default function InitiativePage() {
         active: false,
         player: session.data?.user.email ?? "",
         isPlayer: !isDM,
-        isEnemy: enemy.checked,
+        isEnemy: enemy?.checked || false,
         currentHealth: parseInt(currentHealth.value) || 0,
         totalHealth: parseInt(totalHealth.value) || 0,
         notes: notes.value,
@@ -143,7 +143,7 @@ export default function InitiativePage() {
 
     if (
       (document.querySelector("#newCharacterPersist") as HTMLInputElement)
-        .checked
+        ?.checked
     ) {
       if (/\d/.test(name.value)) {
         const digit = RegExp(/\d+/).exec(name.value);
@@ -299,7 +299,7 @@ export default function InitiativePage() {
     }
     if (
       (document.querySelector("#autoAdvance") as HTMLInputElement)?.checked ||
-      isTable
+      !isPlayer
     ) {
       document
         .querySelector("div .bg-lime-500")
@@ -407,7 +407,7 @@ export default function InitiativePage() {
           </div>
 
           <div className="flex">
-            {(isDM || character.isPlayer) && !isTable ? (
+            {(isDM || character.isPlayer) && isPlayer ? (
               <Button
                 onClick={() => editCharacter(character.name)}
                 tooltip="Edit character"
@@ -546,7 +546,7 @@ export default function InitiativePage() {
         {isEditing ? " (editing...)" : ""}
       </div>
 
-      {!isTable ? (
+      {isPlayer ? (
         <>
           <p className="subtitle">{isEditing ? "Edit" : "Add"} character</p>
           <div className="m-4">
@@ -594,7 +594,9 @@ export default function InitiativePage() {
             <Button
               label={isCombatOngoing ? "Next" : "Start"}
               icon={isCombatOngoing ? <FastForward /> : <Play />}
-              disabled={order.length === 0 || (!isDM && !isCombatOngoing)}
+              disabled={
+                order.length === 0 || (!(isDM || isAdmin) && !isCombatOngoing)
+              }
               onClick={next}
             />
           </div>
