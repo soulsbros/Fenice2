@@ -26,7 +26,7 @@ export default function NpcCard({ npc }: Readonly<NpcCardProps>) {
         </p>
         <p className="flex mt-2">
           <Activity />
-          &nbsp; {npc.status}
+          &nbsp; {npc.status || "Unknown"}
         </p>
       </Link>
     </div>

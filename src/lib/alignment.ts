@@ -23,7 +23,7 @@ export function getValueFromAlignment(alignment: string, type: string) {
 }
 
 export function getActualAlignment(character: Character) {
-  if (!character || !character.lawfulChaoticValue) {
+  if (!character) {
     return "Unknown";
   }
 
