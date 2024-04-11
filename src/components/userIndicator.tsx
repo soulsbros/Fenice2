@@ -17,13 +17,13 @@ export default async function UserIndicator() {
       href={session ? "/profile" : "/api/auth/signin"}
       className="flex items-center"
     >
-      <span>{session ? session?.user?.name?.split(" ")[0] : "Login"}</span>
+      <span>{session ? session?.user?.firstName : "Login"}</span>
       <ImageWithFallback
         src={`https://gravatar.com/avatar/${hash}?s=200&d=mp`}
         fallbackSrc={defaultImage}
         width={40}
         height={40}
-        alt={`Profile picture of ${session?.user?.name}`}
+        alt={`Profile picture of ${session?.user?.firstName}`}
         className="mx-2"
       />
     </Link>

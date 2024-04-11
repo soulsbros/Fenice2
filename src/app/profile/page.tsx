@@ -40,11 +40,13 @@ export default async function ProfilePage() {
           fallbackSrc={defaultImage}
           width={100}
           height={100}
-          alt={`Profile picture of ${user?.name}`}
+          alt={`Profile picture of ${user?.firstName}`}
         />
 
         <div>
-          Name: {user?.name}
+          Name: {user?.firstName + " " + user?.lastName}
+          <br />
+          Nickname: {user?.nickname || "-"}
           <br />
           Email: {user?.email}
           <br />

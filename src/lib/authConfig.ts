@@ -15,9 +15,10 @@ export const authOptions: NextAuthOptions = {
       profile(profile) {
         return {
           id: profile.sub,
-          name: profile.name ?? profile.preferred_username,
+          firstName: profile.given_name,
+          lastName: profile.family_name,
+          nickname: profile.nickname,
           email: profile.email,
-          image: profile.picture,
           roles: profile.resource_access.fenice2.roles ?? [],
         };
       },
@@ -25,11 +26,19 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     jwt({ token, user }) {
-      if (user) token.roles = user.roles;
+      if (user) {
+        token.roles = user.roles;
+        token.firstName = user.firstName;
+        token.lastName = user.lastName;
+        token.nickname = user.nickname;
+      }
       return token;
     },
     session({ session, token }) {
       session.user.roles = token.roles;
+      session.user.firstName = token.firstName;
+      session.user.lastName = token.lastName;
+      session.user.nickname = token.nickname;
       return session;
     },
   },
