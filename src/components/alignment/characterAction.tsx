@@ -55,50 +55,45 @@ export default function CharacterAction({
   };
 
   return (
-    <div className="max-w-[800px]">
-      <div className="flex justify-between mb-4">
-        <Select
-          placeholder="Character"
-          selectedItem={character}
-          onChange={(e) => setCharacter(e.target.value)}
-          options={characters.map((el) => {
-            return { name: el.name, value: el._id!.toString() };
-          })}
+    <div>
+      <Select
+        placeholder="Character"
+        selectedItem={character}
+        onChange={(e) => setCharacter(e.target.value)}
+        options={characters.map((el) => {
+          return { name: el.name, value: el._id!.toString() };
+        })}
+      />
+      <div className="inline-block m-2">
+        <label htmlFor="reasonInput">Action reason</label>
+        <br />
+        <input
+          id="reasonInput"
+          type="text"
+          className="p-2 m-2"
+          onChange={(e) => setReason(e.target.value)}
+          value={reason}
         />
-        <div className="inline-block m-2">
-          <label htmlFor="reasonInput">Action reason</label>
-          <br />
-          <input
-            id="reasonInput"
-            type="text"
-            className="p-2 m-2"
-            onChange={(e) => setReason(e.target.value)}
-            value={reason}
-          />
-        </div>
-        <div className="inline-block m-2">
-          <label htmlFor="actionWeight">Action weight</label>
-          <br />
-          <input
-            id="actionWeight"
-            min={0}
-            type="number"
-            className="p-2 m-2"
-            onChange={(e) => setActionWeight(parseFloat(e.target.value) || 0)}
-            value={actionWeight}
-          />
-        </div>
+      </div>
+      <div className="inline-block m-2">
+        <label htmlFor="actionWeight">Action weight</label>
+        <br />
+        <input
+          id="actionWeight"
+          min={0}
+          type="number"
+          className="p-2 m-2"
+          onChange={(e) => setActionWeight(parseFloat(e.target.value) || 0)}
+          value={actionWeight}
+        />
       </div>
 
-      <div className="text-center w-80 m-auto">
+      <div className="text-center mb-4">
         <Button onClick={() => handleClick("Good")} label="Good action" />
-        <div className="flex justify-between">
-          <Button onClick={() => handleClick("Lawful")} label="Lawful action" />
-          <Button
-            onClick={() => handleClick("Chaotic")}
-            label="Chaotic action"
-          />
-        </div>
+        <br />
+        <Button onClick={() => handleClick("Lawful")} label="Lawful action" />
+        <Button onClick={() => handleClick("Chaotic")} label="Chaotic action" />
+        <br />
         <Button onClick={() => handleClick("Evil")} label="Evil action" />
       </div>
     </div>

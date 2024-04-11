@@ -38,8 +38,9 @@ export default function ActionsHistory({
         {actions.length === 0
           ? "No actions yet"
           : actions.map((action) => (
-              <div key={action.timestamp.toISOString()}>
-                {action.reason} ({action.type}) - {Math.abs(action.value)}
+              <div key={action.timestamp.toISOString()} className="mb-4">
+                {action.reason || "Unknown"} ({action.type},{" "}
+                {Math.abs(action.value)})
               </div>
             ))}
       </div>
