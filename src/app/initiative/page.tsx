@@ -423,12 +423,14 @@ export default function InitiativePage() {
                 className="!mb-0"
               />
             ) : null}
-            <Button
-              onClick={() => damageCharacter(character.name)}
-              tooltip="Damage character"
-              icon={<Crosshair />}
-              className="!mb-0"
-            />
+            {isPlayer ? (
+              <Button
+                onClick={() => damageCharacter(character.name)}
+                tooltip="Damage character"
+                icon={<Crosshair />}
+                className="!mb-0"
+              />
+            ) : null}
           </div>
         </div>
       );
