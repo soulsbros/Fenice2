@@ -161,7 +161,7 @@ export default function CharacterForm({
             name="images"
             className="p-2 m-2"
             multiple
-            accept="image/png, image/jpeg, image/gif"
+            accept="image/png, image/jpeg, image/gif, image/webp"
           />
         </div>
       </div>
