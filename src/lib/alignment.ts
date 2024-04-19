@@ -1,6 +1,10 @@
 import { Character } from "@/types/API";
 
 export function getValueFromAlignment(alignment: string, type: string) {
+  if (alignment.toLowerCase() === "unknown") {
+    return -999;
+  }
+
   // lawful - chaotic scale
   if (type == "LC") {
     if (alignment.toLowerCase().includes("lawful")) {
@@ -23,7 +27,10 @@ export function getValueFromAlignment(alignment: string, type: string) {
 }
 
 export function getActualAlignment(character: Character) {
-  if (!character) {
+  if (
+    !character ||
+    (character.lawfulChaoticValue == -999 && character.goodEvilValue == -999)
+  ) {
     return "Unknown";
   }
 

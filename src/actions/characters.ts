@@ -52,18 +52,18 @@ export async function insertCharacter(prevState: any, formData: FormData) {
     campaignId: new ObjectId(formData.get("campaignId")?.toString() ?? ""),
     player: userData?.user.nickname ?? userData?.user.firstName,
     playerEmail: userData?.user.email ?? "",
-    name: formData.get("name")?.toString() ?? "",
-    race: formData.get("race")?.toString() ?? "",
-    gender: formData.get("gender")?.toString() ?? "",
-    pronouns: formData.get("pronouns")?.toString() ?? "",
-    orientation: formData.get("orientation")?.toString() ?? "",
-    class: formData.get("class")?.toString() ?? "",
+    name: formData.get("name")?.toString().trim() ?? "",
+    race: formData.get("race")?.toString().trim() ?? "",
+    gender: formData.get("gender")?.toString().trim() ?? "",
+    pronouns: formData.get("pronouns")?.toString().trim() ?? "",
+    orientation: formData.get("orientation")?.toString().trim() ?? "",
+    class: formData.get("class")?.toString().trim() ?? "",
     startAlignment: alignment,
     actionsHistory: [],
     lawfulChaoticValue: getValueFromAlignment(alignment, "LC"),
     goodEvilValue: getValueFromAlignment(alignment, "GE"),
-    backstory: formData.get("backstory")?.toString() ?? "",
-    personality: formData.get("personality")?.toString() ?? "",
+    backstory: formData.get("backstory")?.toString().trim() ?? "",
+    personality: formData.get("personality")?.toString().trim() ?? "",
     images: images,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -108,19 +108,20 @@ export async function updateCharacter(prevState: any, formData: FormData) {
   const formImages = formData.getAll("images") as File[];
   let images = [...char.images, ...(await parseImageFiles(formImages))];
 
-  char.name = formData.get("name")?.toString() ?? char.name;
-  char.pronouns = formData.get("pronouns")?.toString() ?? char.pronouns;
+  char.name = formData.get("name")?.toString().trim() ?? char.name;
+  char.pronouns = formData.get("pronouns")?.toString().trim() ?? char.pronouns;
   char.orientation =
-    formData.get("orientation")?.toString() ?? char.orientation;
-  char.gender = formData.get("gender")?.toString() ?? char.gender;
-  char.race = formData.get("race")?.toString() ?? char.race;
-  char.class = formData.get("class")?.toString() ?? char.class;
+    formData.get("orientation")?.toString().trim() ?? char.orientation;
+  char.gender = formData.get("gender")?.toString().trim() ?? char.gender;
+  char.race = formData.get("race")?.toString().trim() ?? char.race;
+  char.class = formData.get("class")?.toString().trim() ?? char.class;
   char.lawfulChaoticValue = getValueFromAlignment(alignment, "LC");
   char.goodEvilValue = getValueFromAlignment(alignment, "GE");
-  char.backstory = formData.get("backstory")?.toString() ?? char.backstory;
+  char.backstory =
+    formData.get("backstory")?.toString().trim() ?? char.backstory;
   char.personality =
-    formData.get("personality")?.toString() ?? char.personality;
-  char.campaignId = new ObjectId(formData.get("campaignId")?.toString());
+    formData.get("personality")?.toString().trim() ?? char.personality;
+  char.campaignId = new ObjectId(formData.get("campaignId")?.toString().trim());
   char.player = userData?.user.nickname ?? userData?.user.firstName;
   char.updatedAt = new Date();
   char.images = images;

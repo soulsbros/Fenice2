@@ -41,15 +41,15 @@ export async function insertNpc(prevState: any, formData: FormData) {
 
   const npc: NPC = {
     campaignId: new ObjectId(formData.get("campaignId")?.toString() ?? ""),
-    name: formData.get("name")?.toString() ?? "",
-    race: formData.get("race")?.toString() ?? "",
-    gender: formData.get("gender")?.toString() ?? "",
-    pronouns: formData.get("pronouns")?.toString() ?? "",
-    orientation: formData.get("orientation")?.toString() ?? "",
-    class: formData.get("class")?.toString() ?? "",
-    status: formData.get("status")?.toString() ?? "",
-    backstory: formData.get("backstory")?.toString() ?? "",
-    personality: formData.get("personality")?.toString() ?? "",
+    name: formData.get("name")?.toString().trim() ?? "",
+    race: formData.get("race")?.toString().trim() ?? "",
+    gender: formData.get("gender")?.toString().trim() ?? "",
+    pronouns: formData.get("pronouns")?.toString().trim() ?? "",
+    orientation: formData.get("orientation")?.toString().trim() ?? "",
+    class: formData.get("class")?.toString().trim() ?? "",
+    status: formData.get("status")?.toString().trim() ?? "",
+    backstory: formData.get("backstory")?.toString().trim() ?? "",
+    personality: formData.get("personality")?.toString().trim() ?? "",
     images: images,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -90,15 +90,17 @@ export async function updateNpc(prevState: any, formData: FormData) {
   const formImages = formData.getAll("images") as File[];
   let images = [...npc.images, ...(await parseImageFiles(formImages))];
 
-  npc.name = formData.get("name")?.toString() ?? npc.name;
-  npc.pronouns = formData.get("pronouns")?.toString() ?? npc.pronouns;
-  npc.orientation = formData.get("orientation")?.toString() ?? npc.orientation;
-  npc.gender = formData.get("gender")?.toString() ?? npc.gender;
-  npc.race = formData.get("race")?.toString() ?? npc.race;
-  npc.class = formData.get("class")?.toString() ?? npc.class;
-  npc.status = formData.get("status")?.toString() ?? npc.status;
-  npc.backstory = formData.get("backstory")?.toString() ?? npc.backstory;
-  npc.personality = formData.get("personality")?.toString() ?? npc.personality;
+  npc.name = formData.get("name")?.toString().trim() ?? npc.name;
+  npc.pronouns = formData.get("pronouns")?.toString().trim() ?? npc.pronouns;
+  npc.orientation =
+    formData.get("orientation")?.toString().trim() ?? npc.orientation;
+  npc.gender = formData.get("gender")?.toString().trim() ?? npc.gender;
+  npc.race = formData.get("race")?.toString().trim() ?? npc.race;
+  npc.class = formData.get("class")?.toString().trim() ?? npc.class;
+  npc.status = formData.get("status")?.toString().trim() ?? npc.status;
+  npc.backstory = formData.get("backstory")?.toString().trim() ?? npc.backstory;
+  npc.personality =
+    formData.get("personality")?.toString().trim() ?? npc.personality;
   npc.campaignId = new ObjectId(formData.get("campaignId")?.toString());
   npc.updatedAt = new Date();
   npc.images = images;
