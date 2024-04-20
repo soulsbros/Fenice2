@@ -1,8 +1,10 @@
 import { Character } from "@/types/API";
 
+export const UNKNOWN_VALUE = -999;
+
 export function getValueFromAlignment(alignment: string, type: string) {
   if (alignment.toLowerCase() === "unknown") {
-    return -999;
+    return UNKNOWN_VALUE;
   }
 
   // lawful - chaotic scale
@@ -29,7 +31,8 @@ export function getValueFromAlignment(alignment: string, type: string) {
 export function getActualAlignment(character: Character) {
   if (
     !character ||
-    (character.lawfulChaoticValue == -999 && character.goodEvilValue == -999)
+    (character.lawfulChaoticValue == UNKNOWN_VALUE &&
+      character.goodEvilValue == UNKNOWN_VALUE)
   ) {
     return "Unknown";
   }
@@ -48,12 +51,12 @@ export function getActualAlignment(character: Character) {
 
   // -100  good  [-33  neutral  33]  evil  100
   if (character.goodEvilValue < -THRESHOLD) {
-    result += " good";
+    result += " Good";
   } else if (character.goodEvilValue > THRESHOLD) {
-    result += " evil";
+    result += " Evil";
   } else if (result != "Neutral") {
     // check to avoid "Neutral neutral" lol
-    result += " neutral";
+    result += " Neutral";
   }
 
   return result;

@@ -1,4 +1,5 @@
 import { Character } from "@/types/API";
+import { UNKNOWN_VALUE } from "./alignment";
 
 const BORDER_COLOR = "#000000";
 const GOOD_COLOR = "#ccf2ff";
@@ -63,7 +64,12 @@ export const drawAllAlignments = (
   centerY: number
 ) => {
   characters.forEach((el) => {
-    drawAlignmentCircle(ctx, el, r, centerX, centerY);
+    if (
+      el.goodEvilValue != UNKNOWN_VALUE &&
+      el.lawfulChaoticValue != UNKNOWN_VALUE
+    ) {
+      drawAlignmentCircle(ctx, el, r, centerX, centerY);
+    }
   });
 };
 
