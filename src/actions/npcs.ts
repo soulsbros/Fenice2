@@ -53,6 +53,7 @@ export async function insertNpc(prevState: any, formData: FormData) {
     images: images,
     createdAt: new Date(),
     updatedAt: new Date(),
+    updatedBy: userData?.user.email,
   };
 
   const result = await insertDocs("npcs", [npc]);
@@ -103,6 +104,7 @@ export async function updateNpc(prevState: any, formData: FormData) {
     formData.get("personality")?.toString().trim() ?? npc.personality;
   npc.campaignId = new ObjectId(formData.get("campaignId")?.toString());
   npc.updatedAt = new Date();
+  npc.updatedBy = userData?.user.email;
   npc.images = images;
 
   const result = await updateDoc("npcs", npc, {

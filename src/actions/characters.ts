@@ -50,7 +50,10 @@ export async function insertCharacter(prevState: any, formData: FormData) {
 
   const char: Character = {
     campaignId: new ObjectId(formData.get("campaignId")?.toString() ?? ""),
-    player: userData?.user.nickname ?? userData?.user.firstName,
+    player:
+      userData?.user.nickname != null
+        ? userData?.user.nickname
+        : userData?.user.firstName,
     playerEmail: userData?.user.email ?? "",
     name: formData.get("name")?.toString().trim() ?? "",
     race: formData.get("race")?.toString().trim() ?? "",
@@ -122,7 +125,10 @@ export async function updateCharacter(prevState: any, formData: FormData) {
   char.personality =
     formData.get("personality")?.toString().trim() ?? char.personality;
   char.campaignId = new ObjectId(formData.get("campaignId")?.toString().trim());
-  char.player = userData?.user.nickname ?? userData?.user.firstName;
+  char.player =
+    userData?.user.nickname != null
+      ? userData?.user.nickname
+      : userData?.user.firstName;
   char.updatedAt = new Date();
   char.images = images;
 

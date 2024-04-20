@@ -30,6 +30,7 @@ export interface Character extends BaseCharacter {
 
 export interface NPC extends BaseCharacter {
   status: string;
+  updatedBy: string;
 }
 
 export interface Campaign {
