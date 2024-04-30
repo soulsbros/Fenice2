@@ -6,6 +6,7 @@ import Textfield from "@/components/textfield";
 import {
   advanceCharacter,
   getHealthDescription,
+  healthColors,
   parseBlock,
 } from "@/lib/initiative";
 import { Character, GameData } from "@/types/Initiative";
@@ -194,7 +195,9 @@ export default function InitiativePage() {
     score.value = character.score.toString();
     currentHealth.value = character.currentHealth.toString();
     totalHealth.value = character.totalHealth.toString();
-    enemy.checked = character.isEnemy;
+    if (enemy) {
+      enemy.checked = character.isEnemy;
+    }
     notes.value = character.notes;
 
     document
@@ -548,6 +551,17 @@ export default function InitiativePage() {
         {isEditing ? " (editing...)" : ""}
       </div>
 
+      <div className="sticky bottom-0 pb-2 bg-main-bg text-right">
+        <Button
+          label={isCombatOngoing ? "Next" : "Start"}
+          icon={isCombatOngoing ? <FastForward /> : <Play />}
+          disabled={
+            order.length === 0 || (!(isDM || isAdmin) && !isCombatOngoing)
+          }
+          onClick={next}
+        />
+      </div>
+
       {isPlayer ? (
         <>
           <p className="subtitle">{isEditing ? "Edit" : "Add"} character</p>
@@ -592,17 +606,6 @@ export default function InitiativePage() {
             </div>
           </div>
 
-          <div className="sticky bottom-0 pb-2 bg-main-bg text-right">
-            <Button
-              label={isCombatOngoing ? "Next" : "Start"}
-              icon={isCombatOngoing ? <FastForward /> : <Play />}
-              disabled={
-                order.length === 0 || (!(isDM || isAdmin) && !isCombatOngoing)
-              }
-              onClick={next}
-            />
-          </div>
-
           {isDM || isAdmin ? (
             <>
               <p className="subtitle">DM controls</p>
@@ -636,12 +639,12 @@ export default function InitiativePage() {
 
           <p className="subtitle mt-4">HP color scale</p>
           <div>
-            <p className="text-green-800">&gt;100% - Untouched</p>
-            <p className="text-green-500">&gt;80% - Barely injured</p>
-            <p className="text-yellow-600">&gt;60% - Lightly injured</p>
-            <p className="text-orange-500">&gt;40% - Injured</p>
-            <p className="text-red-600">&gt;20% - Gravely injured</p>
-            <p className="text-red-800">&lt;20% - Near death</p>
+            <p className={healthColors[0]}>&gt;100% - Untouched</p>
+            <p className={healthColors[1]}>&gt;80% - Barely injured</p>
+            <p className={healthColors[2]}>&gt;60% - Lightly injured</p>
+            <p className={healthColors[3]}>&gt;40% - Injured</p>
+            <p className={healthColors[4]}>&gt;20% - Gravely injured</p>
+            <p className={healthColors[5]}>&lt;20% - Near death</p>
           </div>
         </>
       ) : null}

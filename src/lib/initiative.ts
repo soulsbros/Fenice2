@@ -15,6 +15,15 @@ export function advanceCharacter(order: Character[], turn: number) {
   return { newOrder, newTurn };
 }
 
+export const healthColors = [
+  "text-green-800",
+  "text-green-600",
+  "text-yellow-600",
+  "text-orange-500",
+  "text-red-800",
+  "text-red-500",
+];
+
 export function getHealthDescription(character: Character) {
   if (character.currentHealth <= 0) {
     return { text: "Unconscious", color: "" };
@@ -22,17 +31,17 @@ export function getHealthDescription(character: Character) {
 
   const hpRatio = character.currentHealth / character.totalHealth;
   if (hpRatio >= 1) {
-    return { text: "Untouched", color: "text-green-800" };
+    return { text: "Untouched", color: healthColors[0] };
   } else if (hpRatio > 0.8) {
-    return { text: "Barely injured", color: "text-green-500" };
+    return { text: "Barely injured", color: healthColors[1] };
   } else if (hpRatio > 0.6) {
-    return { text: "Lightly injured", color: "text-yellow-600" };
+    return { text: "Lightly injured", color: healthColors[2] };
   } else if (hpRatio > 0.4) {
-    return { text: "Injured", color: "text-orange-500" };
+    return { text: "Injured", color: healthColors[3] };
   } else if (hpRatio > 0.2) {
-    return { text: "Gravely injured", color: "text-red-600" };
+    return { text: "Gravely injured", color: healthColors[4] };
   } else {
-    return { text: "Near death", color: "text-red-800" };
+    return { text: "Near death", color: healthColors[5] };
   }
 }
 
