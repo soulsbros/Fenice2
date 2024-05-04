@@ -1,42 +1,19 @@
+import LinkButtons from "@/components/linkButtons";
 import { itineraryPoints, markers, teleportPoints } from "@/lib/mapLocations";
 import { LinesList, MapLocation } from "@/types/Map";
 import { LatLngTuple } from "leaflet";
 import dynamic from "next/dynamic";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 const LeafletMap = dynamic(() => import("@/components/leafletMap"), {
   ssr: false,
 });
 
-interface MapButtonsProps {
-  map: string;
-}
-
-const MapButtons = ({ map }: MapButtonsProps) => {
-  return (
-    <>
-      <Link
-        href="/map/brightAge"
-        className={`${map === "brightAge" ? "secondary" : "primary"} button`}
-      >
-        Bright Age
-      </Link>
-      <Link
-        href="/map/darkAge"
-        className={`${map === "darkAge" ? "secondary" : "primary"} button`}
-      >
-        Dark Age
-      </Link>
-      <Link
-        href="/map/golarion"
-        className={`${map === "golarion" ? "secondary" : "primary"} button`}
-      >
-        Golarion
-      </Link>
-    </>
-  );
-};
+const links = [
+  { name: "Bright Age", url: "/map/brightAge" },
+  { name: "Dark Age", url: "/map/darkAge" },
+  { name: "Golarion", url: "/map/golarion" },
+];
 
 export default async function SingleMapPage({
   params,
@@ -58,7 +35,7 @@ export default async function SingleMapPage({
 
     return (
       <>
-        <MapButtons map={params.map} />
+        <LinkButtons selected={params.map} links={links} />
         <LeafletMap
           position={[-9.79567758282973, 6.651439946725858]}
           zoom={2}
@@ -90,7 +67,7 @@ export default async function SingleMapPage({
 
     return (
       <>
-        <MapButtons map={params.map} />
+        <LinkButtons selected={params.map} links={links} />
         <LeafletMap
           position={[44, -10]}
           zoom={5}
@@ -105,7 +82,7 @@ export default async function SingleMapPage({
   if (params.map == "golarion") {
     return (
       <>
-        <MapButtons map={params.map} />
+        <LinkButtons selected={params.map} links={links} />
         <iframe
           id="map"
           title="Map"
