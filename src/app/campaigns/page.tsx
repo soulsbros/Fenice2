@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default async function CampaignsPage() {
   const result = await getCampaigns();
-  const campaigns = result.data as Campaign[];
+  const campaigns = result.data.reverse() as Campaign[];
 
   return campaigns.map((campaign) => (
     <div key={campaign._id!.toString()} className="mb-6">
