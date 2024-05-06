@@ -47,6 +47,13 @@ export default function Sidebar() {
           name="Old site &#x2197;"
           path="https://lafenice.soulsbros.ch"
           icon={<SkipBack />}
+          newTab
+        />
+        <SidebarLink
+          name="Session plan &#x2197;"
+          path="https://docs.google.com/spreadsheets/d/1ky-ZVUt-5uiXDzWmEgrUA_-vLs_LyRrNxUykBOKSPTM"
+          icon={<Calendar />}
+          newTab
         />
       </div>
 

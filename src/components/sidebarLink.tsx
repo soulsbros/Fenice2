@@ -8,6 +8,7 @@ type SidebarLinkProps = {
   name: string;
   path: string;
   icon: ReactElement;
+  newTab?: boolean;
   disabled?: boolean;
 };
 
@@ -21,6 +22,7 @@ export default function SidebarLink({
   name,
   path,
   icon,
+  newTab = false,
   disabled = false,
 }: Readonly<SidebarLinkProps>) {
   const pathname = usePathname();
@@ -36,6 +38,7 @@ export default function SidebarLink({
       className={`flex p-4 hover:bg-blue-300 ${
         disabled ? "cursor-default text-slate-500" : ""
       } ${currentPage ? "text-red-700" : ""}`}
+      target={newTab ? "_blank" : undefined}
     >
       {icon}
       <p className="ml-3">{name}</p>
