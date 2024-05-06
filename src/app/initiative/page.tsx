@@ -69,7 +69,8 @@ export default function InitiativePage() {
       getFields();
     let parsedScore = parseFloat(score.value);
 
-    if (order.find((character) => character.name === name.value)) {
+    const oldValue = order.find((character) => character.name === name.value);
+    if (!isEditing && oldValue) {
       Swal.fire({
         title: "Invalid input",
         text: `Character ${name.value} already exists`,
@@ -89,7 +90,10 @@ export default function InitiativePage() {
       return;
     }
 
-    if (order.find((character) => character.score == parsedScore)) {
+    if (
+      !isEditing &&
+      order.find((character) => character.score == parsedScore)
+    ) {
       const oldIndex = order.findIndex(
         (character) => character.score == parsedScore
       );
@@ -127,20 +131,27 @@ export default function InitiativePage() {
       parsedScore = order[oldIndex].score + modifier;
     }
 
-    const newOrder = [
-      ...order,
-      {
-        name: name.value,
-        score: parsedScore,
-        active: false,
-        player: session.data?.user.email ?? "",
-        isPlayer: !isDM,
-        isEnemy: enemy?.checked || false,
-        currentHealth: parseInt(currentHealth.value) || 0,
-        totalHealth: parseInt(totalHealth.value) || 0,
-        notes: notes.value,
-      },
-    ].toSorted(comparator);
+    const newCharacter: Character = {
+      name: name.value,
+      score: parsedScore,
+      active: oldValue?.active ?? false,
+      player: oldValue?.player ?? session.data?.user.email ?? "",
+      isPlayer: oldValue?.isPlayer ?? !isDM,
+      isEnemy: oldValue?.isEnemy ?? enemy?.checked ?? false,
+      currentHealth: parseInt(currentHealth.value) || 0,
+      totalHealth: parseInt(totalHealth.value) || 0,
+      notes: notes.value,
+    };
+
+    const oldIndex = order.findIndex(
+      (character) => character.name == name.value
+    );
+    if (oldIndex == -1) {
+      order.push(newCharacter);
+    } else {
+      order[oldIndex] = newCharacter;
+    }
+    const newOrder = [...order].toSorted(comparator);
 
     if (
       (document.querySelector("#newCharacterPersist") as HTMLInputElement)
@@ -203,8 +214,6 @@ export default function InitiativePage() {
     document
       .querySelector("#newCharacterName")
       ?.scrollIntoView({ behavior: "smooth" });
-
-    deleteCharacter(currentCharacter);
   };
 
   const deleteCharacter = (currentCharacter: string) => {
@@ -509,6 +518,11 @@ export default function InitiativePage() {
     // validate that there are no duplicate names
     for (let character of parsedText) {
       if (order.find((char) => char.name === character.name)) {
+        Swal.fire({
+          title: "Duplicated entry",
+          text: `Character ${character.name} already exists`,
+          icon: "error",
+        });
         console.error(`Duplicated entry: ${character.name}`);
         return;
       }
@@ -546,12 +560,11 @@ export default function InitiativePage() {
         {renderOrder()}
       </div>
 
-      <div className="mb-4">
-        {enemies} enemies vs {allies} allies
-        {isEditing ? " (editing...)" : ""}
-      </div>
-
-      <div className="sticky bottom-0 pb-2 bg-main-bg text-right">
+      <div className="sticky bottom-0 pb-2 bg-main-bg flex justify-between">
+        <div>
+          {enemies} enemies vs {allies} allies
+          {isEditing ? " (editing...)" : ""}
+        </div>
         <Button
           label={isCombatOngoing ? "Next" : "Start"}
           icon={isCombatOngoing ? <FastForward /> : <Play />}
