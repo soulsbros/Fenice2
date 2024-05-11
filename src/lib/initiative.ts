@@ -73,3 +73,26 @@ export function parseBlock(inputText: string, player: string) {
   }
   return players;
 }
+
+/**
+ * Generates a random number between the given values.
+ * @param min The minimum value (inclusive)
+ * @param max The maximum value (inclusive)
+ * @returns A random number between the given values
+ */
+export function getRandomValue(min: number, max: number) {
+  const array = new Uint32Array(1);
+  crypto.getRandomValues(array);
+  const randomValue = array[0];
+  return Math.floor((randomValue / 0xffffffff) * (max - min + 1) + min);
+}
+
+export function getCharacterColor(character: Character) {
+  if (character.isEnemy) {
+    return "bg-red-700";
+  }
+  if (!character.isPlayer && !character.isEnemy) {
+    return "bg-lime-700";
+  }
+  return "bg-sky-800";
+}

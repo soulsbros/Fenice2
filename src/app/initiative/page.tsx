@@ -5,7 +5,9 @@ import Button from "@/components/button";
 import Textfield from "@/components/textfield";
 import {
   advanceCharacter,
+  getCharacterColor,
   getHealthDescription,
+  getRandomValue,
   healthColors,
   parseBlock,
 } from "@/lib/initiative";
@@ -60,14 +62,24 @@ export default function InitiativePage() {
     let notes = document.querySelector(
       "#newCharacterNotes"
     ) as HTMLInputElement;
+    let amount = document.querySelector(
+      "#newCharacterAmount"
+    ) as HTMLInputElement;
 
-    return { name, score, currentHealth, totalHealth, enemy, notes };
+    return { name, score, currentHealth, totalHealth, enemy, notes, amount };
   };
 
   const addCharacter = async () => {
     const { name, score, currentHealth, totalHealth, enemy, notes } =
       getFields();
-    let parsedScore = parseFloat(score.value);
+
+    // we roll the dice for the DM
+    let parsedScore = isDM
+      ? getRandomValue(1, 20) + parseFloat(score.value)
+      : parseFloat(score.value);
+
+    // WIP
+    // let parsedAmount = amount?.value || 1;
 
     const oldValue = order.find((character) => character.name === name.value);
     if (!isEditing && oldValue) {
@@ -97,21 +109,12 @@ export default function InitiativePage() {
       const oldIndex = order.findIndex(
         (character) => character.score == parsedScore
       );
-      const result = await Swal.fire({
-        title: "Conflict found",
-        text: `Initiative value ${score.value} already exists. Who goes first?`,
-        icon: "question",
-        reverseButtons: true,
-        showCancelButton: true,
-        cancelButtonText: order[oldIndex].name,
-        confirmButtonText: name.value,
-        allowOutsideClick: false,
-        allowEnterKey: false,
-        allowEscapeKey: false,
-      });
+
+      // we decide randomly who goes first
+      const result = getRandomValue(0, 1);
 
       let modifier: number;
-      if (result.isConfirmed) {
+      if (result == 1) {
         // the new one goes first -> put them higher
         modifier = 0.01;
       } else {
@@ -402,20 +405,23 @@ export default function InitiativePage() {
           key={character.name}
           className={`my-2 p-2 flex justify-between items-center ${
             character.active ? "bg-lime-500 font-semibold" : ""
-          } transition-all duration-500 bor border-solid border-2 border-slate-800`}
+          } transition-all duration-500 border-solid border-2 border-slate-600`}
         >
-          <div>
-            <p className={`text-lg ${character.isEnemy ? "text-red-600" : ""}`}>
-              {character.name}{" "}
-              {character.notes && (isDM || character.isPlayer)
-                ? `(${character.notes})`
-                : ""}
-            </p>
-            <p className="text-sm italic flex space-x-2">
-              <ChevronsRight /> {character.score}
-              <Heart />
-              <span className={health.color}>{health.text}</span>
-            </p>
+          <div className="flex">
+            <div className={`${getCharacterColor(character)} mr-1`}>&nbsp;</div>
+            <div>
+              <p className="text-lg">
+                {character.name}{" "}
+                {character.notes && (isDM || character.isPlayer)
+                  ? `(${character.notes})`
+                  : ""}
+              </p>
+              <p className="text-sm italic flex space-x-2">
+                <ChevronsRight /> {character.score}
+                <Heart />
+                <span className={health.color}>{health.text}</span>
+              </p>
+            </div>
           </div>
 
           <div className="flex">
@@ -586,7 +592,7 @@ export default function InitiativePage() {
             />
             <Textfield
               id="newCharacterScore"
-              placeholder="Initiative score"
+              placeholder={isDM ? "Initiative modifier" : "Initiative score"}
               required
             />
             <Textfield
@@ -600,6 +606,13 @@ export default function InitiativePage() {
               type="number"
             />
             <Textfield id="newCharacterNotes" placeholder="Notes" type="text" />
+            {isDM || isAdmin ? (
+              <Textfield
+                id="newCharacterAmount"
+                placeholder="Amount"
+                type="number"
+              />
+            ) : null}
             <div className="text-center">
               {isDM ? (
                 <>
@@ -658,6 +671,13 @@ export default function InitiativePage() {
             <p className={healthColors[3]}>&gt;40% - Injured</p>
             <p className={healthColors[4]}>&gt;20% - Gravely injured</p>
             <p className={healthColors[5]}>&lt;20% - Near death</p>
+          </div>
+
+          <p className="subtitle mt-4">Characters legend</p>
+          <div>
+            <p className="text-red-700">Enemy</p>
+            <p className="text-lime-700">Ally</p>
+            <p className="text-sky-800">Player</p>
           </div>
         </>
       ) : null}
