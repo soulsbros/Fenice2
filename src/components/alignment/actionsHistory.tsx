@@ -5,13 +5,11 @@ import { Action, Character } from "@/types/API";
 import { useEffect, useState } from "react";
 import Select from "../select";
 
-interface ActionsHistoryProps {
+interface Props {
   characters: Character[];
 }
 
-export default function ActionsHistory({
-  characters,
-}: Readonly<ActionsHistoryProps>) {
+export default function ActionsHistory({ characters }: Readonly<Props>) {
   const [character, setCharacter] = useState(characters[0]._id!.toString());
   const [actions, setActions] = useState<Action[]>([]);
 

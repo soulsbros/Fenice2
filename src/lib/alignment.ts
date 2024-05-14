@@ -2,6 +2,19 @@ import { Character } from "@/types/API";
 
 export const UNKNOWN_VALUE = -999;
 
+export const alignments = [
+  "Unknown",
+  "Chaotic Good",
+  "Chaotic Neutral",
+  "Chaotic Evil",
+  "Neutral Good",
+  "Neutral",
+  "Neutral Evil",
+  "Lawful Good",
+  "Lawful Neutral",
+  "Lawful Evil",
+];
+
 export function getValueFromAlignment(alignment: string, type: string) {
   if (alignment.toLowerCase() === "unknown") {
     return UNKNOWN_VALUE;
@@ -61,16 +74,3 @@ export function getActualAlignment(character: Character) {
 
   return result;
 }
-
-export const alignments = [
-  "Unknown",
-  "Chaotic Good",
-  "Chaotic Neutral",
-  "Chaotic Evil",
-  "Neutral Good",
-  "Neutral",
-  "Neutral Evil",
-  "Lawful Good",
-  "Lawful Neutral",
-  "Lawful Evil",
-];

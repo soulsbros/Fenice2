@@ -4,11 +4,11 @@ import { decrypt } from "@/lib/mongo";
 import { Character } from "@/types/API";
 import { notFound } from "next/navigation";
 
-export default async function UserCharactersPage({
-  params,
-}: Readonly<{
+interface Props {
   params: { id: string };
-}>) {
+}
+
+export default async function UserCharactersPage({ params }: Readonly<Props>) {
   let { id } = params;
   const parsedEmail = decrypt(id);
   const result = await getCharacters(undefined, { playerEmail: parsedEmail });

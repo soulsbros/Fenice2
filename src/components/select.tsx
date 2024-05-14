@@ -8,7 +8,7 @@ interface KV {
   value: string;
 }
 
-interface SelectProps {
+interface Props {
   id?: string;
   name?: string;
   placeholder?: string;
@@ -28,7 +28,7 @@ export default function Select({
   redirectPath,
   onChange,
   required = false,
-}: Readonly<SelectProps>) {
+}: Readonly<Props>) {
   const router = useRouter();
   return (
     <div className="inline-block">

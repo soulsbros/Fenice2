@@ -4,11 +4,11 @@ import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image, { ImageProps } from "next/image";
 import { useState } from "react";
 
-interface ImageWithFallbackProps extends ImageProps {
+interface Props extends ImageProps {
   fallbackSrc: string | StaticImport;
 }
 
-const ImageWithFallback = (props: ImageWithFallbackProps) => {
+export default function ImageWithFallback(props: Readonly<Props>) {
   const { src, fallbackSrc, alt, ...rest } = props;
   const [imgSrc, setImgSrc] = useState(src);
 
@@ -22,6 +22,4 @@ const ImageWithFallback = (props: ImageWithFallbackProps) => {
       }}
     />
   );
-};
-
-export default ImageWithFallback;
+}

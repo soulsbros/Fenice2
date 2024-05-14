@@ -1,4 +1,4 @@
-interface TextfieldProps {
+interface Props {
   id?: string;
   name?: string;
   placeholder?: string;
@@ -14,7 +14,7 @@ export default function Textfield({
   defaultValue,
   type = "text",
   required = false,
-}: Readonly<TextfieldProps>) {
+}: Readonly<Props>) {
   return (
     <div className="inline-block">
       {placeholder}

@@ -4,11 +4,11 @@ import Link from "next/link";
 import { Activity } from "react-feather";
 import ImageWithFallback from "./imageWithFallback";
 
-interface NpcCardProps {
+interface Props {
   npc: NPC;
 }
 
-export default function NpcCard({ npc }: Readonly<NpcCardProps>) {
+export default function NpcCard({ npc }: Readonly<Props>) {
   return (
     <div className="character-card w-[300px] m-3 p-4 rounded-md shadow-md">
       <Link href={`/npcs/${npc._id}`}>

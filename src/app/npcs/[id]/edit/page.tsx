@@ -3,11 +3,11 @@ import CharacterForm from "@/components/characterForm";
 import { NPC } from "@/types/API";
 import { ObjectId } from "mongodb";
 
-export default async function EditNpcPage({
-  params,
-}: Readonly<{
+interface Props {
   params: { id: string };
-}>) {
+}
+
+export default async function EditNpcPage({ params }: Readonly<Props>) {
   const { id } = params;
   const result = await getNpcs(undefined, {
     _id: new ObjectId(id),

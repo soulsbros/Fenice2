@@ -9,11 +9,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Plus } from "react-feather";
 
-export default async function CampaignNpcsPage({
-  params,
-}: Readonly<{
+interface Props {
   params: { id: string };
-}>) {
+}
+
+export default async function CampaignNpcsPage({ params }: Readonly<Props>) {
   let { id } = params;
   let parsedId: ObjectId;
   try {

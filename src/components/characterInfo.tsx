@@ -6,7 +6,7 @@ import Link from "next/link";
 import { ReactElement } from "react";
 import ImageWithFallback from "./imageWithFallback";
 
-interface CharacterInfoProps {
+interface Props {
   character: Character;
 }
 
@@ -19,9 +19,7 @@ function CharacterAttribute(key: string, value: string | ReactElement) {
   );
 }
 
-export default async function CharacterInfo({
-  character,
-}: Readonly<CharacterInfoProps>) {
+export default async function CharacterInfo({ character }: Readonly<Props>) {
   const campaignInfo = await getWithFilter("campaigns", undefined, {
     _id: character.campaignId,
   });

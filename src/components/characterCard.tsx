@@ -6,7 +6,7 @@ import Link from "next/link";
 import { AlertCircle, Compass, User, Users } from "react-feather";
 import ImageWithFallback from "./imageWithFallback";
 
-interface CharacterCardProps {
+interface Props {
   character: Character;
   showPlayer?: boolean;
 }
@@ -34,7 +34,7 @@ const countEmptyFields = (character: Character) => {
 export default async function CharacterCard({
   character,
   showPlayer = true,
-}: Readonly<CharacterCardProps>) {
+}: Readonly<Props>) {
   const { emptyFields, emptyFieldsCount } = countEmptyFields(character);
   const campaign = await getCampaigns(undefined, { _id: character.campaignId });
   const campaignName = (campaign.data[0] as Campaign).name;

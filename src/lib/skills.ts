@@ -1,32 +1,5 @@
 import { Edition } from "@/types/Skills";
 
-export const findSkill = (skill: string, edition: string) =>
-  editions
-    .filter((ed) => ed.id === edition)[0]
-    .skills.filter((el) => el.name.toLowerCase() === skill.toLowerCase())[0];
-
-export const getWikiURL = (skillName: string, edition: string) => {
-  switch (edition) {
-    case editions[0].id:
-      return `https://www.d20srd.org/srd/skills/${
-        skillName[0].toLowerCase() + skillName.replaceAll(" ", "").slice(1)
-      }.htm`;
-    case editions[1].id:
-      return `https://www.dandwiki.com/wiki/5e_SRD:${skillName.replaceAll(
-        " ",
-        "_"
-      )}_Skill`;
-    case editions[2].id:
-      return (
-        "https://2e.aonprd.com/Skills.aspx?ID=" +
-        (editions[2].skills.findIndex(
-          (el) => el.name.toLowerCase() === skillName.toLowerCase()
-        ) +
-          1)
-      );
-  }
-};
-
 export const defaultEdition = "pf2";
 
 export const editions: Edition[] = [
@@ -487,3 +460,30 @@ export const editions: Edition[] = [
     ],
   },
 ];
+
+export function findSkill(skill: string, edition: string) {
+  return editions
+    .filter((ed) => ed.id === edition)[0]
+    .skills.filter((el) => el.name.toLowerCase() === skill.toLowerCase())[0];
+}
+export function getWikiURL(skillName: string, edition: string) {
+  switch (edition) {
+    case editions[0].id:
+      return `https://www.d20srd.org/srd/skills/${
+        skillName[0].toLowerCase() + skillName.replaceAll(" ", "").slice(1)
+      }.htm`;
+    case editions[1].id:
+      return `https://www.dandwiki.com/wiki/5e_SRD:${skillName.replaceAll(
+        " ",
+        "_"
+      )}_Skill`;
+    case editions[2].id:
+      return (
+        "https://2e.aonprd.com/Skills.aspx?ID=" +
+        (editions[2].skills.findIndex(
+          (el) => el.name.toLowerCase() === skillName.toLowerCase()
+        ) +
+          1)
+      );
+  }
+}

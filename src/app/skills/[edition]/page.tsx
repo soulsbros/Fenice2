@@ -3,11 +3,11 @@ import Select from "@/components/select";
 import { editions } from "@/lib/skills";
 import { notFound } from "next/navigation";
 
-export default function SkillsPage({
-  params,
-}: Readonly<{
+interface Props {
   params: { edition: string };
-}>) {
+}
+
+export default function SkillsPage({ params }: Readonly<Props>) {
   let { edition } = params;
   const editionData = editions.find((e) => e.id === edition);
   if (!editionData) {

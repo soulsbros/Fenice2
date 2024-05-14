@@ -1,5 +1,14 @@
 import { Character } from "@/types/Initiative";
 
+export const healthColors = [
+  "text-green-800",
+  "text-green-600",
+  "text-yellow-600",
+  "text-orange-500",
+  "text-red-800",
+  "text-red-500",
+];
+
 export function advanceCharacter(order: Character[], turn: number) {
   const newOrder = [...order];
   let newTurn = turn;
@@ -14,15 +23,6 @@ export function advanceCharacter(order: Character[], turn: number) {
   }
   return { newOrder, newTurn };
 }
-
-export const healthColors = [
-  "text-green-800",
-  "text-green-600",
-  "text-yellow-600",
-  "text-orange-500",
-  "text-red-800",
-  "text-red-500",
-];
 
 export function getHealthDescription(character: Character) {
   if (character.currentHealth <= 0) {

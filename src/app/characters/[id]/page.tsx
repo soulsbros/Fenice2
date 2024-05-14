@@ -7,11 +7,11 @@ import { ObjectId } from "mongodb";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 
-export default async function SingleCharacterPage({
-  params,
-}: Readonly<{
+interface Props {
   params: { id: string };
-}>) {
+}
+
+export default async function SingleCharacterPage({ params }: Readonly<Props>) {
   let { id } = params;
   let parsedId;
   try {

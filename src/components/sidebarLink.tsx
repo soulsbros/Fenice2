@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ReactElement } from "react";
 
-type SidebarLinkProps = {
+type Props = {
   name: string;
   path: string;
   icon: ReactElement;
@@ -24,7 +24,7 @@ export default function SidebarLink({
   icon,
   newTab = false,
   disabled = false,
-}: Readonly<SidebarLinkProps>) {
+}: Readonly<Props>) {
   const pathname = usePathname();
   const currentPage =
     !path.startsWith("https://") &&

@@ -13,11 +13,11 @@ import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import { notFound } from "next/navigation";
 
-export default function CalendarPage({
-  params,
-}: Readonly<{
+interface Props {
   params: { campaign: string };
-}>) {
+}
+
+export default function CalendarPage({ params }: Readonly<Props>) {
   function renderEventContent(eventInfo: any) {
     return (
       <>

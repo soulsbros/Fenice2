@@ -4,11 +4,11 @@ import { editions } from "@/lib/skills";
 import { Document } from "@/types/API";
 import { notFound } from "next/navigation";
 
-export default async function DocumentsPage({
-  params,
-}: Readonly<{
+interface Props {
   params: { edition: string };
-}>) {
+}
+
+export default async function DocumentsPage({ params }: Readonly<Props>) {
   let { edition } = params;
   const result = await fetch(
     `https://lafenice.soulsbros.ch/api/docs.php?folder=${edition}`

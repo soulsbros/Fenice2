@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ReactElement } from "react";
 import ImageWithFallback from "./imageWithFallback";
 
-interface NpcInfoProps {
+interface Props {
   npc: NPC;
 }
 
@@ -18,7 +18,7 @@ function NpcAttribute(key: string, value: string | ReactElement) {
   );
 }
 
-export default async function NpcInfo({ npc }: Readonly<NpcInfoProps>) {
+export default async function NpcInfo({ npc }: Readonly<Props>) {
   const campaignInfo = await getWithFilter("campaigns", undefined, {
     _id: npc.campaignId,
   });

@@ -5,15 +5,12 @@ interface LinkItem {
   url: string;
 }
 
-interface LinkButtonsProps {
+interface Props {
   links: LinkItem[];
   selected: string;
 }
 
-export default function LinkButtons({
-  links,
-  selected,
-}: Readonly<LinkButtonsProps>) {
+export default function LinkButtons({ links, selected }: Readonly<Props>) {
   return links.map((link) => {
     const linkName = link.url.split("/");
     return (

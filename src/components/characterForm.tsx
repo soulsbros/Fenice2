@@ -16,7 +16,7 @@ import Swal from "sweetalert2";
 import Select from "./select";
 import Textfield from "./textfield";
 
-interface CharacterFormProps {
+interface Props {
   previousData?: Character | NPC;
   isNpc?: boolean;
 }
@@ -25,7 +25,7 @@ const initialState = {
   message: "",
 };
 
-function SubmitButton({ previousData }: Readonly<CharacterFormProps>) {
+function SubmitButton({ previousData }: Readonly<Props>) {
   const { pending } = useFormStatus();
 
   return (
@@ -42,7 +42,7 @@ function SubmitButton({ previousData }: Readonly<CharacterFormProps>) {
 export default function CharacterForm({
   previousData,
   isNpc = false,
-}: Readonly<CharacterFormProps>) {
+}: Readonly<Props>) {
   const updateAction = isNpc ? updateNpc : updateCharacter;
   const insertAction = isNpc ? insertNpc : insertCharacter;
   const [state, formAction] = useFormState(

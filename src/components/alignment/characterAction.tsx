@@ -8,13 +8,11 @@ import Swal from "sweetalert2";
 import Button from "../button";
 import Select from "../select";
 
-interface CharacterActionProps {
+interface Props {
   characters: Character[];
 }
 
-export default function CharacterAction({
-  characters,
-}: Readonly<CharacterActionProps>) {
+export default function CharacterAction({ characters }: Readonly<Props>) {
   const [actionWeight, setActionWeight] = useState(1);
   const [character, setCharacter] = useState(characters[0]._id!.toString());
   const [reason, setReason] = useState("");

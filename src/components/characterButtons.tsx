@@ -9,7 +9,7 @@ import { Edit, Trash2 } from "react-feather";
 import Swal from "sweetalert2";
 import Button from "./button";
 
-interface CharacterButtonsProps {
+interface Props {
   id: string;
   name: string;
   isNpc?: boolean;
@@ -19,7 +19,7 @@ export default function CharacterButtons({
   id,
   name,
   isNpc = false,
-}: Readonly<CharacterButtonsProps>) {
+}: Readonly<Props>) {
   const router = useRouter();
 
   async function handleDelete() {

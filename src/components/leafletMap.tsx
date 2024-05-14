@@ -23,7 +23,7 @@ interface LeafletLayers {
   options?: Object;
 }
 
-interface LeafletMapProps {
+interface Props {
   position: [number, number];
   zoom: number;
   layers: LeafletLayers[];
@@ -37,7 +37,7 @@ export default function LeafletMap({
   layers,
   markers = [],
   lines = [],
-}: Readonly<LeafletMapProps>) {
+}: Readonly<Props>) {
   const mapOptions = {
     tms: true,
     updateWhenIdle: false,

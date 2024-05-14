@@ -5,11 +5,11 @@ import { Character } from "@/types/API";
 import { ObjectId } from "mongodb";
 import { getServerSession } from "next-auth";
 
-export default async function EditCharacterPage({
-  params,
-}: Readonly<{
+interface Props {
   params: { id: string };
-}>) {
+}
+
+export default async function EditCharacterPage({ params }: Readonly<Props>) {
   const { id } = params;
   const result = await getCharacters(undefined, {
     _id: new ObjectId(id),

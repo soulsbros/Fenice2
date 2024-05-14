@@ -2,11 +2,11 @@ import { findSkill, getWikiURL } from "@/lib/skills";
 import { notFound } from "next/navigation";
 import { AlertTriangle, Book } from "react-feather";
 
-export default function SingleSkillPage({
-  params,
-}: Readonly<{
+interface Props {
   params: { skill: string; edition: string };
-}>) {
+}
+
+export default function SingleSkillPage({ params }: Readonly<Props>) {
   let { skill, edition } = params;
   skill = decodeURIComponent(skill);
 

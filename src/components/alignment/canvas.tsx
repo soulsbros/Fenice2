@@ -13,11 +13,11 @@ import {
 import { Character } from "@/types/API";
 import { useEffect, useRef, useState } from "react";
 
-interface CanvasProps {
+interface Props {
   characters: Character[];
 }
 
-export default function Canvas({ characters }: Readonly<CanvasProps>) {
+export default function Canvas({ characters }: Readonly<Props>) {
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
 

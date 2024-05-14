@@ -5,11 +5,11 @@ import { NPC } from "@/types/API";
 import { ObjectId } from "mongodb";
 import { notFound } from "next/navigation";
 
-export default async function SingleNpcPage({
-  params,
-}: Readonly<{
+interface Props {
   params: { id: string };
-}>) {
+}
+
+export default async function SingleNpcPage({ params }: Readonly<Props>) {
   let { id } = params;
   let parsedId;
   try {

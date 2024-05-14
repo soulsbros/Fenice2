@@ -6,7 +6,9 @@ import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import Button from "./button";
 
-let rollDice = (notation: string) => {
+let rollDice = (_notation: string) => {
+  // we override this after initialization
+  // it's a bit sketchy, but it works
   console.error("Dice not initialized yet");
 };
 
