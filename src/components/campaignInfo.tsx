@@ -1,6 +1,6 @@
 import { Campaign } from "@/types/API";
 
-interface CampaignInfoProps {
+interface Props {
   campaign: Campaign;
 }
 
@@ -21,9 +21,7 @@ const formatDateString = (campaign: Campaign) => {
   return dateString;
 };
 
-export default function CampaignInfo({
-  campaign,
-}: Readonly<CampaignInfoProps>) {
+export default function CampaignInfo({ campaign }: Readonly<Props>) {
   return (
     <div className="my-2">
       DM: {campaign.dm} - Type: {campaign.type}
