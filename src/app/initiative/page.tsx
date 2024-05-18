@@ -2,6 +2,7 @@
 
 import { loadInitiative, saveInitiative } from "@/actions/initiative";
 import Button from "@/components/button";
+import Dropdown from "@/components/dropdown";
 import Textfield from "@/components/textfield";
 import {
   advanceCharacter,
@@ -18,7 +19,6 @@ import {
   Check,
   ChevronsRight,
   Crosshair,
-  Edit,
   FastForward,
   Heart,
   Loader,
@@ -403,12 +403,12 @@ export default function InitiativePage() {
       return (
         <div
           key={character.name}
-          className={`my-2 p-2 flex justify-between items-center ${
+          className={`my-2 p-2 pl-0.5 flex justify-between items-center ${
             character.active ? "bg-lime-500 font-semibold" : ""
           } transition-all duration-500 border-solid border-2 border-slate-600`}
         >
           <div className="flex">
-            <div className={`${getCharacterColor(character)} mr-1`}>&nbsp;</div>
+            <div className={`${getCharacterColor(character)} mr-2`}>&nbsp;</div>
             <div>
               <p className="text-lg">
                 {character.name}{" "}
@@ -425,28 +425,26 @@ export default function InitiativePage() {
           </div>
 
           <div className="flex">
-            {(isDM || character.isPlayer) && isPlayer ? (
-              <Button
-                onClick={() => editCharacter(character.name)}
-                tooltip="Edit character"
-                icon={<Edit />}
-                className="!mb-0"
-              />
-            ) : null}
-            {isDM ? (
-              <Button
-                onClick={() => removeCharacter(character.name)}
-                tooltip="Remove character"
-                icon={<Trash2 />}
-                className="!mb-0"
-              />
-            ) : null}
             {isPlayer ? (
               <Button
                 onClick={() => damageCharacter(character.name)}
                 tooltip="Damage character"
                 icon={<Crosshair />}
                 className="!mb-0"
+              />
+            ) : null}
+            {(isDM || character.isPlayer) && isPlayer ? (
+              <Dropdown
+                links={[
+                  {
+                    title: "Edit",
+                    onClick: () => editCharacter(character.name),
+                  },
+                  {
+                    title: "Remove",
+                    onClick: () => removeCharacter(character.name),
+                  },
+                ]}
               />
             ) : null}
           </div>
@@ -562,7 +560,7 @@ export default function InitiativePage() {
         {isCombatOngoing ? `Turn ${turn}` : "Preparing..."}
       </p>
 
-      <div className="m-4" id="order">
+      <div className="my-4" id="order">
         {renderOrder()}
       </div>
 
@@ -584,7 +582,7 @@ export default function InitiativePage() {
       {isPlayer ? (
         <>
           <p className="subtitle">{isEditing ? "Edit" : "Add"} character</p>
-          <div className="m-4">
+          <div className="my-4">
             <Textfield
               id="newCharacterName"
               placeholder="Character name"
@@ -606,7 +604,7 @@ export default function InitiativePage() {
               type="number"
             />
             <Textfield id="newCharacterNotes" placeholder="Notes" type="text" />
-            {isDM || isAdmin ? (
+            {isDM ? (
               <Textfield
                 id="newCharacterAmount"
                 placeholder="Amount"
@@ -663,21 +661,22 @@ export default function InitiativePage() {
             Auto-scroll
           </label>
 
-          <p className="subtitle mt-4">HP color scale</p>
           <div>
-            <p className={healthColors[0]}>&gt;100% - Untouched</p>
-            <p className={healthColors[1]}>&gt;80% - Barely injured</p>
-            <p className={healthColors[2]}>&gt;60% - Lightly injured</p>
-            <p className={healthColors[3]}>&gt;40% - Injured</p>
-            <p className={healthColors[4]}>&gt;20% - Gravely injured</p>
-            <p className={healthColors[5]}>&lt;20% - Near death</p>
-          </div>
-
-          <p className="subtitle mt-4">Characters legend</p>
-          <div>
-            <p className="text-red-700">Enemy</p>
-            <p className="text-lime-700">Ally</p>
-            <p className="text-sky-800">Player</p>
+            <span className="inline-block align-top mr-4">
+              <p className="subtitle mt-4">HP color scale</p>
+              <p className={healthColors[0]}>&gt;100% - Untouched</p>
+              <p className={healthColors[1]}>&gt;80% - Barely injured</p>
+              <p className={healthColors[2]}>&gt;60% - Lightly injured</p>
+              <p className={healthColors[3]}>&gt;40% - Injured</p>
+              <p className={healthColors[4]}>&gt;20% - Gravely injured</p>
+              <p className={healthColors[5]}>&lt;20% - Near death</p>
+            </span>
+            <span className="inline-block align-top">
+              <p className="subtitle mt-4">Characters legend</p>
+              <p className="text-red-700">Enemy</p>
+              <p className="text-lime-700">Ally</p>
+              <p className="text-sky-700">Player</p>
+            </span>
           </div>
         </>
       ) : null}

@@ -94,5 +94,5 @@ export function getCharacterColor(character: Character) {
   if (!character.isPlayer && !character.isEnemy) {
     return "bg-lime-700";
   }
-  return "bg-sky-800";
+  return "bg-sky-700";
 }
