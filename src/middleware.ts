@@ -6,6 +6,7 @@ export const config = {
     "/documents/:edition*",
     "/characters/new",
     "/characters/:id/edit",
+    "/npcs/new",
     "/npcs/:id/edit",
   ],
 };

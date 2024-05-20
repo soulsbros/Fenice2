@@ -1,7 +1,7 @@
 import CharacterForm from "@/components/characterForm";
 import { authOptions } from "@/lib/authConfig";
 import { getServerSession } from "next-auth";
-import { Link } from "react-feather";
+import Link from "next/link";
 
 export default async function NewNpcPage() {
   const session = await getServerSession(authOptions);

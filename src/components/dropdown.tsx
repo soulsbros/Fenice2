@@ -3,12 +3,12 @@
 import React, { useState } from "react";
 
 interface Props {
-  links: Link[];
+  links: DropdownLink[];
   element?: React.ReactNode;
   className?: string;
 }
 
-interface Link {
+export interface DropdownLink {
   title: string;
   href?: string;
   onClick?: () => void;
