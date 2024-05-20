@@ -35,9 +35,9 @@ export default function SidebarLink({
     <Link
       href={disabled ? "" : path}
       onClick={closeMenu}
-      className={`flex p-4 hover:bg-blue-300 ${
+      className={`flex p-4 hover:bg-blue-300 dark:hover:bg-blue-950 ${
         disabled ? "cursor-default text-slate-500" : ""
-      } ${currentPage ? "text-red-700" : ""}`}
+      } ${currentPage ? "text-fenice-red" : ""}`}
       target={newTab ? "_blank" : undefined}
     >
       {icon}

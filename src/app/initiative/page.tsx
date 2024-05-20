@@ -35,15 +35,15 @@ import Swal from "sweetalert2";
 let socket: any;
 
 export default function InitiativePage() {
-  const session = useSession();
+  const { data: session } = useSession();
   const [order, setOrder] = useState<Character[]>([]);
   const [turn, setTurn] = useState(1);
   const [isEditing, setIsEditing] = useState(false);
   const comparator = (characterA: Character, characterB: Character) =>
     characterB.score - characterA.score;
-  const isAdmin = session.data?.user.roles.includes("admin");
-  const isPlayer = session.data?.user.roles.includes("player");
-  const isDM = session.data?.user.roles.includes("dm");
+  const isAdmin = session?.user.roles.includes("admin");
+  const isPlayer = session?.user.roles.includes("player");
+  const isDM = session?.user.roles.includes("dm");
 
   const getFields = () => {
     let name = document.querySelector("#newCharacterName") as HTMLInputElement;
@@ -138,7 +138,7 @@ export default function InitiativePage() {
       name: name.value,
       score: parsedScore,
       active: oldValue?.active ?? false,
-      player: oldValue?.player ?? session.data?.user.email ?? "",
+      player: oldValue?.player ?? session?.user.email ?? "",
       isPlayer: oldValue?.isPlayer ?? !isDM,
       isEnemy: oldValue?.isEnemy ?? enemy?.checked ?? false,
       currentHealth: parseInt(currentHealth.value) || 0,
@@ -445,6 +445,7 @@ export default function InitiativePage() {
                     onClick: () => removeCharacter(character.name),
                   },
                 ]}
+                className="absolute right-0 mt-16 mr-3"
               />
             ) : null}
           </div>
@@ -517,7 +518,7 @@ export default function InitiativePage() {
       return;
     }
 
-    const parsedText = parseBlock(text, session.data?.user.email!);
+    const parsedText = parseBlock(text, session?.user.email!);
 
     // validate that there are no duplicate names
     for (let character of parsedText) {
@@ -564,7 +565,7 @@ export default function InitiativePage() {
         {renderOrder()}
       </div>
 
-      <div className="sticky bottom-0 pb-2 bg-main-bg flex justify-between">
+      <div className="sticky bottom-0 pb-2 bg-main-bg dark:bg-main-bg-dark flex justify-between">
         <div>
           {enemies} enemies vs {allies} allies
           {isEditing ? " (editing...)" : ""}
@@ -573,7 +574,9 @@ export default function InitiativePage() {
           label={isCombatOngoing ? "Next" : "Start"}
           icon={isCombatOngoing ? <FastForward /> : <Play />}
           disabled={
-            order.length === 0 || (!(isDM || isAdmin) && !isCombatOngoing)
+            order.length === 0 ||
+            !isPlayer ||
+            (!(isDM || isAdmin) && !isCombatOngoing)
           }
           onClick={next}
         />
@@ -591,6 +594,7 @@ export default function InitiativePage() {
             <Textfield
               id="newCharacterScore"
               placeholder={isDM ? "Initiative modifier" : "Initiative score"}
+              type="number"
               required
             />
             <Textfield

@@ -1,5 +1,5 @@
 import { getCharacters } from "@/actions/characters";
-import { LogoutButton } from "@/components/button";
+import { ChangeThemeButton, LogoutButton } from "@/components/button";
 import CharacterCard from "@/components/characterCard";
 import ImageWithFallback from "@/components/imageWithFallback";
 import defaultImage from "@/img/defaultUser.png";
@@ -69,6 +69,7 @@ export default async function ProfilePage() {
         >
           Manage account
         </Link>
+        <ChangeThemeButton />
         <LogoutButton />
       </div>
 

@@ -40,7 +40,7 @@ export default async function CharacterCard({
   const campaignName = (campaign.data[0] as Campaign).name;
 
   return (
-    <div className="character-card w-[300px] m-3 p-4 rounded-md shadow-md">
+    <div className="w-[300px] m-3 p-4 rounded-md shadow-md dark:shadow-slate-600">
       <Link href={`/characters/${character._id}`}>
         <ImageWithFallback
           src={character.images[0]}
@@ -71,7 +71,7 @@ export default async function CharacterCard({
         )}
         {!showPlayer && emptyFieldsCount > 0 ? (
           <p
-            className="flex mt-2 justify-end text-red-600"
+            className="flex mt-2 justify-end text-fenice-red"
             title={`Missing fields: ${emptyFields.join(", ")}`}
           >
             <AlertCircle />

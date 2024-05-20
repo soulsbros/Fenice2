@@ -26,7 +26,7 @@ export default async function CharacterInfo({ character }: Readonly<Props>) {
   const campaign = campaignInfo?.data[0] as Campaign;
 
   return (
-    <div className="mb-5 p-5 border rounded-md shadow-md">
+    <div className="mb-5 p-5 border rounded-md shadow-md dark:shadow-slate-600 dark:border-slate-600">
       <div className="text-center">
         {character.images.length === 0 ? "No character image(s)" : null}
         {character.images.map((image) => (

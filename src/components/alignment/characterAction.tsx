@@ -17,9 +17,9 @@ export default function CharacterAction({ characters }: Readonly<Props>) {
   const [character, setCharacter] = useState(characters[0]._id!.toString());
   const [reason, setReason] = useState("");
 
-  const session = useSession();
-  const isDM = session?.data?.user.roles.includes("dm");
-  const isAdmin = session?.data?.user.roles.includes("admin");
+  const { data: session } = useSession();
+  const isDM = session?.user.roles.includes("dm");
+  const isAdmin = session?.user.roles.includes("admin");
   if (!isAdmin && !isDM) {
     return;
   }

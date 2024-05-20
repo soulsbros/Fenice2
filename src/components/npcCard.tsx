@@ -10,7 +10,7 @@ interface Props {
 
 export default function NpcCard({ npc }: Readonly<Props>) {
   return (
-    <div className="character-card w-[300px] m-3 p-4 rounded-md shadow-md">
+    <div className="w-[300px] m-3 p-4 rounded-md shadow-md dark:shadow-slate-600">
       <Link href={`/npcs/${npc._id}`}>
         <ImageWithFallback
           src={npc.images[0]}

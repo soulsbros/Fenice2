@@ -1,6 +1,7 @@
 "use client";
 
 import { signOut } from "next-auth/react";
+import { useTheme } from "next-themes";
 import Link from "next/link";
 import { ReactElement } from "react";
 
@@ -59,4 +60,14 @@ export function SubtextButton({
 
 export function LogoutButton() {
   return <Button onClick={signOut} label="Logout" />;
+}
+
+export function ChangeThemeButton() {
+  const { resolvedTheme, setTheme } = useTheme();
+  return (
+    <Button
+      onClick={() => setTheme(resolvedTheme === "light" ? "dark" : "light")}
+      label="Change theme"
+    />
+  );
 }
