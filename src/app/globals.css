@@ -55,8 +55,12 @@ textarea {
   @apply bg-slate-500 cursor-not-allowed;
 }
 
+.active {
+  @apply !border-white;
+}
+
 .button {
-  @apply text-text-white font-bold py-[10px] px-4 rounded inline-flex align-middle space-x-3 mr-2 mb-2;
+  @apply text-text-white font-bold py-[10px] px-4 rounded inline-flex align-middle space-x-3 mr-2 mb-2 border border-transparent;
 }
 
 .link {

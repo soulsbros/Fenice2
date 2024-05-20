@@ -17,7 +17,7 @@ export default function LinkButtons({ links, selected }: Readonly<Props>) {
       <Link
         href={link.url}
         key={link.name}
-        className={`${selected === linkName[linkName.length - 1] ? "secondary" : "primary"} button`}
+        className={`${selected === linkName[linkName.length - 1] ? "active" : ""} primary button`}
       >
         {link.name}
       </Link>
