@@ -30,8 +30,7 @@ export async function insertNpc(prevState: any, formData: FormData) {
   if (
     !formData.get("name") ||
     !formData.get("race") ||
-    !formData.get("class") ||
-    !formData.get("alignment")
+    !formData.get("class")
   ) {
     return { message: "Error: missing required data" };
   }
@@ -82,8 +81,7 @@ export async function updateNpc(prevState: any, formData: FormData) {
   if (
     !formData.get("name") ||
     !formData.get("race") ||
-    !formData.get("class") ||
-    !formData.get("alignment")
+    !formData.get("class")
   ) {
     return { message: "Error: missing one or more required fields" };
   }

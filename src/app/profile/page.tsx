@@ -36,7 +36,7 @@ export default async function ProfilePage() {
 
       <div className="flex items-center gap-8">
         <ImageWithFallback
-          src={`https://gravatar.com/avatar/${hash}?s=200`}
+          src={`https://gravatar.com/avatar/${hash}?s=200&d=mp`}
           fallbackSrc={defaultImage}
           width={100}
           height={100}
@@ -46,7 +46,7 @@ export default async function ProfilePage() {
         <div>
           Name: {user?.firstName + " " + user?.lastName}
           <br />
-          Nickname: {user?.nickname || "-"}
+          Nickname: {user?.nickname ?? "-"}
           <br />
           Email: {user?.email}
           <br />
