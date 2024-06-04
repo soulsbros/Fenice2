@@ -1,11 +1,10 @@
 "use client";
 
-import defaultImage from "@/img/defaultUser.png";
 import { getGravatarHash } from "@/lib/authConfig";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
+import Image from "next/image";
 import Dropdown, { DropdownLink } from "./dropdown";
-import ImageWithFallback from "./imageWithFallback";
 
 export default function UserIndicator() {
   const { data: session } = useSession();
@@ -35,12 +34,9 @@ export default function UserIndicator() {
       className="absolute right-0 top-16 mr-1"
       element={
         <div className="flex items-center">
-          <span>
-            {session ? session?.user?.firstName ?? "Loading..." : "Guest"}
-          </span>
-          <ImageWithFallback
+          <span>{session ? session?.user?.firstName : "Guest"}</span>
+          <Image
             src={`https://gravatar.com/avatar/${hash}?s=200&d=mp`}
-            fallbackSrc={defaultImage}
             width={40}
             height={40}
             alt={`Profile picture of ${session?.user?.firstName}`}
