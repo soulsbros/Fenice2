@@ -10,6 +10,8 @@ This is a website for our D&D group, where we handle maps, character data and mu
 
 The frontend is exposed at <https://fenice2.soulsbros.ch>.
 
+404 and 500 error logos by [SAWARATSUKI](https://github.com/SAWARATSUKI/KawaiiLogos)
+
 ### Dependencies
 
 - MongoDB database

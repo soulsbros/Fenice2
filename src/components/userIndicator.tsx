@@ -1,19 +1,16 @@
 "use client";
 
-import { createHash } from "crypto";
+import defaultImage from "@/img/defaultUser.png";
+import { getGravatarHash } from "@/lib/authConfig";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
-import Image from "next/image";
 import Dropdown, { DropdownLink } from "./dropdown";
+import ImageWithFallback from "./imageWithFallback";
 
 export default function UserIndicator() {
   const { data: session } = useSession();
   const { resolvedTheme, setTheme } = useTheme();
-
-  // https://docs.gravatar.com/general/hash
-  const hash = createHash("sha256")
-    .update(session?.user.email?.trim().toLowerCase() ?? "")
-    .digest("hex");
+  const hash = getGravatarHash(session?.user.email ?? "");
 
   let links: DropdownLink[] = [
     {
@@ -41,12 +38,14 @@ export default function UserIndicator() {
           <span>
             {session ? session?.user?.firstName ?? "Loading..." : "Guest"}
           </span>
-          <Image
+          <ImageWithFallback
             src={`https://gravatar.com/avatar/${hash}?s=200&d=mp`}
+            fallbackSrc={defaultImage}
             width={40}
             height={40}
             alt={`Profile picture of ${session?.user?.firstName}`}
             className="mx-2"
+            priority={true}
           />
         </div>
       }

@@ -1,3 +1,4 @@
+import { createHash } from "crypto";
 import { NextAuthOptions } from "next-auth";
 import KeycloakProvider from "next-auth/providers/keycloak";
 
@@ -43,3 +44,8 @@ export const authOptions: NextAuthOptions = {
     },
   },
 };
+
+// https://docs.gravatar.com/general/hash
+export function getGravatarHash(email: string) {
+  return createHash("sha256").update(email.trim().toLowerCase()).digest("hex");
+}

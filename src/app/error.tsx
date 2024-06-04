@@ -7,7 +7,13 @@ import Link from "next/link";
 export default function GeneralError() {
   return (
     <>
-      <p className="title">Error</p>
+      <Image
+        src="https://raw.githubusercontent.com/SAWARATSUKI/KawaiiLogos/a8ff05675a435f99aa429b723ff73af4dca5c7e3/ResponseCode/500%20InternalServerError.png"
+        alt="Internal server error"
+        width={400}
+        height={200}
+        priority={true}
+      />
       <p className="mb-5">
         Something went wrong. Try again later or let us know what happened!
       </p>

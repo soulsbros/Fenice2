@@ -3,9 +3,8 @@ import { ChangeThemeButton, LogoutButton } from "@/components/button";
 import CharacterCard from "@/components/characterCard";
 import ImageWithFallback from "@/components/imageWithFallback";
 import defaultImage from "@/img/defaultUser.png";
-import { authOptions } from "@/lib/authConfig";
+import { authOptions, getGravatarHash } from "@/lib/authConfig";
 import { Character } from "@/types/API";
-import { createHash } from "crypto";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { Plus } from "react-feather";
@@ -14,6 +13,7 @@ export default async function ProfilePage() {
   const session = await getServerSession(authOptions);
   const user = session?.user;
   const issuer = process.env.KEYCLOAK_ISSUER ?? "";
+  const hash = getGravatarHash(session?.user.email ?? "");
 
   const result = await getCharacters(
     {
@@ -24,11 +24,6 @@ export default async function ProfilePage() {
       playerEmail: session?.user.email,
     }
   );
-
-  // https://docs.gravatar.com/general/hash
-  const hash = createHash("sha256")
-    .update(session?.user.email?.trim().toLowerCase() ?? "")
-    .digest("hex");
 
   return (
     <>
@@ -41,6 +36,7 @@ export default async function ProfilePage() {
           width={100}
           height={100}
           alt={`Profile picture of ${user?.firstName}`}
+          priority={true}
         />
 
         <div>
