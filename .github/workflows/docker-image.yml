@@ -13,6 +13,9 @@ on:
     branches:
       - github.event.repository.default_branch
 
+env:
+  MONGODB_URI: ${{ secrets.MONGODB_URI }}
+
 jobs:
   docker:
     runs-on: ubuntu-latest

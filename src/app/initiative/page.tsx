@@ -74,9 +74,10 @@ export default function InitiativePage() {
       getFields();
 
     // we roll the dice for the DM
-    let parsedScore = isDM
-      ? getRandomValue(1, 20) + parseFloat(score.value)
-      : parseFloat(score.value);
+    let parsedScore =
+      isDM && !isEditing
+        ? getRandomValue(1, 20) + parseFloat(score.value)
+        : parseFloat(score.value);
 
     // WIP
     // let parsedAmount = amount?.value || 1;
@@ -95,7 +96,7 @@ export default function InitiativePage() {
     if (!name.value || !score.value) {
       Swal.fire({
         title: "Invalid input",
-        text: "Name or initiative value are missing",
+        text: "Name or initiative value are missing or wrong",
         icon: "error",
       });
       console.error("Invalid input", name.value, score.value);
@@ -176,8 +177,8 @@ export default function InitiativePage() {
       currentHealth.value = "";
       totalHealth.value = "";
       notes.value = "";
+      score.value = "";
     }
-    score.value = "";
 
     save({ order: newOrder, turn: turn });
     setIsEditing(false);
@@ -316,9 +317,13 @@ export default function InitiativePage() {
       (document.querySelector("#autoAdvance") as HTMLInputElement)?.checked ||
       !isPlayer
     ) {
-      document
-        .querySelector("div .bg-lime-500")
-        ?.scrollIntoView({ behavior: "smooth" });
+      if (newData.order[0]?.active) {
+        document.body.scrollIntoView({ behavior: "smooth" });
+      } else {
+        document
+          .querySelector("div .bg-lime-500")
+          ?.scrollIntoView({ behavior: "smooth" });
+      }
     }
   };
 
@@ -593,7 +598,9 @@ export default function InitiativePage() {
             />
             <Textfield
               id="newCharacterScore"
-              placeholder={isDM ? "Initiative modifier" : "Initiative score"}
+              placeholder={
+                isDM && !isEditing ? "Initiative modifier" : "Initiative score"
+              }
               type="number"
               required
             />
