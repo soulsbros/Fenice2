@@ -7,7 +7,7 @@ const mongoURI =
 const dbName = process.env.DB_NAME ?? "fenice2";
 
 const client = new MongoClient(mongoURI, {
-  connectTimeoutMS: 5000,
+  connectTimeoutMS: 2000,
   appName: "Fenice2",
   authSource: dbName,
 });
@@ -167,7 +167,7 @@ export async function parseImageFiles(dataArray: File[]) {
 export async function getDefaultCampaign() {
   const result = await getCampaigns();
   const campaign = result?.data.reverse()[0] as Campaign;
-  return campaign._id;
+  return campaign?._id;
 }
 
 // just to avoid having clear emails in links

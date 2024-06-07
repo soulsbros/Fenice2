@@ -23,7 +23,7 @@ export default async function AlignmentDetailPage({ params }: Readonly<Props>) {
 
   const campaigns = await getCampaigns();
   const campaign = campaigns.data.filter((campaign: Campaign) =>
-    parsedId.equals(campaign._id)
+    parsedId.equals(campaign?._id)
   )[0] as Campaign;
   if (!campaign) {
     notFound();
