@@ -1,5 +1,8 @@
 import { Character } from "@/types/Initiative";
 
+// we have to fully write out all the classes
+// that we want Tailwind to bundle
+
 export const healthColors = [
   "text-green-700",
   "text-green-600",
@@ -87,12 +90,16 @@ export function getRandomValue(min: number, max: number) {
   return Math.floor((randomValue / 0xffffffff) * (max - min + 1) + min);
 }
 
-export function getCharacterColor(character: Character) {
+export function getCharacterColors(character: Character) {
   if (character.isEnemy) {
-    return "bg-red-700";
+    return { bg: "bg-red-700", text: "text-red-700", border: "border-red-500" };
   }
   if (!character.isPlayer && !character.isEnemy) {
-    return "bg-lime-700";
+    return {
+      bg: "bg-lime-700",
+      text: "text-lime-700",
+      border: "border-lime-500",
+    };
   }
-  return "bg-sky-700";
+  return { bg: "bg-sky-700", text: "text-sky-700", border: "border-sky-500" };
 }

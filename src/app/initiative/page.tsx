@@ -6,7 +6,7 @@ import Dropdown from "@/components/dropdown";
 import Textfield from "@/components/textfield";
 import {
   advanceCharacter,
-  getCharacterColor,
+  getCharacterColors,
   getHealthDescription,
   getRandomValue,
   healthColors,
@@ -264,6 +264,9 @@ export default function InitiativePage() {
         save({ order: newOrder, turn: turn });
       } else if (Number.isInteger(parsedDamage)) {
         newOrder[pos].currentHealth -= parsedDamage;
+        if (newOrder[pos].currentHealth < 0) {
+          newOrder[pos].currentHealth = 0;
+        }
         save({ order: newOrder, turn: turn });
       }
     }
@@ -409,11 +412,15 @@ export default function InitiativePage() {
         <div
           key={character.name}
           className={`my-2 p-2 pl-0.5 flex justify-between items-center ${
-            character.active ? "bg-lime-500 font-semibold" : ""
-          } transition-all duration-500 border-solid border-2 border-slate-600`}
+            character.active
+              ? `${getCharacterColors(character).border} font-semibold`
+              : "border-slate-600"
+          } transition-all duration-500 border-solid border-2`}
         >
           <div className="flex">
-            <div className={`${getCharacterColor(character)} mr-2`}>&nbsp;</div>
+            <div className={`${getCharacterColors(character).bg} mr-2`}>
+              &nbsp;
+            </div>
             <div>
               <p className="text-lg">
                 {character.name}{" "}
@@ -566,30 +573,32 @@ export default function InitiativePage() {
         {isCombatOngoing ? `Turn ${turn}` : "Preparing..."}
       </p>
 
-      <div className="my-4" id="order">
+      <div className="mt-4" id="order">
         {renderOrder()}
       </div>
 
-      <div className="sticky bottom-0 pb-2 bg-main-bg dark:bg-main-bg-dark flex justify-between">
+      <div className="sticky bottom-0 py-2 items-center bg-main-bg dark:bg-main-bg-dark flex justify-between">
         <div>
           {enemies} enemies vs {allies} allies
           {isEditing ? " (editing...)" : ""}
         </div>
-        <Button
-          label={isCombatOngoing ? "Next" : "Start"}
-          icon={isCombatOngoing ? <FastForward /> : <Play />}
-          disabled={
-            order.length === 0 ||
-            !isPlayer ||
-            (!(isDM || isAdmin) && !isCombatOngoing)
-          }
-          onClick={next}
-        />
+        {isPlayer ? (
+          <Button
+            label={isCombatOngoing ? "Next" : "Start"}
+            icon={isCombatOngoing ? <FastForward /> : <Play />}
+            disabled={
+              order.length === 0 || (!(isDM || isAdmin) && !isCombatOngoing)
+            }
+            onClick={next}
+          />
+        ) : null}
       </div>
 
       {isPlayer ? (
         <>
-          <p className="subtitle">{isEditing ? "Edit" : "Add"} character</p>
+          <p className="subtitle mt-4">
+            {isEditing ? "Edit" : "Add"} character
+          </p>
           <div className="my-4">
             <Textfield
               id="newCharacterName"
