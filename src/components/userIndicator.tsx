@@ -34,12 +34,12 @@ export default function UserIndicator() {
       className="absolute right-0 top-16 mr-1"
       element={
         <div className="flex items-center">
-          <span>{session ? session?.user?.firstName : "Guest"}</span>
+          <span>{session ? session?.user?.nickname : "Guest"}</span>
           <Image
             src={`https://gravatar.com/avatar/${hash}?s=200&d=mp`}
             width={40}
             height={40}
-            alt={`Profile picture of ${session?.user?.firstName}`}
+            alt={`Profile picture of ${session?.user?.nickname}`}
             className="mx-2"
             priority={true}
           />

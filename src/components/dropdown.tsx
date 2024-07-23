@@ -6,6 +6,7 @@ interface Props {
   links: DropdownLink[];
   element?: React.ReactNode;
   className?: string;
+  disabled?: boolean;
 }
 
 export interface DropdownLink {
@@ -19,6 +20,7 @@ export default function Dropdown({
   links,
   element,
   className,
+  disabled = false,
 }: Readonly<Props>) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -50,23 +52,25 @@ export default function Dropdown({
         )}
       </button>
 
-      <div
-        className={`z-10 ${isOpen ? "" : "hidden"} bg-white text-black divide-y divide-gray-100 rounded-lg shadow w-44 ${className}`}
-      >
-        <ul className="py-2">
-          {links.map((link) => (
-            <li key={link.title}>
-              <a
-                href={link.href}
-                onClick={() => handleClick(link.onClick)}
-                className="block px-4 py-2 hover:bg-gray-100"
-              >
-                {link.title}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
+      {!disabled && isOpen ? (
+        <div
+          className={`z-10 bg-white text-black divide-y divide-gray-100 rounded-lg shadow w-44 ${className}`}
+        >
+          <ul className="py-2">
+            {links.map((link) => (
+              <li key={link.title}>
+                <a
+                  href={link.href}
+                  onClick={() => handleClick(link.onClick)}
+                  className="block px-4 py-2 hover:bg-gray-100"
+                >
+                  {link.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
     </>
   );
 }

@@ -39,6 +39,7 @@ export default function InitiativePage() {
   const [order, setOrder] = useState<Character[]>([]);
   const [turn, setTurn] = useState(1);
   const [isEditing, setIsEditing] = useState(false);
+  const [shouldScroll, setShouldScroll] = useState(true);
   const comparator = (characterA: Character, characterB: Character) =>
     characterB.score - characterA.score;
   const isAdmin = session?.user.roles.includes("admin");
@@ -88,6 +89,7 @@ export default function InitiativePage() {
         title: "Invalid input",
         text: `Character ${name.value} already exists`,
         icon: "error",
+        showCancelButton: false,
       });
       console.error("Character already exists", name.value, score.value);
       return;
@@ -96,8 +98,9 @@ export default function InitiativePage() {
     if (!name.value || !score.value) {
       showAlert({
         title: "Invalid input",
-        text: "Name or initiative value are missing or wrong",
+        text: "Name or initiative value are missing or invalid",
         icon: "error",
+        showCancelButton: false,
       });
       console.error("Invalid input", name.value, score.value);
       return;
@@ -308,15 +311,12 @@ export default function InitiativePage() {
     if (sendUpdate) {
       socket.emit("characters-change", newData);
     }
-    if (
-      (document.querySelector("#autoAdvance") as HTMLInputElement)?.checked ||
-      !isPlayer
-    ) {
+    if (shouldScroll) {
       if (newData.order[0]?.active) {
         document.body.scrollIntoView({ behavior: "smooth" });
       } else {
         document
-          .querySelector("div .bg-lime-500")
+          .querySelector("div .font-semibold")
           ?.scrollIntoView({ behavior: "smooth" });
       }
     }
@@ -335,23 +335,35 @@ export default function InitiativePage() {
     }
   };
 
-  const countEnemies = () => {
+  const countCharacters = () => {
     let enemies = 0;
+    let allies = 0;
     for (let character of order) {
-      if (character.isEnemy) {
-        // handles "Orc 1&2" and adds a minimum one
-        enemies += character.name.split("&").length;
-        // handles "Orcs 1-4"
-        if (character.name.includes("-")) {
-          for (let chunk of character.name.split("&")) {
-            const pos = chunk.indexOf("-");
-            enemies +=
-              Number.parseInt(chunk[pos + 1]) - Number.parseInt(chunk[pos - 1]);
-          }
+      let chars = 0;
+      // possible inputs:
+      // "Orc" (=1), "Orc 2" (=1), "Orc 4-5" (=2),
+      // "Orc 10&11" (=2), "Orc 2-3 & Orc 13-15" (=5)
+      if (character.name.includes("-")) {
+        for (let chunk of character.name.split("&")) {
+          const numbers = chunk.split("-");
+          // we do the difference + 1 since: 4-6 => diff is two, but there are 3 elements
+          chars +=
+            parseInt(numbers[1].replace(/\D/g, "")) -
+            parseInt(numbers[0].replace(/\D/g, "")) +
+            1;
         }
+      } else {
+        // we only have contiguous enemies, so number of elements is number of enemies
+        // e.g. "Orc 1&2" (=2), "Orc 4&7&9" (=3)
+        chars += character.name.split("&").length;
+      }
+      if (character.isEnemy) {
+        enemies += chars;
+      } else {
+        allies += chars;
       }
     }
-    return enemies;
+    return { enemies, allies };
   };
 
   const loadOrder = async () => {
@@ -433,21 +445,20 @@ export default function InitiativePage() {
                 className="!mb-0"
               />
             ) : null}
-            {(isDM || character.isPlayer) && isPlayer ? (
-              <Dropdown
-                links={[
-                  {
-                    title: "Edit",
-                    onClick: () => editCharacter(character.name),
-                  },
-                  {
-                    title: "Remove",
-                    onClick: () => removeCharacter(character.name),
-                  },
-                ]}
-                className="absolute right-0 mt-16 mr-3"
-              />
-            ) : null}
+            <Dropdown
+              links={[
+                {
+                  title: "Edit",
+                  onClick: () => editCharacter(character.name),
+                },
+                {
+                  title: "Remove",
+                  onClick: () => removeCharacter(character.name),
+                },
+              ]}
+              className="absolute right-0 mt-16 mr-3"
+              disabled={!isPlayer || !(isDM || character.isPlayer)}
+            />
           </div>
         </div>
       );
@@ -547,8 +558,7 @@ export default function InitiativePage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const enemies = countEnemies();
-  const allies = order.filter((character) => !character.isEnemy).length;
+  const { enemies, allies } = countCharacters();
   const isCombatOngoing =
     order.findIndex((character) => character.active) !== -1;
 
@@ -663,7 +673,11 @@ export default function InitiativePage() {
           ) : null}
 
           <label>
-            <input type="checkbox" id="autoAdvance" defaultChecked />{" "}
+            <input
+              type="checkbox"
+              checked={shouldScroll}
+              onChange={(e) => setShouldScroll(e.target.checked)}
+            />{" "}
             Auto-scroll
           </label>
 
@@ -679,9 +693,9 @@ export default function InitiativePage() {
             </span>
             <span className="inline-block align-top">
               <p className="subtitle mt-4">Characters legend</p>
-              <p className="text-red-700">Enemy</p>
-              <p className="text-lime-700">Ally</p>
-              <p className="text-sky-700">Player</p>
+              <p className="text-red-600">Enemy</p>
+              <p className="text-lime-600">Ally</p>
+              <p className="text-sky-600">Player</p>
             </span>
           </div>
         </>
