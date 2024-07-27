@@ -16,33 +16,65 @@ export default async function CampaignsPage() {
     return "No campaigns found";
   }
 
-  return campaigns.map((campaign) => {
-    const currentCharacters = characters.filter((char) =>
-      char.campaignId.equals(campaign._id)
-    );
-    const currentNpcs = npcs.filter((npc) =>
-      npc.campaignId.equals(campaign._id)
-    );
-    return (
-      <div key={campaign._id!.toString()} className="mb-6">
-        <div className="subtitle">{campaign.name}</div>
-        <CampaignInfo campaign={campaign} />
+  // Statistics calculations
 
-        <div className="my-2">
-          {`${currentCharacters.length} `}
-          <Link
-            href={`/characters/by-campaign/${campaign._id}`}
-            className="link"
-          >
-            characters
-          </Link>
-          {` and ${currentNpcs.length} `}
-          <Link href={`/npcs/by-campaign/${campaign._id}`} className="link">
-            NPCs
-          </Link>
-          {" on record"}
-        </div>
+  const statusCounts = campaigns.reduce(
+    (acc, item) => {
+      if (acc[item.status]) {
+        acc[item.status]++;
+      } else {
+        acc[item.status] = 1;
+      }
+      return acc;
+    },
+    {} as Record<string, number>
+  );
+
+  return (
+    <>
+      <div className="mb-4">
+        <div className="subtitle">Stats</div>
+        {Object.entries(statusCounts).map(([status, count]) => (
+          <span key={status} className="mr-2">
+            {status}: {count}
+          </span>
+        ))}
       </div>
-    );
-  });
+
+      <div>
+        {campaigns.map((campaign) => {
+          const currentCharacters = characters.filter((char) =>
+            char.campaignId.equals(campaign._id)
+          );
+          const currentNpcs = npcs.filter((npc) =>
+            npc.campaignId.equals(campaign._id)
+          );
+          return (
+            <div key={campaign._id!.toString()} className="mb-6">
+              <div className="subtitle">{campaign.name}</div>
+              <CampaignInfo campaign={campaign} />
+
+              <div className="my-2">
+                {`${currentCharacters.length} `}
+                <Link
+                  href={`/characters/by-campaign/${campaign._id}`}
+                  className="link"
+                >
+                  characters
+                </Link>
+                {` and ${currentNpcs.length} `}
+                <Link
+                  href={`/npcs/by-campaign/${campaign._id}`}
+                  className="link"
+                >
+                  NPCs
+                </Link>
+                {" on record"}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </>
+  );
 }

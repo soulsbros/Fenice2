@@ -7,6 +7,7 @@ import {
   Archive,
   Calendar,
   File,
+  FileText,
   Globe,
   Home,
   List,
@@ -56,6 +57,12 @@ export default function Sidebar() {
           name="Session plan &#x2197;"
           path="https://docs.google.com/spreadsheets/d/1ky-ZVUt-5uiXDzWmEgrUA_-vLs_LyRrNxUykBOKSPTM"
           icon={<Calendar />}
+          newTab
+        />
+        <SidebarLink
+          name="Wiki &#x2197;"
+          path="https://steeven9.notion.site/D-D-Wiki-cb4d0cacda1d41a8a312f4860760ca8e"
+          icon={<FileText />}
           newTab
         />
       </div>
