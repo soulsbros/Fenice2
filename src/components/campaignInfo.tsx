@@ -1,4 +1,5 @@
 import { Campaign } from "@/types/API";
+import Link from "next/link";
 
 interface Props {
   campaign: Campaign;
@@ -28,6 +29,14 @@ export default function CampaignInfo({ campaign }: Readonly<Props>) {
       {campaign.ruleset != "" ? ` - Ruleset: ${campaign.ruleset}` : null}
       {formatDateString(campaign)} ({campaign.status}
       {campaign.endLevel ? ` at level ${campaign.endLevel}` : null})
+      {campaign.wikiLink ? (
+        <>
+          &nbsp; - &nbsp;
+          <Link href={campaign.wikiLink} className="link" target="_blank">
+            Wiki page
+          </Link>
+        </>
+      ) : null}
     </div>
   );
 }

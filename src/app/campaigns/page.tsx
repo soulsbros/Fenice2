@@ -69,7 +69,16 @@ export default async function CampaignsPage() {
                 >
                   NPCs
                 </Link>
-                {" on record"}
+                {" on record. "}
+                {campaign.wikiLink ? (
+                  <Link
+                    href={campaign.wikiLink}
+                    className="link"
+                    target="_blank"
+                  >
+                    Wiki page
+                  </Link>
+                ) : null}
               </div>
             </div>
           );

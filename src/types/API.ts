@@ -45,6 +45,7 @@ export interface Campaign {
   endDate: Date;
   endLevel: number | null;
   ruleset: string;
+  wikiLink?: string;
 }
 
 export interface Document {
