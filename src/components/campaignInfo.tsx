@@ -31,7 +31,7 @@ export default function CampaignInfo({ campaign }: Readonly<Props>) {
       {campaign.endLevel ? ` at level ${campaign.endLevel}` : null})
       {campaign.wikiLink ? (
         <>
-          &nbsp; - &nbsp;
+          &nbsp;-&nbsp;
           <Link href={campaign.wikiLink} className="link" target="_blank">
             Wiki page
           </Link>

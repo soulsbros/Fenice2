@@ -20,11 +20,7 @@ export default async function CampaignsPage() {
 
   const statusCounts = campaigns.reduce(
     (acc, item) => {
-      if (acc[item.status]) {
-        acc[item.status]++;
-      } else {
-        acc[item.status] = 1;
-      }
+      acc[item.status] = (acc[item.status] || 0) + 1;
       return acc;
     },
     {} as Record<string, number>
@@ -69,16 +65,7 @@ export default async function CampaignsPage() {
                 >
                   NPCs
                 </Link>
-                {" on record. "}
-                {campaign.wikiLink ? (
-                  <Link
-                    href={campaign.wikiLink}
-                    className="link"
-                    target="_blank"
-                  >
-                    Wiki page
-                  </Link>
-                ) : null}
+                {" on record"}
               </div>
             </div>
           );
