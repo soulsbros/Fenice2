@@ -6,11 +6,7 @@ const mongoURI =
   process.env.MONGODB_URI ?? "mongodb://user:password@localhost:27017";
 const dbName = process.env.DB_NAME ?? "fenice2";
 
-const client = new MongoClient(mongoURI, {
-  connectTimeoutMS: 2000,
-  appName: "Fenice2",
-  authSource: dbName,
-});
+let client: MongoClient;
 let database: Db;
 
 export async function ourMongo(collection: string) {
@@ -18,6 +14,11 @@ export async function ourMongo(collection: string) {
     return database.collection(collection);
   }
   try {
+    client = new MongoClient(mongoURI, {
+      connectTimeoutMS: 2000,
+      appName: "Fenice2",
+      authSource: dbName,
+    });
     await client.connect();
     database = client.db(dbName);
     console.info(` ✓ Connected to mongoDB database ${dbName}`);
