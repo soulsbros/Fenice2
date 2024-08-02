@@ -90,16 +90,10 @@ export function getRandomValue(min: number, max: number) {
   return Math.floor((randomValue / 0xffffffff) * (max - min + 1) + min);
 }
 
-export function getCharacterColors(character: Character) {
-  if (character.isEnemy) {
-    return { bg: "bg-red-600", text: "text-red-700", border: "border-red-600" };
-  }
-  if (!character.isPlayer && !character.isEnemy) {
-    return {
-      bg: "bg-lime-600",
-      text: "text-lime-700",
-      border: "border-lime-600",
-    };
-  }
-  return { bg: "bg-sky-600", text: "text-sky-700", border: "border-sky-600" };
+export function getCharacterType(character: Character) {
+  if (character.isEnemy) return "enemy";
+
+  if (!character.isPlayer && !character.isEnemy) return "ally";
+
+  return "player";
 }

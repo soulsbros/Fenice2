@@ -6,7 +6,7 @@ import Dropdown from "@/components/dropdown";
 import Textfield from "@/components/textfield";
 import {
   advanceCharacter,
-  getCharacterColors,
+  getCharacterType,
   getHealthDescription,
   getRandomValue,
   healthColors,
@@ -413,12 +413,12 @@ export default function InitiativePage() {
           key={character.name}
           className={`my-2 p-2 pl-0.5 flex justify-between items-center ${
             character.active
-              ? `${getCharacterColors(character).border} font-semibold`
+              ? `border-${getCharacterType(character)} font-semibold`
               : "border-slate-600"
           } transition-all duration-500 border-solid border-2`}
         >
           <div className="flex">
-            <div className={`${getCharacterColors(character).bg} mr-2`}>
+            <div className={`bg-${getCharacterType(character)} mr-2`}>
               &nbsp;
             </div>
             <div>
@@ -693,9 +693,9 @@ export default function InitiativePage() {
             </span>
             <span className="inline-block align-top">
               <p className="subtitle mt-4">Characters legend</p>
-              <p className="text-red-600">Enemy</p>
-              <p className="text-lime-600">Ally</p>
-              <p className="text-sky-600">Player</p>
+              <p className="text-enemy">Enemy</p>
+              <p className="text-ally">Ally</p>
+              <p className="text-player">Player</p>
             </span>
           </div>
         </>
