@@ -17,7 +17,6 @@ export async function ourMongo(collection: string) {
     client = new MongoClient(mongoURI, {
       connectTimeoutMS: 2000,
       appName: "Fenice2",
-      authSource: dbName,
     });
     await client.connect();
     database = client.db(dbName);
