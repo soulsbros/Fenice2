@@ -69,6 +69,7 @@ export async function insertCharacter(prevState: any, formData: FormData) {
     backstory: parseFormData(formData, "backstory"),
     personality: parseFormData(formData, "personality"),
     images: images,
+    songLinks: [],
     createdAt: new Date(),
     updatedAt: new Date(),
   };

@@ -15,6 +15,7 @@ interface BaseCharacter {
   createdAt: Date;
   updatedAt: Date;
   images: string[];
+  songLinks: string[];
 }
 
 export interface Character extends BaseCharacter {

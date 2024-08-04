@@ -13,7 +13,7 @@ interface Props {
 function CharacterAttribute(key: string, value: string | ReactElement) {
   return (
     <div className="flex mb-4">
-      <div className="font-extrabold flex-1">{key}</div>
+      <div className="font-extrabold flex-1 mr-4">{key}</div>
       <div className="flex-[2] m-auto">{value || "Unknown"}</div>
     </div>
   );
@@ -72,6 +72,29 @@ export default async function CharacterInfo({ character }: Readonly<Props>) {
         {CharacterAttribute("Personality", character.personality)}
         {CharacterAttribute("Backstory", character.backstory)}
       </div>
+
+      {character.songLinks.length > 0 ? (
+        <>
+          <div className="font-extrabold">
+            {character.songLinks.length == 1 ? "Song" : "Songs"}
+          </div>
+          <div className="flex my-4 flex-wrap">
+            {character.songLinks.map((link) => (
+              <iframe
+                className="block mr-4 mb-4"
+                width="560"
+                height="315"
+                src={link}
+                key={link}
+                title="YouTube video player"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              ></iframe>
+            ))}
+          </div>
+        </>
+      ) : null}
     </div>
   );
 }

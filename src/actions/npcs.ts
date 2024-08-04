@@ -51,6 +51,7 @@ export async function insertNpc(prevState: any, formData: FormData) {
     backstory: parseFormData(formData, "backstory"),
     personality: parseFormData(formData, "personality"),
     images: images,
+    songLinks: [],
     createdAt: new Date(),
     updatedAt: new Date(),
     updatedBy: userData?.user.email,
