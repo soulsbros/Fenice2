@@ -12,6 +12,15 @@ export const healthColors = [
   "text-red-700",
 ];
 
+const pgColors = [
+  "bg-player",
+  "bg-ally",
+  "bg-enemy",
+  "border-player",
+  "border-ally",
+  "border-enemy",
+];
+
 export function advanceCharacter(order: Character[], turn: number) {
   const newOrder = [...order];
   let newTurn = turn;
