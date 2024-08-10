@@ -1,16 +1,13 @@
 "use client";
 
 import LinkButtons from "@/components/linkButtons";
+import PathfinderCalendar from "@/components/pathfinderCalendar";
 import {
+  CURRENT_DATE_AVALOR,
   CURRENT_DATE_DA,
+  EVENTS_AVALOR,
   EVENTS_DA,
-  GOLARION_DAYS,
-  GOLARION_MONTHS,
 } from "@/lib/calendarEvents";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin from "@fullcalendar/interaction";
-import FullCalendar from "@fullcalendar/react";
-import timeGridPlugin from "@fullcalendar/timegrid";
 import { notFound } from "next/navigation";
 
 interface Props {
@@ -18,29 +15,9 @@ interface Props {
 }
 
 export default function CalendarPage({ params }: Readonly<Props>) {
-  function renderEventContent(eventInfo: any) {
-    return (
-      <>
-        <b>{eventInfo.timeText}</b>
-        {eventInfo.event.title}
-      </>
-    );
-  }
-
-  const handleEventClick = (clickInfo: any) => {
-    console.info(clickInfo);
-  };
-
-  const formatTitle = (date: any) => {
-    return GOLARION_MONTHS[date.date.month] + " " + (date.date.year + 2700);
-  };
-
-  const formatDayHeader = (date: any) => {
-    return GOLARION_DAYS[date.date.marker.getDay()];
-  };
-
   const links = [
     { name: "Dark Age", url: "/calendar/darkAge" },
+    { name: "Avalor", url: "/calendar/avalor" },
     { name: "Sessions", url: "/calendar/sessions" },
   ];
 
@@ -48,33 +25,18 @@ export default function CalendarPage({ params }: Readonly<Props>) {
     return (
       <>
         <LinkButtons selected={params.campaign} links={links} />
-        <FullCalendar
-          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-          headerToolbar={{
-            left: "prev,next today",
-            center: "title",
-            right: "dayGridMonth,timeGridWeek,timeGridDay",
-          }}
-          initialView="dayGridMonth"
-          editable={false}
-          selectable={true}
-          selectMirror={true}
-          dayMaxEvents={true}
-          weekends={true}
-          dayHeaderFormat={formatDayHeader}
-          initialEvents={EVENTS_DA}
-          titleFormat={formatTitle}
-          eventContent={renderEventContent}
-          eventClick={handleEventClick}
-          buttonText={{
-            today: "Today",
-            month: "Month",
-            week: "Week",
-            day: "Day",
-            list: "List",
-          }}
-          now={CURRENT_DATE_DA}
-          firstDay={1}
+        <PathfinderCalendar now={CURRENT_DATE_DA} initialEvents={EVENTS_DA} />
+      </>
+    );
+  }
+
+  if (params.campaign == "avalor") {
+    return (
+      <>
+        <LinkButtons selected={params.campaign} links={links} />
+        <PathfinderCalendar
+          now={CURRENT_DATE_AVALOR}
+          initialEvents={EVENTS_AVALOR}
         />
       </>
     );

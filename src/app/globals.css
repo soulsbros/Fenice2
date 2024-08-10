@@ -41,6 +41,12 @@ textarea {
   text-align: center;
 }
 
+/* Fullcalendar fixes */
+
+.fc .fc-list-sticky .fc-list-day > * {
+  background: initial;
+}
+
 /* Custom classes */
 
 .primary {

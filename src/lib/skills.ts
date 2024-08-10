@@ -479,7 +479,7 @@ export function getWikiURL(skillName: string, edition: string) {
       )}_Skill`;
     case editions[2].id:
       return (
-        "https://2e.aonprd.com/Skills.aspx?ID=" +
+        "https://2e.aonprd.com/Skills.aspx?NoRedirect=1&ID=" +
         (editions[2].skills.findIndex(
           (el) => el.name.toLowerCase() === skillName.toLowerCase()
         ) +
