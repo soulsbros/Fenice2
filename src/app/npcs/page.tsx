@@ -1,4 +1,4 @@
-import { getDefaultCampaign } from "@/lib/mongo";
+import { getDefaultCampaign } from "@/lib/utils";
 import { redirect } from "next/navigation";
 
 export default async function NpcsRootPage() {

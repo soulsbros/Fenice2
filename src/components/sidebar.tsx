@@ -1,6 +1,6 @@
 import contactLogo from "@/img/icon_contact.png";
 import githubLogo from "@/img/icon_github.png";
-import { defaultEdition } from "@/lib/skills";
+import { defaultEdition } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import {

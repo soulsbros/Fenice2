@@ -1,5 +1,3 @@
-import { getCampaigns } from "@/actions/characters";
-import { Campaign } from "@/types/API";
 import { Db, Document, Filter, MongoClient } from "mongodb";
 
 const mongoURI =
@@ -162,15 +160,6 @@ export async function parseImageFiles(dataArray: File[]) {
     }
   }
   return result;
-}
-
-export async function getDefaultCampaign() {
-  const result = await getCampaigns();
-  if (!result || result.data.length == 0) {
-    throw new Error("Cannot find any campaign");
-  }
-  const campaign = result.data.reverse()[0] as Campaign;
-  return campaign._id;
 }
 
 // just to avoid having clear emails in links

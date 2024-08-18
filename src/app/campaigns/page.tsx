@@ -6,15 +6,15 @@ import Link from "next/link";
 
 export default async function CampaignsPage() {
   let result = await getCampaigns();
-  const campaigns = result.data.reverse() as Campaign[];
+  const campaigns = (result.data.reverse() as Campaign[]) ?? [];
+  if (campaigns.length == 0) {
+    return "No campaigns found";
+  }
+
   result = await getCharacters();
   const characters = (result.data as Character[]) ?? [];
   result = await getNpcs();
   const npcs = (result.data as NPC[]) ?? [];
-
-  if (campaigns.length == 0) {
-    return "No campaigns found";
-  }
 
   // Statistics calculations
 

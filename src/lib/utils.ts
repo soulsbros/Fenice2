@@ -26,3 +26,23 @@ export function parseFormData(
     return string;
   }
 }
+
+export async function playTTS(message: string) {
+  if (!process.env.TTS_URL) {
+    console.error("Error: TTS URL is not defined!");
+    return;
+  }
+  await fetch(process.env.TTS_URL, {
+    method: "POST",
+    headers: { "Content-type": "application/json" },
+    body: `{"message": "${message}", "target": "media_player.d_d_table"}`,
+  });
+}
+
+// Default values e.g. for navigation pane
+
+export const defaultEdition = "pf2";
+
+export async function getDefaultCampaign() {
+  return "65d8bd910444b1cacf32a09a";
+}
