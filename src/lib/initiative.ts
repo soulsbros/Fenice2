@@ -1,3 +1,4 @@
+import { playTTS } from "@/actions/initiative";
 import { Character } from "@/types/Initiative";
 
 // we have to fully write out all the classes
@@ -21,17 +22,38 @@ const pgColors = [
   "border-enemy",
 ];
 
-export function advanceCharacter(order: Character[], turn: number) {
+// array of lines to use randomly for the next turn TTS.
+// CHARACTER gets replaced dynamically with the character name at invocation time
+const announcerLines = [
+  "It's CHARACTER's turn",
+  "CHARACTER - fuck 'em up",
+  "Go, CHARACTER!",
+  "CHARACTER, you're up",
+  "Next up: CHARACTER",
+  "Now serving: CHARACTER",
+  "CHARACTER, I choose you!",
+];
+
+export function advanceCharacter(
+  order: Character[],
+  turn: number,
+  tts = false
+) {
   const newOrder = [...order];
   let newTurn = turn;
   const currentCharacter = newOrder.findIndex((character) => character.active);
   if (currentCharacter != -1) {
     newOrder[currentCharacter].active = false;
   }
-  newOrder[(currentCharacter + 1) % newOrder.length].active = true;
+  const newChar = newOrder[(currentCharacter + 1) % newOrder.length];
+  newChar.active = true;
 
   if (currentCharacter === newOrder.length - 1) {
     newTurn = turn + 1;
+  }
+  if (tts) {
+    const line = announcerLines[getRandomValue(0, announcerLines.length - 1)];
+    playTTS(line.replaceAll("CHARACTER", newChar.name));
   }
   return { newOrder, newTurn };
 }

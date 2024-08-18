@@ -40,6 +40,7 @@ export default function InitiativePage() {
   const [turn, setTurn] = useState(1);
   const [isEditing, setIsEditing] = useState(false);
   const [shouldScroll, setShouldScroll] = useState(true);
+  const [shouldTTS, setShouldTTS] = useState(false);
   const comparator = (characterA: Character, characterB: Character) =>
     characterB.score - characterA.score;
   const isAdmin = session?.user.roles.includes("admin");
@@ -301,7 +302,7 @@ export default function InitiativePage() {
   };
 
   const next = () => {
-    const { newOrder, newTurn } = advanceCharacter(order, turn);
+    const { newOrder, newTurn } = advanceCharacter(order, turn, shouldTTS);
     save({ order: newOrder, turn: newTurn });
   };
 
@@ -669,6 +670,14 @@ export default function InitiativePage() {
                   onClick={forceReload}
                 />
               </div>
+              <label className="mr-2">
+                <input
+                  type="checkbox"
+                  checked={shouldTTS}
+                  onChange={(e) => setShouldTTS(e.target.checked)}
+                />{" "}
+                TTS
+              </label>
             </>
           ) : null}
 
