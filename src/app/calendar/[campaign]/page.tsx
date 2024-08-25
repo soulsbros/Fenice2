@@ -16,8 +16,8 @@ interface Props {
 
 export default function CalendarPage({ params }: Readonly<Props>) {
   const links = [
-    { name: "Dark Age", url: "/calendar/darkAge" },
     { name: "Avalor", url: "/calendar/avalor" },
+    { name: "Dark Age", url: "/calendar/darkAge" },
     { name: "Sessions", url: "/calendar/sessions" },
   ];
 

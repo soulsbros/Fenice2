@@ -56,11 +56,45 @@ export const EVENTS_DA = [
 
 // Avalor
 
-export const CURRENT_DATE_AVALOR = "2024-08-17T00:00:00";
+export const CURRENT_DATE_AVALOR = "2024-08-28T00:00:00";
 
 export const EVENTS_AVALOR = [
   {
     title: "Arruolati nelle guardie",
+    start: "2024-07-24",
+  },
+  {
+    title: "Caso piuma",
+    start: "2024-07-25",
+  },
+  {
+    title: "Cambio gruppi, evacuazione barracks",
     start: "2024-07-26",
+  },
+  {
+    title: "Caso druido nel Verdant Ward",
+    start: "2024-08-03",
+  },
+  {
+    title: "Consegna di Serolk Muthar alle guardie; scelta degli istruttori",
+    start: "2024-08-04",
+  },
+  {
+    title: "Caso Rauatai",
+    start: "2024-08-25",
+  },
+  {
+    title: "Ricerca di Mahoa",
+    start: "2024-08-26",
+  },
+  {
+    title: "Incontro con Alar, espulsione dalle guardie",
+    start: "2024-08-27",
+  },
+  {
+    title: "Neketaka",
+    start: "2024-08-27",
+    // end should be day + 1
+    end: "2024-08-29",
   },
 ];

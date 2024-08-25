@@ -47,6 +47,10 @@ textarea {
   background: initial;
 }
 
+.fc .fc-list-event:hover td {
+  background-color: initial;
+}
+
 /* Custom classes */
 
 .primary {
