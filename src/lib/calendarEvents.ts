@@ -23,6 +23,10 @@ export const GOLARION_DAYS = [
   "Starday",
 ];
 
+const EVENT_COLORS = {
+  lenior: "#ffb300",
+};
+
 export function formatTitle(date: any) {
   return `${GOLARION_MONTHS[date.date.month]} ${date.date.year + 2700}`;
 }
@@ -32,7 +36,7 @@ export function formatDayHeader(date: any) {
 }
 
 export function formatFullDate(date: any) {
-  return `${date.date.marker.getDay()} ${GOLARION_MONTHS[date.date.month]} ${date.date.year + 2700}`;
+  return `${date.date.day} ${GOLARION_MONTHS[date.date.month]} ${date.date.year + 2700}`;
 }
 
 // Dark Age
@@ -58,43 +62,46 @@ export const EVENTS_DA = [
 
 export const CURRENT_DATE_AVALOR = "2024-08-28T00:00:00";
 
+// note: end should be day + 1 (exclusive)
 export const EVENTS_AVALOR = [
+  // Lenior
+  //TODO add books, anniversaries, etc.
+  // Guards/plot events
   {
-    title: "Arruolati nelle guardie",
+    title: "Joined the guards",
     start: "2024-07-24",
   },
   {
-    title: "Caso piuma",
+    title: "Feather case",
     start: "2024-07-25",
   },
   {
-    title: "Cambio gruppi, evacuazione barracks",
+    title: "Change of groups, barracks evacuation",
     start: "2024-07-26",
   },
   {
-    title: "Caso druido nel Verdant Ward",
+    title: "Druids case",
     start: "2024-08-03",
   },
   {
-    title: "Consegna di Serolk Muthar alle guardie; scelta degli istruttori",
+    title: "Serolk Muthar captured; instructors choice",
     start: "2024-08-04",
   },
   {
-    title: "Caso Rauatai",
+    title: "Rauatai case",
     start: "2024-08-25",
   },
   {
-    title: "Ricerca di Mahoa",
+    title: "Looking for Mahoa",
     start: "2024-08-26",
   },
   {
-    title: "Incontro con Alar, espulsione dalle guardie",
+    title: "Meeting with Alar, kicked from guards",
     start: "2024-08-27",
   },
   {
     title: "Neketaka",
     start: "2024-08-27",
-    // end should be day + 1
     end: "2024-08-29",
   },
 ];

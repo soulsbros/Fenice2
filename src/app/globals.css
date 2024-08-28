@@ -51,6 +51,10 @@ textarea {
   background-color: initial;
 }
 
+.fc .fc-event-main {
+  overflow: hidden;
+}
+
 /* Custom classes */
 
 .primary {
