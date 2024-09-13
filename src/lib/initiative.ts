@@ -24,14 +24,23 @@ const pgColors = [
 
 // array of lines to use randomly for the next turn TTS.
 // CHARACTER gets replaced dynamically with the character name at invocation time
+// note: swear words will be censored lol
 const announcerLines = [
   "It's CHARACTER's turn",
-  "CHARACTER - fuck 'em up",
+  "CHARACTER - mess 'em up",
   "Go, CHARACTER!",
   "CHARACTER, you're up",
   "Next up: CHARACTER",
   "Now serving: CHARACTER",
   "CHARACTER, I choose you!",
+];
+
+// same as above but when you're low HP
+const lowHealthLines = [
+  "Thread carefully, CHARACTER",
+  "Careful, CHARACTER",
+  "CHARACTER, turn it around",
+  "You can do it, CHARACTER",
 ];
 
 export function advanceCharacter(
@@ -52,7 +61,12 @@ export function advanceCharacter(
     newTurn = turn + 1;
   }
   if (tts) {
-    const line = announcerLines[getRandomValue(0, announcerLines.length - 1)];
+    let line: string;
+    if (newChar.currentHealth / newChar.totalHealth > 0.5) {
+      line = announcerLines[getRandomValue(0, announcerLines.length - 1)];
+    } else {
+      line = lowHealthLines[getRandomValue(0, lowHealthLines.length - 1)];
+    }
     playTTS(line.replaceAll("CHARACTER", newChar.name));
   }
   return { newOrder, newTurn };
