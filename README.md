@@ -20,7 +20,7 @@ The frontend is exposed at <https://fenice2.soulsbros.ch>.
 
 ### ⚙️ Prerequisites
 
-- Node.js v20
+- Node.js v22
 - Yarn package manager
 - Docker
 

@@ -15,7 +15,7 @@
     "prepare": "husky install"
   },
   "engines": {
-    "node": "^20.0.0"
+    "node": "^22.0.0"
   },
   "dependencies": {
     "@3d-dice/dice-box": "1.0.14",
@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "@types/leaflet": "^1.9.6",
-    "@types/node": "^20.6.3",
+    "@types/node": "^22.5.5",
     "@types/react": "^18.2.22",
     "@types/react-dom": "^18.2.7",
     "eslint": "^8.49.0",
