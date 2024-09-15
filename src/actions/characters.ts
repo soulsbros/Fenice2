@@ -51,10 +51,7 @@ export async function insertCharacter(prevState: any, formData: FormData) {
 
   const char: Character = {
     campaignId: new ObjectId(parseFormData(formData, "campaignId")),
-    player:
-      userData?.user.nickname != null
-        ? userData?.user.nickname
-        : userData?.user.firstName,
+    player: userData?.user.nickname || userData?.user.firstName,
     playerEmail: userData?.user.email ?? "",
     name: parseFormData(formData, "name"),
     race: parseFormData(formData, "race", true),
@@ -125,10 +122,7 @@ export async function updateCharacter(prevState: any, formData: FormData) {
   char.backstory = parseFormData(formData, "backstory") ?? char.backstory;
   char.personality = parseFormData(formData, "personality") ?? char.personality;
   char.campaignId = new ObjectId(parseFormData(formData, "campaignId"));
-  char.player =
-    userData?.user.nickname != null
-      ? userData?.user.nickname
-      : userData?.user.firstName;
+  char.player = userData?.user.nickname || userData?.user.firstName;
   char.updatedAt = new Date();
   char.images = images;
 
