@@ -13,4 +13,5 @@ export interface Character {
 export interface GameData {
   order: Character[];
   turn: number;
+  shouldTTS: boolean;
 }

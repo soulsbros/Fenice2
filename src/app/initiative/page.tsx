@@ -2,6 +2,7 @@
 
 import { loadInitiative, saveInitiative } from "@/actions/initiative";
 import Button from "@/components/button";
+import Checkbox from "@/components/checkbox";
 import Dropdown from "@/components/dropdown";
 import Textfield from "@/components/textfield";
 import {
@@ -40,7 +41,7 @@ export default function InitiativePage() {
   const [turn, setTurn] = useState(1);
   const [isEditing, setIsEditing] = useState(false);
   const [shouldScroll, setShouldScroll] = useState(true);
-  const [shouldTTS, setShouldTTS] = useState(false);
+  const [shouldTTS, setShouldTTS] = useState(true);
   const comparator = (characterA: Character, characterB: Character) =>
     characterB.score - characterA.score;
   const isAdmin = session?.user.roles.includes("admin");
@@ -184,7 +185,7 @@ export default function InitiativePage() {
       score.value = "";
     }
 
-    save({ order: newOrder, turn: turn });
+    save({ order: newOrder, turn: turn, shouldTTS });
     setIsEditing(false);
   };
 
@@ -239,6 +240,7 @@ export default function InitiativePage() {
         (character) => character.name !== currentCharacter
       ),
       turn: newTurn,
+      shouldTTS,
     });
   };
 
@@ -261,13 +263,13 @@ export default function InitiativePage() {
       let parsedDamage = Number.parseInt(damage);
       if (damage.toLowerCase() === "full") {
         newOrder[pos].currentHealth = newOrder[pos].totalHealth;
-        save({ order: newOrder, turn: turn });
+        save({ order: newOrder, turn: turn, shouldTTS });
       } else if (Number.isInteger(parsedDamage)) {
         newOrder[pos].currentHealth -= parsedDamage;
         if (newOrder[pos].currentHealth < 0) {
           newOrder[pos].currentHealth = 0;
         }
-        save({ order: newOrder, turn: turn });
+        save({ order: newOrder, turn: turn, shouldTTS });
       }
     }
   };
@@ -280,7 +282,7 @@ export default function InitiativePage() {
       confirmButtonText: "Clear",
     }).then((result) => {
       if (result.isConfirmed) {
-        save({ order: [], turn: 1 });
+        save({ order: [], turn: 1, shouldTTS });
       }
     });
   };
@@ -296,19 +298,20 @@ export default function InitiativePage() {
         const newOrder = [...order];
         newOrder[newOrder.findIndex((character) => character.active)].active =
           false;
-        save({ order: newOrder, turn: 1 });
+        save({ order: newOrder, turn: 1, shouldTTS });
       }
     });
   };
 
   const next = () => {
     const { newOrder, newTurn } = advanceCharacter(order, turn, shouldTTS);
-    save({ order: newOrder, turn: newTurn });
+    save({ order: newOrder, turn: newTurn, shouldTTS });
   };
 
   const save = (newData: GameData, sendUpdate = true) => {
     setOrder(newData.order);
     setTurn(newData.turn);
+    setShouldTTS(newData.shouldTTS);
     if (sendUpdate) {
       socket.emit("characters-change", newData);
     }
@@ -345,13 +348,18 @@ export default function InitiativePage() {
       // "Orc" (=1), "Orc 2" (=1), "Orc 4-5" (=2),
       // "Orc 10&11" (=2), "Orc 2-3 & Orc 13-15" (=5)
       if (character.name.includes("-")) {
-        for (let chunk of character.name.split("&")) {
-          const numbers = chunk.split("-");
-          // we do the difference + 1 since: 4-6 => diff is two, but there are 3 elements
-          chars +=
-            parseInt(numbers[1].replace(/\D/g, "")) -
-            parseInt(numbers[0].replace(/\D/g, "")) +
-            1;
+        if (/\D/g.test(character.name)) {
+          // we only have letters, e.g. "Orc - running"
+          chars = 1;
+        } else {
+          for (let chunk of character.name.split("&")) {
+            const numbers = chunk.split("-");
+            // we do the difference + 1 since: 4-6 => diff is two, but there are 3 elements
+            chars +=
+              parseInt(numbers[1].replace(/\D/g, "")) -
+              parseInt(numbers[0].replace(/\D/g, "")) +
+              1;
+          }
         }
       } else {
         // we only have contiguous enemies, so number of elements is number of enemies
@@ -377,7 +385,7 @@ export default function InitiativePage() {
       if (result.isConfirmed) {
         const newOrder = await loadInitiative();
         if (newOrder.success) {
-          save({ order: newOrder.data[0].order, turn: 1 });
+          save({ order: newOrder.data[0].order, turn: 1, shouldTTS });
         } else {
           console.error(newOrder.message);
           showAlert({
@@ -408,6 +416,9 @@ export default function InitiativePage() {
       return <p className="p-2">The party seems a little empty...</p>;
     }
     return order.map((character) => {
+      // we don't want to show enemies to players before the fight starts
+      if (character.isEnemy && !isCombatOngoing && !isDM) return;
+
       const health = getHealthValue(character);
       return (
         <div
@@ -543,7 +554,7 @@ export default function InitiativePage() {
       }
     }
     const newOrder = [...order, ...parsedText].toSorted(comparator);
-    save({ order: newOrder, turn: turn });
+    save({ order: newOrder, turn: turn, shouldTTS });
   };
 
   useEffect(() => {
@@ -583,9 +594,7 @@ export default function InitiativePage() {
           <Button
             label={isCombatOngoing ? "Next" : "Start"}
             icon={isCombatOngoing ? <FastForward /> : <Play />}
-            disabled={
-              order.length === 0 || (!(isDM || isAdmin) && !isCombatOngoing)
-            }
+            disabled={order.length === 0 || (!isDM && !isCombatOngoing)}
             onClick={next}
           />
         ) : null}
@@ -620,7 +629,11 @@ export default function InitiativePage() {
               placeholder="Total health"
               type="number"
             />
-            <Textfield id="newCharacterNotes" placeholder="Notes" type="text" />
+            <Textfield
+              id="newCharacterNotes"
+              placeholder={`Notes${isDM ? " (hidden)" : ""}`}
+              type="text"
+            />
             {isDM ? (
               <Textfield
                 id="newCharacterAmount"
@@ -631,12 +644,8 @@ export default function InitiativePage() {
             <div className="text-center">
               {isDM ? (
                 <>
-                  <label className="mx-2">
-                    <input type="checkbox" id="newCharacterEnemy" /> Enemy
-                  </label>
-                  <label className="mx-2">
-                    <input type="checkbox" id="newCharacterPersist" /> Persist
-                  </label>
+                  <Checkbox id="newCharacterEnemy" label="Enemy" />
+                  <Checkbox id="newCharacterPersist" label="Persist" />
                 </>
               ) : null}
               <Button
@@ -670,25 +679,19 @@ export default function InitiativePage() {
                   onClick={forceReload}
                 />
               </div>
-              <label className="mr-2">
-                <input
-                  type="checkbox"
-                  checked={shouldTTS}
-                  onChange={(e) => setShouldTTS(e.target.checked)}
-                />{" "}
-                TTS
-              </label>
+              <Checkbox
+                label="TTS"
+                checked={shouldTTS}
+                onChange={(e) => setShouldTTS(e.target.checked)}
+              />
             </>
           ) : null}
 
-          <label>
-            <input
-              type="checkbox"
-              checked={shouldScroll}
-              onChange={(e) => setShouldScroll(e.target.checked)}
-            />{" "}
-            Auto-scroll
-          </label>
+          <Checkbox
+            label="Auto-scroll"
+            checked={shouldScroll}
+            onChange={(e) => setShouldScroll(e.target.checked)}
+          />
 
           <div>
             <span className="inline-block align-top mr-4">
