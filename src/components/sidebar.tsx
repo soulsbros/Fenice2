@@ -48,7 +48,7 @@ export default function Sidebar() {
         {/* <SidebarLink name="Table" path="/table" icon={<Grid />} /> */}
         <hr />
         <SidebarLink
-          name="Old site &#x2197;"
+          name="Old website &#x2197;"
           path="https://lafenice.soulsbros.ch"
           icon={<Globe />}
           newTab
