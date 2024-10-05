@@ -464,6 +464,7 @@ export function findSkill(skill: string, edition: string) {
     .filter((ed) => ed.id === edition)[0]
     .skills.filter((el) => el.name.toLowerCase() === skill.toLowerCase())[0];
 }
+
 export function getWikiURL(skillName: string, edition: string) {
   switch (edition) {
     case editions[0].id:

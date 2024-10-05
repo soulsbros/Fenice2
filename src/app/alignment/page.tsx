@@ -1,7 +1,6 @@
-import { getDefaultCampaign } from "@/lib/utils";
+import { defaultCampaign } from "@/lib/utils";
 import { redirect } from "next/navigation";
 
 export default async function AlignmentRootPage() {
-  const campaign = await getDefaultCampaign();
-  redirect(`/alignment/by-campaign/${campaign}`);
+  redirect(`/alignment/by-campaign/${defaultCampaign}`);
 }

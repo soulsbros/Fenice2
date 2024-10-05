@@ -1,7 +1,8 @@
+import { getFiles } from "@/actions/storage";
 import { SubtextButton } from "@/components/button";
 import Select from "@/components/select";
 import { editions } from "@/lib/skills";
-import { Document } from "@/types/API";
+import { cleanDocTitle } from "@/lib/utils";
 import { notFound } from "next/navigation";
 
 interface Props {
@@ -10,15 +11,12 @@ interface Props {
 
 export default async function DocumentsPage({ params }: Readonly<Props>) {
   let { edition } = params;
-  const result = await fetch(
-    `https://lafenice.soulsbros.ch/api/docs.php?folder=${edition}`
-  );
-  const docs = await result.json();
-
   const editionString = editions.find((ed) => ed.id === edition)?.name;
   if (!editionString) {
     notFound();
   }
+
+  const docs = await getFiles(`docs/${edition}`);
 
   return (
     <>
@@ -37,14 +35,16 @@ export default async function DocumentsPage({ params }: Readonly<Props>) {
         "No documents found"
       ) : (
         <div className="flex flex-wrap justify-center sm:justify-between mt-4">
-          {docs.map((doc: Document) => (
-            <SubtextButton
-              url={doc.url}
-              title={doc.filename}
-              subtitle={doc.category}
-              key={doc.category + doc.filename}
-            />
-          ))}
+          {docs.map(async (doc) => {
+            return (
+              <SubtextButton
+                url={`/documents/viewer/${encodeURIComponent(doc)}`} // to avoid slashes breaking the URL we encode it
+                title={cleanDocTitle(doc).title}
+                subtitle={cleanDocTitle(doc).category}
+                key={doc}
+              />
+            );
+          })}
         </div>
       )}
     </>

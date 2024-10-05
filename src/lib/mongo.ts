@@ -164,16 +164,10 @@ export async function parseImageFiles(dataArray: File[]) {
 
 // just to avoid having clear emails in links
 
-const crypto = require("crypto");
-const algorithm = "aes256";
-const key = process.env.CRYPTO_SECRET ?? "";
-
 export function encrypt(text: string) {
-  const cipher = crypto.createCipher(algorithm, key);
-  return cipher.update(text, "utf8", "hex") + cipher.final("hex");
+  return Buffer.from(text).toString("base64");
 }
 
 export function decrypt(text: string) {
-  const decipher = crypto.createDecipher(algorithm, key);
-  return decipher.update(text, "hex", "utf8") + decipher.final("utf8");
+  return Buffer.from(text, "base64").toString("utf8");
 }

@@ -30,7 +30,7 @@ export default function Button({
 }: Readonly<ButtonProps>) {
   return (
     <button
-      className={`${disabled ? "disabled" : "primary"} button ${className ?? null}`}
+      className={`${disabled ? "disabled" : "primary"} button ${className ?? ""}`}
       onClick={disabled ? () => {} : onClick}
       title={tooltip}
     >
