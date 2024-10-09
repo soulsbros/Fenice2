@@ -39,9 +39,13 @@ export default function InitiativePage() {
   const { data: session } = useSession();
   const [order, setOrder] = useState<Character[]>([]);
   const [turn, setTurn] = useState(1);
+
   const [isEditing, setIsEditing] = useState(false);
   const [shouldScroll, setShouldScroll] = useState(true);
   const [shouldTTS, setShouldTTS] = useState(true);
+  const [isEnemy, setIsEnemy] = useState(true);
+  const [shouldPersist, setShouldPersist] = useState(true);
+
   const comparator = (characterA: Character, characterB: Character) =>
     characterB.score - characterA.score;
   const isAdmin = session?.user.roles.includes("admin");
@@ -59,9 +63,6 @@ export default function InitiativePage() {
     let totalHealth = document.querySelector(
       "#newCharacterTotalHealth"
     ) as HTMLInputElement;
-    let enemy = document.querySelector(
-      "#newCharacterEnemy"
-    ) as HTMLInputElement;
     let notes = document.querySelector(
       "#newCharacterNotes"
     ) as HTMLInputElement;
@@ -69,12 +70,11 @@ export default function InitiativePage() {
       "#newCharacterAmount"
     ) as HTMLInputElement;
 
-    return { name, score, currentHealth, totalHealth, enemy, notes, amount };
+    return { name, score, currentHealth, totalHealth, notes, amount };
   };
 
   const addCharacter = async () => {
-    const { name, score, currentHealth, totalHealth, enemy, notes } =
-      getFields();
+    const { name, score, currentHealth, totalHealth, notes } = getFields();
 
     // we roll the dice for the DM
     let parsedScore =
@@ -146,7 +146,7 @@ export default function InitiativePage() {
       active: oldValue?.active ?? false,
       player: oldValue?.player ?? session?.user.email ?? "",
       isPlayer: oldValue?.isPlayer ?? !isDM,
-      isEnemy: oldValue?.isEnemy ?? enemy?.checked ?? false,
+      isEnemy: oldValue?.isEnemy ?? isEnemy ?? false,
       currentHealth: parseInt(currentHealth.value) || 0,
       totalHealth: parseInt(totalHealth.value) || 0,
       notes: notes.value,
@@ -162,10 +162,7 @@ export default function InitiativePage() {
     }
     const newOrder = [...order].toSorted(comparator);
 
-    if (
-      (document.querySelector("#newCharacterPersist") as HTMLInputElement)
-        ?.checked
-    ) {
+    if (shouldPersist) {
       if (/\d/.test(name.value)) {
         const digit = RegExp(/\d+/).exec(name.value);
         if (digit != null && !name.value.includes("-")) {
@@ -204,8 +201,7 @@ export default function InitiativePage() {
 
   const editCharacter = (currentCharacter: string) => {
     setIsEditing(true);
-    const { name, score, currentHealth, totalHealth, enemy, notes } =
-      getFields();
+    const { name, score, currentHealth, totalHealth, notes } = getFields();
 
     const character =
       order[order.findIndex((character) => character.name == currentCharacter)];
@@ -213,9 +209,8 @@ export default function InitiativePage() {
     score.value = character.score.toString();
     currentHealth.value = character.currentHealth.toString();
     totalHealth.value = character.totalHealth.toString();
-    if (enemy) {
-      enemy.checked = character.isEnemy;
-    }
+    setIsEnemy(character.isEnemy);
+
     notes.value = character.notes;
 
     document
@@ -644,8 +639,16 @@ export default function InitiativePage() {
             <div className="text-center">
               {isDM ? (
                 <>
-                  <Checkbox id="newCharacterEnemy" label="Enemy" />
-                  <Checkbox id="newCharacterPersist" label="Persist" />
+                  <Checkbox
+                    label="Enemy"
+                    checked={isEnemy}
+                    onChange={(e) => setIsEnemy(e.target.checked)}
+                  />
+                  <Checkbox
+                    label="Persist"
+                    checked={shouldPersist}
+                    onChange={(e) => setShouldPersist(e.target.checked)}
+                  />
                 </>
               ) : null}
               <Button
