@@ -56,12 +56,12 @@ export function TopbarLink({
     <Link
       href={href}
       onClick={closeMenu}
-      className={`inline-block p-4 hover:bg-blue-300 dark:hover:bg-blue-950 ${currentPage ? "text-fenice-red dark:text-white" : ""}`}
+      className={`inline-block p-4 text-center hover:bg-blue-300 dark:hover:bg-blue-950 ${currentPage ? "text-fenice-red dark:text-white" : ""} hover:animate-pulse`}
       target={newTab ? "_blank" : undefined}
       title={name}
     >
       {icon}
-      {/* {name ? <p className="ml-3">{name}</p> : null} */}
+      {name ? <p className="capitalize text-xs">{name}</p> : null}
     </Link>
   );
 }

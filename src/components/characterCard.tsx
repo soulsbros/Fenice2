@@ -1,7 +1,9 @@
 import { getCampaigns } from "@/actions/characters";
 import defaultUser from "@/img/defaultUser.png";
 import { getActualAlignment } from "@/lib/alignment";
+import { authOptions } from "@/lib/authConfig";
 import { Campaign, Character } from "@/types/API";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { AlertCircle, Compass, User, Users } from "react-feather";
 import ImageWithFallback from "./imageWithFallback";
@@ -38,6 +40,7 @@ export default async function CharacterCard({
   const { emptyFields, emptyFieldsCount } = countEmptyFields(character);
   const campaign = await getCampaigns(undefined, { _id: character.campaignId });
   const campaignName = (campaign.data[0] as Campaign).name;
+  const userData = await getServerSession(authOptions);
 
   return (
     <div className="w-[300px] m-3 p-4 rounded-md shadow-md dark:shadow-slate-600">
@@ -69,7 +72,8 @@ export default async function CharacterCard({
             &nbsp; {campaignName}
           </p>
         )}
-        {!showPlayer && emptyFieldsCount > 0 ? (
+        {character.playerEmail == userData?.user.email &&
+        emptyFieldsCount > 0 ? (
           <p
             className="flex mt-2 justify-end text-fenice-red"
             title={`Missing fields: ${emptyFields.join(", ")}`}

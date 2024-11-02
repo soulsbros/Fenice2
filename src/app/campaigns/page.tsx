@@ -76,3 +76,6 @@ export default async function CampaignsPage() {
     </>
   );
 }
+
+// disable pre-render at build time
+export const dynamic = "force-dynamic";

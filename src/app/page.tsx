@@ -1,12 +1,8 @@
 import { getCampaigns } from "@/actions/characters";
 import Countdown from "@/components/countdown";
+import DiceRoller from "@/components/diceRoller";
 import { Campaign } from "@/types/API";
-import dynamic from "next/dynamic";
 import Link from "next/link";
-
-const DiceRoller = dynamic(() => import("@/components/diceRoller"), {
-  ssr: false,
-});
 
 export default async function Home() {
   // TODO fetch from gcal
@@ -44,7 +40,7 @@ export default async function Home() {
         ))}
       </div>
 
-      {countdownDate ? (
+      {countdownDate && new Date(countdownDate) >= new Date() ? ( // show only if in the future
         <>
           <p className="subtitle">Next session in...</p>
           <Countdown targetDate={countdownDate} />
@@ -56,3 +52,6 @@ export default async function Home() {
     </>
   );
 }
+
+// disable pre-render at build time
+export const dynamic = "force-dynamic";

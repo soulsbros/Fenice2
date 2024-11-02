@@ -16,7 +16,7 @@ export function Sidebar() {
   return (
     <div id="menuPanel" className="flex min-w-fit flex-col mr-5 hidden">
       <SidebarLink name="Home" href="/" icon={<Home />} />
-      <SidebarLink name="Campaigns" href="/campaigns" icon={<Archive />} />
+
       <SidebarLink name="Characters" href="/characters" icon={<Users />} />
       <SidebarLink name="Calendar" href="/calendar" icon={<Calendar />} />
       <SidebarLink
@@ -32,6 +32,7 @@ export function Sidebar() {
         icon={<Zap />}
       />
       <SidebarLink name="Soundboard" href="/sounds" icon={<Volume2 />} />
+      <SidebarLink name="Stats" href="/campaigns" icon={<Archive />} />
     </div>
   );
 }
@@ -39,22 +40,22 @@ export function Sidebar() {
 export function Topbar() {
   return (
     <div className="hidden lg:inline-block">
-      <TopbarLink name="Campaigns" href="/campaigns" icon={<Archive />} />
-      <TopbarLink name="Characters" href="/characters" icon={<Users />} />
-      <TopbarLink name="Calendar" href="/calendar" icon={<Calendar />} />
+      <TopbarLink name="Chars" href="/characters" icon={<Users />} />
+      <TopbarLink name="Cal" href="/calendar" icon={<Calendar />} />
       <TopbarLink
-        name="Documents"
+        name="Docs"
         href={`/documents/${defaultEdition}`}
         icon={<File />}
       />
-      <TopbarLink name="Initiative" href="/initiative" icon={<List />} />
+      <TopbarLink name="Init" href="/initiative" icon={<List />} />
       <TopbarLink name="Map" href="/map" icon={<Map />} />
       <TopbarLink
         name="Skills"
         href={`/skills/${defaultEdition}`}
         icon={<Zap />}
       />
-      <TopbarLink name="Soundboard" href="/sounds" icon={<Volume2 />} />
+      <TopbarLink name="Sounds" href="/sounds" icon={<Volume2 />} />
+      <TopbarLink name="Stats" href="/campaigns" icon={<Archive />} />
     </div>
   );
 }

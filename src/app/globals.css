@@ -13,6 +13,12 @@ textarea {
   border: 1px solid black;
 }
 
+/* Fix for header icons */
+
+header a svg {
+  margin: auto;
+}
+
 /* Dice fixes */
 
 #dice-box canvas {

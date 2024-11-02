@@ -38,7 +38,7 @@ export default function CalendarPage({ params }: Readonly<Props>) {
         <iframe
           src="https://calendar.google.com/calendar/embed?height=600&wkst=2&ctz=Europe%2FZurich&bgcolor=%23ffffff&showTitle=0&showPrint=0&showCalendars=0&showTz=0&src=ZWQ3OTNmMTM1MTIwODc5YTQ4ZjE5OWE4OWZlOTc5ZjFlYjk1NGZhY2U4NDgzNDc5YWU0ODg4ZGQxNDYyOGIwM0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23C0CA33"
           width="100%"
-          height="90%"
+          height="75%"
           title="Calendar"
         ></iframe>
       ) : null}
