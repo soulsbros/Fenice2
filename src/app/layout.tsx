@@ -74,7 +74,10 @@ export default function RootLayout({ children }: Readonly<Props>) {
             </main>
 
             <footer className="flex space-x-2 p-4 items-center justify-center">
-              <p>&copy;{new Date().getFullYear()} Soulsbros</p>
+              <p>
+                &copy;{new Date().getFullYear()}{" "}
+                <Link href="https://soulsbros.ch">Soulsbros</Link>
+              </p>
               <Link
                 href="https://github.com/soulsbros"
                 target="_blank"

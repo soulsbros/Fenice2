@@ -70,7 +70,7 @@ export default async function SingleMapPage({
           layers={layers}
         />
       ) : null}
-      {params.map == "brightAge" ? (
+      {params.map == "darkAge" ? (
         <LeafletMap
           position={[44, -10]}
           zoom={5}
@@ -85,7 +85,7 @@ export default async function SingleMapPage({
           title="Map"
           src="https://map.pathfinderwiki.com/#location=3.76/42.98/-17.76"
           width="100%"
-          height="90%"
+          height="75%"
         ></iframe>
       ) : null}
     </>

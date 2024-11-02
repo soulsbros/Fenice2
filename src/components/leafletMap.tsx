@@ -84,7 +84,7 @@ export default function LeafletMap({
   };
 
   return (
-    <MapContainer center={position} zoom={zoom} className="h-[90%]">
+    <MapContainer center={position} zoom={zoom} className="h-[75%]">
       {layers.map((layer) => {
         if (layer.image) {
           return (

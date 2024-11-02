@@ -16,10 +16,8 @@ export function Sidebar() {
   return (
     <div id="menuPanel" className="flex min-w-fit flex-col mr-5 hidden">
       <SidebarLink name="Home" href="/" icon={<Home />} />
-      <hr />
       <SidebarLink name="Campaigns" href="/campaigns" icon={<Archive />} />
       <SidebarLink name="Characters" href="/characters" icon={<Users />} />
-      <hr />
       <SidebarLink name="Calendar" href="/calendar" icon={<Calendar />} />
       <SidebarLink
         name="Documents"
