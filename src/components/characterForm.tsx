@@ -103,6 +103,17 @@ export default function CharacterForm({
           name="orientation"
           defaultValue={previousData?.orientation}
         />
+        <Info
+          size={18}
+          className="inline-block ml-1"
+          onClick={() => {
+            showAlert({
+              html: `Defines how your character handles romance. Some popular ones include:<br>
+              <img src="/assets/orientations.png">`,
+              showCancelButton: false,
+            });
+          }}
+        />
         {isNpc ? (
           <Textfield
             placeholder="Status"
@@ -151,6 +162,7 @@ export default function CharacterForm({
                 html: `You can add multiple images.<br> If you're editing a character,
                   any image you upload here will be added to the already existing ones.<br>
                   Contact Steeven if you need to remove an image.`,
+                showCancelButton: false,
               });
             }}
           />
@@ -166,18 +178,26 @@ export default function CharacterForm({
       </div>
 
       <div className="mb-2">
-        <textarea
-          className="p-2 m-2 align-top min-h-[300px] w-[calc(50%-16px)]"
-          placeholder="Backstory"
-          name="backstory"
-          defaultValue={previousData?.backstory}
-        ></textarea>
-        <textarea
-          className="p-2 m-2 align-top min-h-[300px] w-[calc(50%-16px)]"
-          placeholder="Personality"
-          name="personality"
-          defaultValue={previousData?.personality}
-        ></textarea>
+        <span className="inline-block m-2 min-w-[calc(50%-16px)]">
+          Backstory
+          <br />
+          <textarea
+            className="p-2 m-2 min-h-[300px] w-full"
+            placeholder="Backstory"
+            name="backstory"
+            defaultValue={previousData?.backstory}
+          ></textarea>
+        </span>
+        <span className="inline-block m-2 min-w-[calc(50%-16px)]">
+          Personality
+          <br />
+          <textarea
+            className="p-2 m-2 min-h-[300px] w-full"
+            placeholder="Personality"
+            name="personality"
+            defaultValue={previousData?.personality}
+          ></textarea>
+        </span>
       </div>
 
       <SubmitButton previousData={previousData} />
