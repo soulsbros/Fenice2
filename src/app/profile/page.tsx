@@ -5,9 +5,14 @@ import ImageWithFallback from "@/components/imageWithFallback";
 import defaultImage from "@/img/defaultUser.png";
 import { authOptions, getGravatarHash } from "@/lib/authConfig";
 import { Character } from "@/types/API";
+import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { Plus } from "react-feather";
+
+export const metadata: Metadata = {
+  title: "Profile",
+};
 
 export default async function ProfilePage() {
   const session = await getServerSession(authOptions);

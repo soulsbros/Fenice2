@@ -1,7 +1,12 @@
 import CharacterForm from "@/components/characterForm";
 import { authOptions } from "@/lib/authConfig";
+import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "New character",
+};
 
 export default async function NewCharacterPage() {
   const session = await getServerSession(authOptions);

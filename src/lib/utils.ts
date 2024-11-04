@@ -46,3 +46,7 @@ export function cleanDocTitle(title: string) {
 
 export const defaultEdition = "pf2";
 export const defaultCampaign = "65d8bd910444b1cacf32a09a";
+export const baseTitle = "La Compagnia della Fenice";
+export const baseDesc =
+  "Our D&D website with manuals, characters, and much more!";
+export const baseUrl = new URL("https://fenice2.soulsbros.ch");

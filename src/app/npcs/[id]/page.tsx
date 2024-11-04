@@ -3,10 +3,25 @@ import CharacterButtons from "@/components/characterButtons";
 import NpcInfo from "@/components/npcInfo";
 import { NPC } from "@/types/API";
 import { ObjectId } from "mongodb";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 interface Props {
   params: { id: string };
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  try {
+    const result = await getNpcs(undefined, { _id: new ObjectId(params.id) });
+    const npc = result.data[0] as NPC;
+    return {
+      title: npc.name,
+    };
+  } catch (err) {
+    return {
+      title: "Lost",
+    };
+  }
 }
 
 export default async function SingleNpcPage({ params }: Readonly<Props>) {

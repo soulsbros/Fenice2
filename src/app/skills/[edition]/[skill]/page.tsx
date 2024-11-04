@@ -1,9 +1,16 @@
 import { findSkill, getWikiURL } from "@/lib/skills";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { AlertTriangle, Book } from "react-feather";
 
 interface Props {
   params: { skill: string; edition: string };
+}
+
+export function generateMetadata({ params }: Props): Metadata {
+  return {
+    title: params.skill,
+  };
 }
 
 export default function SingleSkillPage({ params }: Readonly<Props>) {
@@ -35,7 +42,7 @@ export default function SingleSkillPage({ params }: Readonly<Props>) {
         title="wikiPage"
         src={getWikiURL(skill, edition)}
         loading="eager"
-        className="w-full h-full"
+        className="w-full h-[95%]"
       />
     </>
   );

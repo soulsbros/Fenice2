@@ -1,5 +1,3 @@
-"use client";
-
 import LinkButtons from "@/components/linkButtons";
 import PathfinderCalendar from "@/components/pathfinderCalendar";
 import {
@@ -8,10 +6,15 @@ import {
   EVENTS_AVALOR,
   EVENTS_DA,
 } from "@/lib/calendarEvents";
+import { Metadata } from "next";
 
 interface Props {
   params: { campaign: string };
 }
+
+export const metadata: Metadata = {
+  title: "Calendar",
+};
 
 export default function CalendarPage({ params }: Readonly<Props>) {
   const links = [

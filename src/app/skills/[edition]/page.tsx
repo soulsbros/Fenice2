@@ -1,11 +1,16 @@
 import { SubtextButton } from "@/components/button";
 import Select from "@/components/select";
 import { editions } from "@/lib/skills";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 interface Props {
   params: { edition: string };
 }
+
+export const metadata: Metadata = {
+  title: "Skills",
+};
 
 export default function SkillsPage({ params }: Readonly<Props>) {
   let { edition } = params;

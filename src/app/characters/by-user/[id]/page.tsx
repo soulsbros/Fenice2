@@ -2,10 +2,28 @@ import { getCharacters } from "@/actions/characters";
 import CharacterCard from "@/components/characterCard";
 import { decrypt } from "@/lib/mongo";
 import { Character } from "@/types/API";
+import { ObjectId } from "mongodb";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 interface Props {
   params: { id: string };
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  try {
+    const result = await getCharacters(undefined, {
+      _id: new ObjectId(params.id),
+    });
+    const char = result.data[0] as Character;
+    return {
+      title: `Characters ${char.player}`,
+    };
+  } catch (err) {
+    return {
+      title: "Lost",
+    };
+  }
 }
 
 export default async function UserCharactersPage({ params }: Readonly<Props>) {
@@ -19,7 +37,7 @@ export default async function UserCharactersPage({ params }: Readonly<Props>) {
 
   return (
     <>
-      <div className="title">{result.data[0].player}</div>
+      <div className="title">Characters {result.data[0].player}</div>
 
       <div className="flex flex-wrap justify-around">
         {result.success

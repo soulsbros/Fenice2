@@ -4,6 +4,7 @@ import UserIndicator from "@/components/userIndicator";
 import icon from "@/img/icon.png";
 import contactLogo from "@/img/icon_contact.png";
 import githubLogo from "@/img/icon_github.png";
+import { baseDesc, baseTitle, baseUrl } from "@/lib/utils";
 import type { Metadata, Viewport } from "next";
 import { ThemeProvider } from "next-themes";
 import { Inter } from "next/font/google";
@@ -15,16 +16,19 @@ import NextAuthProvider from "./providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "La Compagnia della Fenice",
-  description: "The site of La Compagnia della Fenice",
+  title: {
+    template: `%s - ${baseTitle}`,
+    default: baseTitle,
+  },
+  description: baseDesc,
   authors: [{ name: "Soulsbros", url: "https://soulsbros.ch" }],
-  metadataBase: new URL("https://fenice2.soulsbros.ch"),
+  metadataBase: baseUrl,
   openGraph: {
     type: "website",
-    url: "/",
-    title: "La Compagnia della Fenice",
-    description: "The site of La Compagnia della Fenice",
-    siteName: "La Compagnia della Fenice",
+    url: baseUrl,
+    title: baseTitle,
+    description: baseDesc,
+    siteName: baseTitle,
     images: "/favicon.ico",
   },
 };
@@ -58,7 +62,7 @@ export default function RootLayout({ children }: Readonly<Props>) {
                     alt="Image of a dice"
                     className="mx-2"
                   />
-                  La Compagnia della Fenice
+                  {baseTitle}
                 </Link>
               </div>
 

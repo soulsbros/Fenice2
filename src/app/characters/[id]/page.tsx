@@ -4,11 +4,28 @@ import CharacterInfo from "@/components/characterInfo";
 import { authOptions } from "@/lib/authConfig";
 import { Character } from "@/types/API";
 import { ObjectId } from "mongodb";
+import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 
 interface Props {
   params: { id: string };
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  try {
+    const result = await getCharacters(undefined, {
+      _id: new ObjectId(params.id),
+    });
+    const char = result.data[0] as Character;
+    return {
+      title: `${char.name}`,
+    };
+  } catch (err) {
+    return {
+      title: "Lost",
+    };
+  }
 }
 
 export default async function SingleCharacterPage({ params }: Readonly<Props>) {

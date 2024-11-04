@@ -5,10 +5,27 @@ import CharacterAction from "@/components/alignment/characterAction";
 import Select from "@/components/select";
 import { Campaign, Character } from "@/types/API";
 import { ObjectId } from "mongodb";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 interface Props {
   params: { id: string };
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  try {
+    const campaign = await getCampaigns(undefined, {
+      _id: new ObjectId(params.id),
+    });
+    const campaignName = (campaign.data[0] as Campaign).name;
+    return {
+      title: `Alignment ${campaignName}`,
+    };
+  } catch (err) {
+    return {
+      title: "Lost",
+    };
+  }
 }
 
 export default async function AlignmentDetailPage({ params }: Readonly<Props>) {

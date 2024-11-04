@@ -3,11 +3,16 @@ import { SubtextButton } from "@/components/button";
 import Select from "@/components/select";
 import { editions } from "@/lib/skills";
 import { cleanDocTitle } from "@/lib/utils";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 interface Props {
   params: { edition: string };
 }
+
+export const metadata: Metadata = {
+  title: "Documents",
+};
 
 export default async function DocumentsPage({ params }: Readonly<Props>) {
   let { edition } = params;

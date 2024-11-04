@@ -4,12 +4,29 @@ import CharacterCard from "@/components/characterCard";
 import Select from "@/components/select";
 import { Campaign, Character } from "@/types/API";
 import { ObjectId } from "mongodb";
+import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Plus } from "react-feather";
 
 interface Props {
   params: { id: string };
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  try {
+    const campaign = await getCampaigns(undefined, {
+      _id: new ObjectId(params.id),
+    });
+    const campaignName = (campaign.data[0] as Campaign).name;
+    return {
+      title: `${campaignName}`,
+    };
+  } catch (err) {
+    return {
+      title: "Lost",
+    };
+  }
 }
 
 export default async function CampaignCharactersPage({

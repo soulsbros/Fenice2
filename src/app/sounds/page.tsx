@@ -1,6 +1,7 @@
 "use client";
 
 import { sounds } from "@/lib/sounds";
+import { baseTitle } from "@/lib/utils";
 import { useEffect, useState } from "react";
 
 export default function SoundsPage() {
@@ -13,6 +14,7 @@ export default function SoundsPage() {
 
   useEffect(() => {
     setAudio(document.getElementById("player")! as HTMLAudioElement);
+    document.title = `Soundboard - ${baseTitle}`;
   }, []);
 
   return (

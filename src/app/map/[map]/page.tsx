@@ -3,6 +3,7 @@ import LinkButtons from "@/components/linkButtons";
 import { itineraryPoints, markers, teleportPoints } from "@/lib/mapLocations";
 import { LinesList, MapLocation } from "@/types/Map";
 import { LatLngTuple } from "leaflet";
+import { Metadata } from "next";
 import dynamic from "next/dynamic";
 
 const LeafletMap = dynamic(() => import("@/components/leafletMap"), {
@@ -14,6 +15,10 @@ const links = [
   { name: "Dark Age", url: "/map/darkAge" },
   { name: "Golarion", url: "/map/golarion" },
 ];
+
+export const metadata: Metadata = {
+  title: "Map",
+};
 
 export default async function SingleMapPage({
   params,

@@ -13,7 +13,7 @@ import {
   healthColors,
   parseBlock,
 } from "@/lib/initiative";
-import { showAlert } from "@/lib/utils";
+import { baseTitle, showAlert } from "@/lib/utils";
 import { Character, GameData } from "@/types/Initiative";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -557,6 +557,7 @@ export default function InitiativePage() {
     initializeSocket();
     requestWakeLock();
     document.addEventListener("visibilitychange", handleVisibilityChange);
+    document.title = `Initiative - ${baseTitle}`;
     document
       .querySelector("#newCharacterName")
       ?.addEventListener("keyup", handleKeypress);

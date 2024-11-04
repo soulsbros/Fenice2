@@ -2,7 +2,12 @@ import { getCampaigns, getCharacters } from "@/actions/characters";
 import { getNpcs } from "@/actions/npcs";
 import CampaignInfo from "@/components/campaignInfo";
 import { Campaign, Character, NPC } from "@/types/API";
+import { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Stats",
+};
 
 export default async function CampaignsPage() {
   let result = await getCampaigns();
