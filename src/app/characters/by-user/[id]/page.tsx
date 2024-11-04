@@ -2,7 +2,6 @@ import { getCharacters } from "@/actions/characters";
 import CharacterCard from "@/components/characterCard";
 import { decrypt } from "@/lib/mongo";
 import { Character } from "@/types/API";
-import { ObjectId } from "mongodb";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -12,9 +11,8 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
-    const result = await getCharacters(undefined, {
-      _id: new ObjectId(params.id),
-    });
+    const parsedEmail = decrypt(params.id);
+    const result = await getCharacters(undefined, { playerEmail: parsedEmail });
     const char = result.data[0] as Character;
     return {
       title: `Characters ${char.player}`,

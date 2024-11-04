@@ -1,6 +1,7 @@
 import { LeafletLayer } from "@/components/leafletMap";
-import LinkButtons from "@/components/linkButtons";
+import Select from "@/components/select";
 import { itineraryPoints, markers, teleportPoints } from "@/lib/mapLocations";
+import { capitalize } from "@/lib/utils";
 import { LinesList, MapLocation } from "@/types/Map";
 import { LatLngTuple } from "leaflet";
 import { Metadata } from "next";
@@ -10,25 +11,27 @@ const LeafletMap = dynamic(() => import("@/components/leafletMap"), {
   ssr: false,
 });
 
+interface Props {
+  params: { id: string };
+}
+
 const links = [
-  { name: "Bright Age", url: "/map/brightAge" },
-  { name: "Dark Age", url: "/map/darkAge" },
-  { name: "Golarion", url: "/map/golarion" },
+  { name: "Bright Age", url: "brightAge" },
+  { name: "Dark Age", url: "darkAge" },
+  { name: "Golarion", url: "golarion" },
 ];
 
-export const metadata: Metadata = {
-  title: "Map",
-};
+export function generateMetadata({ params }: Props): Metadata {
+  return {
+    title: `Map ${capitalize(links.filter((link) => link.url == params.id)[0]?.name || "")}`,
+  };
+}
 
-export default async function SingleMapPage({
-  params,
-}: Readonly<{
-  params: { map: string };
-}>) {
+export default async function SingleMapPage({ params }: Readonly<Props>) {
   let layers: LeafletLayer[] = [];
   let lines: LinesList[] = [];
 
-  if (params.map == "brightAge") {
+  if (params.id == "brightAge") {
     layers = [
       {
         url: "https://lafenice.soulsbros.ch/img/mappe/brightAge/{z}/tile_{x}_{y}.jpg",
@@ -42,7 +45,7 @@ export default async function SingleMapPage({
     ];
   }
 
-  if (params.map == "darkAge") {
+  if (params.id == "darkAge") {
     lines = [
       {
         points: itineraryPoints as LatLngTuple[][],
@@ -65,17 +68,25 @@ export default async function SingleMapPage({
 
   return (
     <>
-      <div className="title">Map</div>
-      <LinkButtons selected={params.map} links={links} />
+      <div className="title">
+        Map{" "}
+        <Select
+          redirectPath="/map"
+          selectedItem={params.id}
+          options={links.map((el) => {
+            return { name: el.name, value: el.url };
+          })}
+        />
+      </div>
 
-      {params.map == "brightAge" ? (
+      {params.id == "brightAge" ? (
         <LeafletMap
           position={[-9.79567758282973, 6.651439946725858]}
           zoom={2}
           layers={layers}
         />
       ) : null}
-      {params.map == "darkAge" ? (
+      {params.id == "darkAge" ? (
         <LeafletMap
           position={[44, -10]}
           zoom={5}
@@ -84,13 +95,13 @@ export default async function SingleMapPage({
           layers={layers}
         />
       ) : null}
-      {params.map == "golarion" ? (
+      {params.id == "golarion" ? (
         <iframe
           id="map"
           title="Map"
           src="https://map.pathfinderwiki.com/#location=3.76/42.98/-17.76"
           width="100%"
-          height="75%"
+          height="90%"
         ></iframe>
       ) : null}
     </>
