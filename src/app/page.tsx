@@ -1,12 +1,12 @@
 import { getCampaigns } from "@/actions/characters";
 import Countdown from "@/components/countdown";
 import DiceRoller from "@/components/diceRoller";
+import { fetchNextSession } from "@/lib/calendarEvents";
 import { Campaign } from "@/types/API";
 import Link from "next/link";
 
 export default async function Home() {
-  // TODO fetch from gcal
-  const countdownDate = process.env.NEXT_SESSION_DATE; //"2024-10-30 12:00";
+  const countdownDate = await fetchNextSession();
 
   let result = await getCampaigns(undefined, { status: "Ongoing" });
   const campaigns = (result.data.reverse() as Campaign[]) ?? [];

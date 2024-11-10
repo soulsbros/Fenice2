@@ -39,6 +39,15 @@ export function formatFullDate(date: any) {
   return `${date.date.day} ${GOLARION_MONTHS[date.date.month]} ${date.date.year + 2700}`;
 }
 
+// Fetches the date of our next session from our shared calendar.
+// Uses https://github.com/Steeven9/Gcal-API
+export async function fetchNextSession(): Promise<string | undefined> {
+  const res = await fetch(process.env.GCAL_API_URL!);
+  const data = await res.json();
+  return data.filter((event: any) => !event.title.includes("Compleanno"))[0]
+    ?.startTime;
+}
+
 // Dark Age
 
 export const CURRENT_DATE_DA = "2022-11-17T00:00:00";

@@ -575,7 +575,7 @@ export default function InitiativePage() {
     <>
       <p className="title">Initiative tracker</p>
       <p className="text-lg">
-        {isCombatOngoing ? `Turn ${turn}` : "Preparing..."}
+        {isCombatOngoing ? `⚔️ Turn ${turn}` : "⏳ Preparing..."}
       </p>
 
       <div className="mt-4" id="order">

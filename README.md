@@ -15,6 +15,8 @@ The frontend is exposed at <https://fenice2.soulsbros.ch>.
 ### Dependencies
 
 - MongoDB database
+- <https://github.com/Steeven9/Gcal-API> to fetch next session date
+- Home Assistant with Alexa for TTS (optional)
 
 ## 🏡 Local development
 
