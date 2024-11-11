@@ -32,7 +32,7 @@ export default function CampaignInfo({
       DM: {campaign.dm} - Type: {campaign.type}
       {campaign.ruleset != "" ? ` - Ruleset: ${campaign.ruleset}` : null}
       {formatDateString(campaign)} ({campaign.status}
-      {campaign.endLevel ? ` at level ${campaign.endLevel}` : null})
+      {campaign.endLevel ? `, level ${campaign.endLevel}` : null})
       <div className="mt-2">
         <Link
           href={`/alignment/by-campaign/${campaign._id}`}

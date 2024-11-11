@@ -28,11 +28,7 @@ export async function insertNpc(prevState: any, formData: FormData) {
   if (!userData) {
     return { message: "Error: invalid user data. Try logging out and back in" };
   }
-  if (
-    !formData.get("name") ||
-    !formData.get("race") ||
-    !formData.get("class")
-  ) {
+  if (!formData.get("name")) {
     return { message: "Error: missing required data" };
   }
 
@@ -80,11 +76,7 @@ export async function updateNpc(prevState: any, formData: FormData) {
   if (!userData) {
     return { message: "Error: invalid user data. Try logging out and back in" };
   }
-  if (
-    !formData.get("name") ||
-    !formData.get("race") ||
-    !formData.get("class")
-  ) {
+  if (!formData.get("name")) {
     return { message: "Error: missing one or more required fields" };
   }
 

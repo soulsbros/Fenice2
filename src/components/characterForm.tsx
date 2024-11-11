@@ -76,13 +76,13 @@ export default function CharacterForm({
         <Textfield
           placeholder="Race"
           name="race"
-          required
+          required={!isNpc}
           defaultValue={previousData?.race}
         />
         <Textfield
           placeholder="Class"
           name="class"
-          required
+          required={!isNpc}
           defaultValue={previousData?.class}
         />
       </div>
@@ -105,7 +105,7 @@ export default function CharacterForm({
         />
         <Info
           size={18}
-          className="inline-block ml-1"
+          className="inline-block mr-1"
           onClick={() => {
             showAlert({
               html: `Defines how your character handles romance. Some popular ones include:<br>
