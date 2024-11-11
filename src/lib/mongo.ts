@@ -165,9 +165,9 @@ export async function parseImageFiles(dataArray: File[]) {
 // just to avoid having clear emails in links
 
 export function encrypt(text: string) {
-  return Buffer.from(text).toString("base64");
+  return encodeURIComponent(Buffer.from(text).toString("base64"));
 }
 
 export function decrypt(text: string) {
-  return Buffer.from(text, "base64").toString("utf8");
+  return Buffer.from(decodeURIComponent(text), "base64").toString("utf8");
 }
