@@ -42,10 +42,16 @@ export function formatFullDate(date: any) {
 // Fetches the date of our next session from our shared calendar.
 // Uses https://github.com/Steeven9/Gcal-API
 export async function fetchNextSession(): Promise<string | undefined> {
-  const res = await fetch(process.env.GCAL_API_URL!);
-  const data = await res.json();
-  return data.filter((event: any) => !event.title.includes("Compleanno"))[0]
-    ?.startTime;
+  try {
+    const res = await fetch(process.env.GCAL_API_URL!);
+    const data = await res.json();
+    // filter out birthdays (which are in the same calendar) and return first result
+    return data.filter((event: any) => !event.title.includes("Compleanno"))[0]
+      ?.startTime;
+  } catch (err) {
+    console.error(err);
+    return undefined;
+  }
 }
 
 // Dark Age
