@@ -26,7 +26,10 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: baseUrl,
-    title: baseTitle,
+    title: {
+      template: `%s - ${baseTitle}`,
+      default: baseTitle,
+    },
     description: baseDesc,
     siteName: baseTitle,
     images: "/favicon.ico",

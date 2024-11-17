@@ -20,7 +20,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     });
     const campaignName = (campaign.data[0] as Campaign).name;
     return {
-      title: `${campaignName}`,
+      title: campaignName,
+      openGraph: {
+        title: campaignName,
+      },
     };
   } catch (err) {
     return {
