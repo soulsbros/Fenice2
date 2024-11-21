@@ -43,7 +43,7 @@ export function formatFullDate(date: any) {
 // Uses https://github.com/Steeven9/Gcal-API
 export async function fetchNextSession(): Promise<string | undefined> {
   try {
-    const res = await fetch(process.env.GCAL_API_URL!);
+    const res = await fetch(process.env.GCAL_API_URL!, { cache: "no-store" });
     const data = await res.json();
     // filter out birthdays (which are in the same calendar) and return first result
     return data.filter((event: any) => !event.title.includes("Compleanno"))[0]

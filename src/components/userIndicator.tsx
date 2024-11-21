@@ -31,7 +31,7 @@ export default function UserIndicator() {
   return (
     <Dropdown
       links={links}
-      className="absolute right-0 top-16 mr-1"
+      className="absolute right-0 top-16 mr-1 z-50"
       element={
         <div className="flex items-center">
           <span>
