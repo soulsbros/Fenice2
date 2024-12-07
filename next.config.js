@@ -5,9 +5,9 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "lafenice.soulsbros.ch",
+        hostname: "s3.soulsbros.ch",
         port: "",
-        pathname: "/img/**",
+        pathname: "/fenice/**",
       },
       {
         protocol: "https",

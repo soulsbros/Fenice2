@@ -1,6 +1,11 @@
 import { LeafletLayer } from "@/components/leafletMap";
 import Select from "@/components/select";
-import { itineraryPoints, markers, teleportPoints } from "@/lib/mapLocations";
+import {
+  flagelloRossoPoints,
+  itineraryPoints,
+  markers,
+  teleportPoints,
+} from "@/lib/mapLocations";
 import { capitalize } from "@/lib/utils";
 import { LinesList, MapLocation } from "@/types/Map";
 import { LatLngTuple } from "leaflet";
@@ -18,7 +23,19 @@ interface Props {
 const links = [
   { name: "Bright Age", url: "brightAge" },
   { name: "Dark Age", url: "darkAge" },
+  { name: "Flagello Rosso", url: "flagelloRosso" },
   { name: "Golarion", url: "golarion" },
+];
+
+const PF_LAYERS = [
+  {
+    url: "https://oznogon.com/golarion-tile/tiles/{z}/{x}/{y}",
+    attribution:
+      'Map data &copy; <a href="https://www.dungeonetics.com/golarion-geography">John Mechalas</a>, <a href="https://paizo.com/community/communityuse">Paizo CUP</a>',
+  },
+  {
+    url: "https://oznogon.com/golarion-tile/tiles-relief/{z}/{x}/{y}",
+  },
 ];
 
 export function generateMetadata({ params }: Props): Metadata {
@@ -34,7 +51,7 @@ export default async function SingleMapPage({ params }: Readonly<Props>) {
   if (params.id == "brightAge") {
     layers = [
       {
-        url: "https://lafenice.soulsbros.ch/img/mappe/brightAge/{z}/tile_{x}_{y}.jpg",
+        url: "https://s3.soulsbros.ch/fenice/maps/brightAge/{z}/tile_{x}_{y}.jpg",
         attribution: "Map data &copy; Sasha Toscano",
         options: {
           maxZoom: 5,
@@ -43,6 +60,8 @@ export default async function SingleMapPage({ params }: Readonly<Props>) {
         },
       },
     ];
+  } else {
+    layers = PF_LAYERS;
   }
 
   if (params.id == "darkAge") {
@@ -53,16 +72,15 @@ export default async function SingleMapPage({ params }: Readonly<Props>) {
       },
       { points: teleportPoints as LatLngTuple[][], options: { color: "red" } },
     ];
+  }
 
-    layers = [
+  if (params.id == "flagelloRosso") {
+    lines = [
       {
-        url: "https://oznogon.com/golarion-tile/tiles/{z}/{x}/{y}",
-        attribution:
-          'Map data &copy; <a href="https://www.dungeonetics.com/golarion-geography">John Mechalas</a>, <a href="https://paizo.com/community/communityuse">Paizo CUP</a>',
+        points: flagelloRossoPoints.itinerary as LatLngTuple[][],
+        options: { color: "blue" },
       },
-      {
-        url: "https://oznogon.com/golarion-tile/tiles-relief/{z}/{x}/{y}",
-      },
+      // { points: teleportPoints as LatLngTuple[][], options: { color: "red" } },
     ];
   }
 
@@ -91,6 +109,14 @@ export default async function SingleMapPage({ params }: Readonly<Props>) {
           position={[44, -10]}
           zoom={5}
           markers={markers as MapLocation[]}
+          lines={lines}
+          layers={layers}
+        />
+      ) : null}
+      {params.id == "flagelloRosso" ? (
+        <LeafletMap
+          position={[35.24218961212739, -11.425781250000002]}
+          zoom={5}
           lines={lines}
           layers={layers}
         />
