@@ -697,27 +697,27 @@ export default function InitiativePage() {
             checked={shouldScroll}
             onChange={(e) => setShouldScroll(e.target.checked)}
           />
-
-          <div>
-            <span className="inline-block align-top mr-4">
-              <p className="subtitle mt-4">HP color scale</p>
-              <p className={healthColors[0]}>100% - Untouched</p>
-              <p className={healthColors[1]}>81-99% - Barely injured</p>
-              <p className={healthColors[2]}>61-80% - Lightly injured</p>
-              <p className={healthColors[3]}>41-60% - Injured</p>
-              <p className={healthColors[4]}>21-40% - Gravely injured</p>
-              <p className={healthColors[5]}>1-20% - Near death</p>
-              <p className={healthColors[5]}>0% - Unconscious</p>
-            </span>
-            <span className="inline-block align-top">
-              <p className="subtitle mt-4">Characters legend</p>
-              <p className="text-enemy">Enemy</p>
-              <p className="text-ally">Ally</p>
-              <p className="text-player">Player</p>
-            </span>
-          </div>
         </>
       ) : null}
+
+      <div>
+        <span className="inline-block align-top mr-4">
+          <p className="subtitle mt-4">HP color scale</p>
+          <p className={healthColors[0]}>100% - Untouched</p>
+          <p className={healthColors[1]}>81-99% - Barely injured</p>
+          <p className={healthColors[2]}>61-80% - Lightly injured</p>
+          <p className={healthColors[3]}>41-60% - Injured</p>
+          <p className={healthColors[4]}>21-40% - Gravely injured</p>
+          <p className={healthColors[5]}>1-20% - Near death</p>
+          <p className={healthColors[5]}>0% - Unconscious</p>
+        </span>
+        <span className="inline-block align-top">
+          <p className="subtitle mt-4">Characters legend</p>
+          <p className="text-enemy">Enemy</p>
+          <p className="text-ally">Ally</p>
+          <p className="text-player">Player</p>
+        </span>
+      </div>
     </>
   );
 }

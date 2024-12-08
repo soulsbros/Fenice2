@@ -99,7 +99,7 @@ export default function CharacterForm({
           defaultValue={previousData?.gender}
         />
         <Textfield
-          placeholder="Sexual orientation"
+          placeholder="Orientation"
           name="orientation"
           defaultValue={previousData?.orientation}
         />
@@ -108,7 +108,7 @@ export default function CharacterForm({
           className="inline-block mr-1"
           onClick={() => {
             showAlert({
-              html: `Defines how your character handles romance. Some popular ones include:<br>
+              html: `Defines how your character handles romantic and sexual attraction. Some common ones include:<br><br>
               <img src="/assets/orientations.png">`,
               showCancelButton: false,
             });
@@ -118,7 +118,7 @@ export default function CharacterForm({
           <Textfield
             placeholder="Status"
             name="status"
-            defaultValue={(previousData as NPC)?.status}
+            defaultValue={(previousData as NPC)?.status ?? "Alive"}
           />
         ) : null}
       </div>
