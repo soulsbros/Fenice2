@@ -7,6 +7,9 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Stats",
+  openGraph: {
+    title: "Stats",
+  },
 };
 
 export default async function CampaignsPage() {

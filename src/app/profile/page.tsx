@@ -12,6 +12,9 @@ import { Plus } from "react-feather";
 
 export const metadata: Metadata = {
   title: "Profile",
+  openGraph: {
+    title: "Profile",
+  },
 };
 
 export default async function ProfilePage() {

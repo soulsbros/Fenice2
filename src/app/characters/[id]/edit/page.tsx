@@ -15,9 +15,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const result = await getCharacters(undefined, {
       _id: new ObjectId(params.id),
     });
-    const char = result.data[0] as Character;
+    const title = `Edit ${(result.data[0] as Character).name}`;
     return {
-      title: `Edit ${char.name}`,
+      title: title,
+      openGraph: {
+        title: title,
+      },
     };
   } catch (err) {
     return {

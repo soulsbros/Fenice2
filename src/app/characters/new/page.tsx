@@ -6,6 +6,9 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "New character",
+  openGraph: {
+    title: "New character",
+  },
 };
 
 export default async function NewCharacterPage() {

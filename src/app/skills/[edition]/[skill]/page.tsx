@@ -10,6 +10,9 @@ interface Props {
 export function generateMetadata({ params }: Props): Metadata {
   return {
     title: params.skill,
+    openGraph: {
+      title: params.skill,
+    },
   };
 }
 

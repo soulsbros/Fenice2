@@ -6,6 +6,9 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "New NPC",
+  openGraph: {
+    title: "New NPC",
+  },
 };
 
 export default async function NewNpcPage() {

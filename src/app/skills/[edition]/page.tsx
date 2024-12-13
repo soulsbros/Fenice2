@@ -10,6 +10,9 @@ interface Props {
 
 export const metadata: Metadata = {
   title: "Skills",
+  openGraph: {
+    title: "Skills",
+  },
 };
 
 export default function SkillsPage({ params }: Readonly<Props>) {

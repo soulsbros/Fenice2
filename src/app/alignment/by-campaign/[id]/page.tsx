@@ -17,9 +17,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const campaign = await getCampaigns(undefined, {
       _id: new ObjectId(params.id),
     });
-    const campaignName = (campaign.data[0] as Campaign).name;
+    const title = `Alignment ${(campaign.data[0] as Campaign).name}`;
     return {
-      title: `Alignment ${campaignName}`,
+      title: title,
+      openGraph: {
+        title: title,
+      },
     };
   } catch (err) {
     return {

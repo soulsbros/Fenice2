@@ -21,8 +21,12 @@ const links = [
 ];
 
 export function generateMetadata({ params }: Props): Metadata {
+  const title = `Calendar ${capitalize(links.filter((link) => link.url == params.campaign)[0]?.name || "")}`;
   return {
-    title: `Calendar ${capitalize(links.filter((link) => link.url == params.campaign)[0]?.name || "")}`,
+    title: title,
+    openGraph: {
+      title: title,
+    },
   };
 }
 

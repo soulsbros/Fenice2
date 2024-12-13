@@ -13,9 +13,12 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
     const result = await getNpcs(undefined, { _id: new ObjectId(params.id) });
-    const npc = result.data[0] as NPC;
+    const title = (result.data[0] as NPC).name;
     return {
-      title: npc.name,
+      title: title,
+      openGraph: {
+        title: title,
+      },
     };
   } catch (err) {
     return {

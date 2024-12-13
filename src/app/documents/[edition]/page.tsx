@@ -12,6 +12,9 @@ interface Props {
 
 export const metadata: Metadata = {
   title: "Documents",
+  openGraph: {
+    title: "Documents",
+  },
 };
 
 export default async function DocumentsPage({ params }: Readonly<Props>) {

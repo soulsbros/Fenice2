@@ -39,8 +39,12 @@ const PF_LAYERS = [
 ];
 
 export function generateMetadata({ params }: Props): Metadata {
+  const title = `Map ${capitalize(links.filter((link) => link.url == params.id)[0]?.name || "")}`;
   return {
-    title: `Map ${capitalize(links.filter((link) => link.url == params.id)[0]?.name || "")}`,
+    title: title,
+    openGraph: {
+      title: title,
+    },
   };
 }
 

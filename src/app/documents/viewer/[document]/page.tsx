@@ -9,8 +9,12 @@ interface Props {
 }
 
 export function generateMetadata({ params }: Props): Metadata {
+  const title = cleanDocTitle(decodeURIComponent(params.document)).title;
   return {
-    title: cleanDocTitle(decodeURIComponent(params.document)).title,
+    title: title,
+    openGraph: {
+      title: title,
+    },
   };
 }
 
