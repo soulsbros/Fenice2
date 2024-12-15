@@ -69,6 +69,7 @@ export async function insertCharacter(prevState: any, formData: FormData) {
     songLinks: [],
     createdAt: new Date(),
     updatedAt: new Date(),
+    heroforgeLink: parseFormData(formData, "heroforgeLink"),
   };
 
   const result = await insertDocs("characters", [char]);
@@ -125,6 +126,8 @@ export async function updateCharacter(prevState: any, formData: FormData) {
   char.player = userData?.user.nickname || userData?.user.firstName;
   char.updatedAt = new Date();
   char.images = images;
+  char.heroforgeLink =
+    parseFormData(formData, "heroforgeLink") ?? char.heroforgeLink;
 
   const result = await updateDoc("characters", char, {
     _id: id,

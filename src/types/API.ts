@@ -16,6 +16,7 @@ interface BaseCharacter {
   updatedAt: Date;
   images: string[];
   songLinks: string[];
+  heroforgeLink?: string;
 }
 
 export interface Character extends BaseCharacter {

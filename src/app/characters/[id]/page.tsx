@@ -51,7 +51,7 @@ export default async function SingleCharacterPage({ params }: Readonly<Props>) {
   return (
     <>
       <div className="flex justify-between items-center">
-        <span className="title">{char.name}</span>
+        <span className="title !mb-0">{char.name}</span>
         {char?.playerEmail === userData?.user.email ? (
           <CharacterButtons id={id} name={char.name} />
         ) : null}

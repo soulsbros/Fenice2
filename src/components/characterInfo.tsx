@@ -36,10 +36,20 @@ export default async function CharacterInfo({ character }: Readonly<Props>) {
             alt={`Image for ${character.name}`}
             width={300}
             height={300}
-            className="rounded inline-block m-2"
+            className="rounded inline-block"
             key={image.substring(25)}
           />
         ))}
+        <br />
+        {character.heroforgeLink ? (
+          <Link
+            href={character.heroforgeLink}
+            target="_blank"
+            className="primary button !mt-4"
+          >
+            See it on Heroforge
+          </Link>
+        ) : null}
       </div>
 
       <div className="mt-4">
@@ -61,8 +71,8 @@ export default async function CharacterInfo({ character }: Readonly<Props>) {
             {campaign.name}
           </Link>
         )}
-        {CharacterAttribute("Class", character.class)}
         {CharacterAttribute("Race", character.race)}
+        {CharacterAttribute("Class", character.class)}
         {CharacterAttribute("Alignment", getActualAlignment(character))}
         {CharacterAttribute(
           "Gender and pronouns",
@@ -78,7 +88,7 @@ export default async function CharacterInfo({ character }: Readonly<Props>) {
           <div className="font-extrabold">
             {character.songLinks.length == 1 ? "Song" : "Songs"}
           </div>
-          <div className="flex my-4 flex-wrap">
+          <div className="flex mt-4 flex-wrap justify-center">
             {character.songLinks.map((link) => (
               <iframe
                 className="block mr-4 mb-4"

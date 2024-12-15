@@ -85,18 +85,29 @@ export default function CharacterForm({
           required={!isNpc}
           defaultValue={previousData?.class}
         />
+        {!isNpc ? (
+          <Select
+            placeholder="Alignment"
+            name="alignment"
+            options={alignments.map((alignment) => {
+              return { name: alignment, value: alignment };
+            })}
+            required
+            selectedItem={getActualAlignment(previousData as Character)}
+          />
+        ) : null}
       </div>
 
       <div>
         <Textfield
-          placeholder="Pronouns"
-          name="pronouns"
-          defaultValue={previousData?.pronouns}
-        />
-        <Textfield
           placeholder="Gender"
           name="gender"
           defaultValue={previousData?.gender}
+        />
+        <Textfield
+          placeholder="Pronouns"
+          name="pronouns"
+          defaultValue={previousData?.pronouns}
         />
         <Textfield
           placeholder="Orientation"
@@ -124,17 +135,6 @@ export default function CharacterForm({
       </div>
 
       <div>
-        {!isNpc ? (
-          <Select
-            placeholder="Alignment"
-            name="alignment"
-            options={alignments.map((alignment) => {
-              return { name: alignment, value: alignment };
-            })}
-            required
-            selectedItem={getActualAlignment(previousData as Character)}
-          />
-        ) : null}
         {campaigns.length === 0 ? (
           <div className="inline-block">
             Campaign
@@ -152,6 +152,21 @@ export default function CharacterForm({
             selectedItem={previousData?.campaignId.toString() ?? campaignParam}
           />
         )}
+        <Textfield
+          placeholder="Heroforge link"
+          name="heroforgeLink"
+          defaultValue={previousData?.heroforgeLink}
+        />
+        <Info
+          size={18}
+          className="inline-block mr-1"
+          onClick={() => {
+            showAlert({
+              html: 'In Heroforge, click on the character name in the top bar, then "Share", copy the URL and paste it here',
+              showCancelButton: false,
+            });
+          }}
+        />
         <div className="inline-block">
           Image(s)
           <Info

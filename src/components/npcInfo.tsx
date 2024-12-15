@@ -39,6 +39,16 @@ export default async function NpcInfo({ npc }: Readonly<Props>) {
             key={image.substring(25)}
           />
         ))}
+        <br />
+        {npc.heroforgeLink ? (
+          <Link
+            href={npc.heroforgeLink}
+            target="_blank"
+            className="primary button !mt-4"
+          >
+            See it on Heroforge
+          </Link>
+        ) : null}
       </div>
 
       <div className="mt-4">
@@ -49,8 +59,8 @@ export default async function NpcInfo({ npc }: Readonly<Props>) {
           </Link>
         )}
         {NpcAttribute("Status", npc.status)}
-        {NpcAttribute("Class", npc.class)}
         {NpcAttribute("Race", npc.race)}
+        {NpcAttribute("Class", npc.class)}
         {NpcAttribute(
           "Gender and pronouns",
           `${npc.gender}${npc.pronouns ? ", " : ""}${npc.pronouns}`
