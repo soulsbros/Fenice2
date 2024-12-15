@@ -1,5 +1,8 @@
+import { authOptions } from "@/lib/authConfig";
 import { Campaign } from "@/types/API";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
+import { LevelUpButton } from "./button";
 
 interface Props {
   campaign: Campaign;
@@ -23,10 +26,12 @@ const formatDateString = (campaign: Campaign) => {
   return dateString;
 };
 
-export default function CampaignInfo({
+export default async function CampaignInfo({
   campaign,
   isCharacterPage,
 }: Readonly<Props>) {
+  const userData = await getServerSession(authOptions);
+
   return (
     <div className="my-2">
       DM: {campaign.dm} - Type: {campaign.type}
@@ -55,6 +60,7 @@ export default function CampaignInfo({
             Characters
           </Link>
         )}
+
         {campaign.wikiLink ? (
           <Link
             href={campaign.wikiLink}
@@ -63,6 +69,10 @@ export default function CampaignInfo({
           >
             Wiki page
           </Link>
+        ) : null}
+
+        {userData?.user.roles.includes("admin") ? (
+          <LevelUpButton campaignId={campaign._id!} />
         ) : null}
       </div>
     </div>

@@ -1,4 +1,11 @@
-import { Db, Document, Filter, MongoClient } from "mongodb";
+import {
+  Db,
+  Document,
+  Filter,
+  MongoClient,
+  OptionalId,
+  UpdateFilter,
+} from "mongodb";
 
 const mongoURI =
   process.env.MONGODB_URI ?? "mongodb://user:password@localhost:27017";
@@ -64,7 +71,10 @@ export async function getWithFilter(
   }
 }
 
-export async function insertDocs(collection: string, docs: any[]) {
+export async function insertDocs(
+  collection: string,
+  docs: OptionalId<Document>[]
+) {
   const db = await ourMongo(collection);
   try {
     const result = await db?.insertMany(docs);
@@ -92,8 +102,8 @@ export async function insertDocs(collection: string, docs: any[]) {
 
 export async function updateDoc(
   collection: string,
-  doc: any,
-  filter = {} as Filter<Document>
+  doc: Document[] | UpdateFilter<Document>,
+  filter: Filter<Document>
 ) {
   const db = await ourMongo(collection);
   try {
@@ -120,10 +130,37 @@ export async function updateDoc(
   }
 }
 
-export async function deleteDoc(
+export async function updateFields(
   collection: string,
-  filter = {} as Filter<Document>
+  updatedDoc: Document[] | UpdateFilter<Document>,
+  filter: Filter<Document>
 ) {
+  const db = await ourMongo(collection);
+  try {
+    const result = await db?.updateOne(filter, updatedDoc);
+
+    if (result && result.modifiedCount > 0) {
+      return {
+        success: true,
+        message: `${result.modifiedCount} ${collection} updated successfully`,
+      };
+    } else {
+      console.error(`Error updating ${collection} fields`, result);
+      return {
+        success: false,
+        message: `Error updating ${collection} fields: ${result}`,
+      };
+    }
+  } catch (err) {
+    console.error(`Error updating ${collection} fields`, err);
+    return {
+      success: false,
+      message: `Error updating ${collection} fields: ${err}`,
+    };
+  }
+}
+
+export async function deleteDoc(collection: string, filter: Filter<Document>) {
   const db = await ourMongo(collection);
   try {
     const result = await db?.deleteOne(filter);

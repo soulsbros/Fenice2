@@ -1,5 +1,7 @@
 "use client";
 
+import { levelUp } from "@/actions/campaigns";
+import { ObjectId } from "mongodb";
 import { signOut } from "next-auth/react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
@@ -70,4 +72,12 @@ export function ChangeThemeButton() {
       label="Change theme"
     />
   );
+}
+
+interface LevelUpButtonProps {
+  campaignId: ObjectId;
+}
+
+export function LevelUpButton({ campaignId }: Readonly<LevelUpButtonProps>) {
+  return <Button onClick={() => levelUp(campaignId)} label="Level up" />;
 }
