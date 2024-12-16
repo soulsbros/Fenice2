@@ -10,8 +10,14 @@ export interface Character {
   notes: string;
 }
 
+export interface Player {
+  nickname: string;
+  email: string;
+}
+
 export interface GameData {
   order: Character[];
   turn: number;
   shouldTTS: boolean;
+  players: Player[];
 }

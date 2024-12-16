@@ -14,7 +14,7 @@ import {
   parseBlock,
 } from "@/lib/initiative";
 import { baseTitle, showAlert } from "@/lib/utils";
-import { Character, GameData } from "@/types/Initiative";
+import { Character, GameData, Player } from "@/types/Initiative";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import {
@@ -42,6 +42,7 @@ export default function InitiativePage() {
   const isDM = session?.user.roles.includes("dm") ?? false;
 
   const [order, setOrder] = useState<Character[]>([]);
+  const [players, setPlayers] = useState<Player[]>([]);
   const [turn, setTurn] = useState(1);
 
   const [isEditing, setIsEditing] = useState(false);
@@ -304,15 +305,16 @@ export default function InitiativePage() {
     save({ order: newOrder, turn: newTurn, shouldTTS });
   };
 
-  const save = (newData: GameData, sendUpdate = true) => {
-    setOrder(newData.order);
-    setTurn(newData.turn);
-    setShouldTTS(newData.shouldTTS);
+  // we're never updating the players with this method, hence the Partial
+  const save = (newData: Partial<GameData>, sendUpdate = true) => {
+    setOrder(newData.order!);
+    setTurn(newData.turn!);
+    setShouldTTS(newData.shouldTTS!);
     if (sendUpdate) {
       socket.emit("characters-change", newData);
     }
     if (shouldScroll) {
-      if (newData.order[0]?.active) {
+      if (newData.order![0]?.active) {
         document.body.scrollIntoView({ behavior: "smooth" });
       } else {
         document
@@ -475,7 +477,12 @@ export default function InitiativePage() {
 
   const initializeSocket = async () => {
     await fetch("/api/socket");
-    socket = io();
+    socket = io({
+      auth: {
+        nickname: session?.user.nickname,
+        email: session?.user.email,
+      },
+    });
 
     socket.on("connect", () => {
       console.info("Connected to socket");
@@ -483,6 +490,7 @@ export default function InitiativePage() {
 
     socket.on("update-characters", (data: GameData) => {
       console.info("Received update");
+      setPlayers(data.players);
       save(data, false);
     });
 
@@ -554,6 +562,10 @@ export default function InitiativePage() {
   };
 
   useEffect(() => {
+    // we want to do this after we loaded the auth data, but only once
+    if (!session?.user || socket) {
+      return;
+    }
     initializeSocket();
     requestWakeLock();
     document.addEventListener("visibilitychange", handleVisibilityChange);
@@ -565,7 +577,7 @@ export default function InitiativePage() {
       .querySelector("#newCharacterScore")
       ?.addEventListener("keyup", handleKeypress);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [session]);
 
   const { enemies, allies } = countCharacters();
   const isCombatOngoing =
@@ -675,7 +687,7 @@ export default function InitiativePage() {
                   />
                 ) : null}
               </div>
-              <div>
+              <div className="mb-2">
                 <Button label="Load" icon={<Upload />} onClick={loadOrder} />
                 <Button label="Save" icon={<Save />} onClick={saveOrder} />
                 <Button
@@ -697,6 +709,13 @@ export default function InitiativePage() {
             checked={shouldScroll}
             onChange={(e) => setShouldScroll(e.target.checked)}
           />
+
+          <div className="mt-4">
+            <p className="subtitle">Connected players</p>
+            {players.map((player) => (
+              <div key={player.email}>{player.nickname}</div>
+            ))}
+          </div>
         </>
       ) : null}
 
