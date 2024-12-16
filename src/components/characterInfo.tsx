@@ -47,7 +47,7 @@ export default async function CharacterInfo({ character }: Readonly<Props>) {
             target="_blank"
             className="primary button !mt-4"
           >
-            See it on Heroforge
+            See {character.pronouns.split("/")[1] ?? "them"} on Heroforge
           </Link>
         ) : null}
       </div>

@@ -46,7 +46,7 @@ export default async function NpcInfo({ npc }: Readonly<Props>) {
             target="_blank"
             className="primary button !mt-4"
           >
-            See it on Heroforge
+            See {npc.pronouns.split("/")[1] ?? "them"} on Heroforge
           </Link>
         ) : null}
       </div>
