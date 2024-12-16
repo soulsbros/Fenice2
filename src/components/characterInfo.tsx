@@ -36,7 +36,7 @@ export default async function CharacterInfo({ character }: Readonly<Props>) {
             alt={`Image for ${character.name}`}
             width={300}
             height={300}
-            className="rounded inline-block"
+            className="rounded inline-block p-1"
             key={image.substring(25)}
           />
         ))}

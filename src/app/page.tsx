@@ -18,7 +18,7 @@ export default async function Home() {
         This is the website for our D&D group. Feel free to start exploring by
         browsing the tabs in the menu! More features to come ＼(＾O＾)／
         <br />
-        Audio recording are still hosted on the{" "}
+        Pictures and audio recording are still hosted on the{" "}
         <Link href="https://lafenice.soulsbros.ch" className="link">
           old website
         </Link>{" "}
