@@ -5,14 +5,8 @@ services:
     build: . # change to image for prod
     # image: steeven9/fenice2
     platform: linux/amd64
-    environment:
-      # adjust if needed
-      - MONGODB_URI=mongodb://user:password@mongodb:27017
-      - NEXTAUTH_URL=http://localhost:3000
-      - NEXTAUTH_SECRET=supersecret
-      - KEYCLOAK_ID=fenice2
-      - KEYCLOAK_SECRET=testsecret
-      - KEYCLOAK_ISSUER=https://my-keycloak-domain.com/realms/My_Realm
+    env_file:
+      - .env.local
     ports:
       - "3000:3000"
 
