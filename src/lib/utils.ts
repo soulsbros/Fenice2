@@ -45,7 +45,7 @@ export function cleanDocTitle(title: string) {
 // Default values e.g. for navigation pane and redirects
 
 export const defaultEdition = "pf2";
-export const defaultCampaign = "65d8bd910444b1cacf32a09a";
+export const defaultCampaign = "6697e5deda0f1caafa40e160";
 export const baseTitle = "La Compagnia della Fenice";
 export const baseDesc =
   "Our D&D website with manuals, characters, and much more!";
