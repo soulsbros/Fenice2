@@ -10,10 +10,28 @@ export default async function Home() {
 
   let result = await getCampaigns(undefined, { status: "Ongoing" });
   const campaigns = (result.data.reverse() as Campaign[]) ?? [];
+  const christmasDay = 25;
+  const christmasHours = 18;
+  const christmas = new Date();
+  const christmasCheck =
+    christmas.getUTCDate() === christmasDay &&
+    christmas.getHours() === christmasHours;
 
   return (
     <>
       <div className="title">Welcome!</div>
+      <div className="mb-4">
+        {christmasCheck && (
+          <>
+            <img src="/assets/kalim.png" />
+            <img src="/assets/brit.png" />
+            <div className="mb-4">
+              Cosi finalmente proviamo questi acrilici 4 NPC per Caed Nua e 6
+              characters uno per ogni player (si anche te Sasha)!
+            </div>
+          </>
+        )}
+      </div>
       <div className="mb-4">
         This is the website for our D&D group. Feel free to start exploring by
         browsing the tabs in the menu! More features to come ＼(＾O＾)／
