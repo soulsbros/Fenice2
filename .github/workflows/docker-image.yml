@@ -16,7 +16,7 @@ jobs:
     uses: steeven9/CICD-template/.github/workflows/docker-build.yml@main
     if: github.ref_type == 'tag'
     with:
-      image-name: ${{ env.IMAGE_NAME }}:${{ github.ref_name }}
+      image-name: ${{ jobs.build-tags.env.IMAGE_NAME }}:${{ github.ref_name }}
       push: true
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -27,7 +27,7 @@ jobs:
     uses: steeven9/CICD-template/.github/workflows/docker-build.yml@main
     if: github.ref_type == 'branch'
     with:
-      image-name: ${{ env.IMAGE_NAME }}:latest
+      image-name: ${{ jobs.build-branches.env.IMAGE_NAME }}:latest
       push: ${{ github.ref_name == 'main' }}
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
