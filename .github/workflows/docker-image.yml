@@ -26,6 +26,8 @@ jobs:
     with:
       image-name: steeven9/fenice2:latest
       push: ${{ github.ref_name == 'main' }}
+      ping_webhook: ${{ github.ref_name == 'main' }}
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+      WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
