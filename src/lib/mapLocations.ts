@@ -179,7 +179,37 @@ export const markers = [
     marker: "Blue",
     dateVisited: "13th - 15th of Lamashan",
   },
-  // -- not visited yet --
+  {
+    name: "Canorate",
+    position: [44.147225937906384, -10.920410156250002],
+    description: "The fortified center of Jathras' imperium",
+    marker: "Blue",
+  },
+  {
+    name: "Kerse", // 25
+    position: [45.16300456190904, -6.130371093750001],
+    description: "A city that we almost blew up",
+    marker: "Blue",
+  },
+  {
+    name: "Isle of Terror",
+    position: [47.4588075782003, -7.498168945312501],
+    description: "",
+    marker: "Blue",
+  },
+  {
+    name: "Three Pines fort",
+    position: [48.197420104256224, -12.227783203125002],
+    description: "",
+    marker: "Blue",
+  },
+  {
+    name: "Urgir",
+    position: [51.69476034802203, -13.991088867187502],
+    description: "",
+    marker: "Blue",
+  },
+  // -- not visited --
   {
     name: "Bassomonte",
     position: [47.954809896971966, 2.5708007812500004],
@@ -359,6 +389,15 @@ export const itineraryPoints = [
     markers[22].position, // algamat
     markers[18].position, // surana mansion
   ],
+  // teleportPoints
+  [
+    [47.59349194071775, -13.452758789062502], // bosco
+    markers[27].position, // forte tre pini
+    markers[26].position, // isola del terrore
+  ],
+  // teleportPoints
+
+  // marcia verso Jathras, TP a
 ];
 
 // Those are the red lines of when we teleported from a place to another
@@ -382,6 +421,22 @@ export const teleportPoints = [
   [
     markers[16].position, // voluse
     [46.921987020980595, -0.5630493164062501], // caruskei
+  ],
+  [
+    markers[18].position, // surana mansion
+    markers[28].position, // urgir (orchi)
+  ],
+  [
+    markers[18].position, // surana mansion
+    markers[4].position, // longacre
+  ],
+  [
+    markers[18].position, // surana mansion
+    [47.59349194071775, -13.452758789062502], // bosco
+  ],
+  [
+    [47.4588075782003, -7.498168945312501], // isola del terrore
+    markers[18].position, // surana mansion
   ],
 ];
 
