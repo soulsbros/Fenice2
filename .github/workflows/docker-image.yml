@@ -7,16 +7,13 @@ on:
     tags:
       - "v*"
 
-env:
-  IMAGE_NAME: steeven9/fenice2
-
 jobs:
   build-tags:
     # Build and push the image with the tag name
     uses: steeven9/CICD-template/.github/workflows/docker-build.yml@main
     if: github.ref_type == 'tag'
     with:
-      image-name: ${{ jobs.build-tags.env.IMAGE_NAME }}:${{ github.ref_name }}
+      image-name: steeven9/fenice2:${{ github.ref_name }}
       push: true
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -27,7 +24,7 @@ jobs:
     uses: steeven9/CICD-template/.github/workflows/docker-build.yml@main
     if: github.ref_type == 'branch'
     with:
-      image-name: ${{ jobs.build-branches.env.IMAGE_NAME }}:latest
+      image-name: steeven9/fenice2:latest
       push: ${{ github.ref_name == 'main' }}
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
