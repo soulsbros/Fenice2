@@ -93,7 +93,7 @@ export default function RootLayout({ children }: Readonly<Props>) {
                 <Image src={githubLogo} width={32} alt="GitHub logo" />
               </Link>
               <Link
-                href="https://soulsbros.ch/?p=contact"
+                href="https://soulsbros.ch#contact"
                 target="_blank"
                 className="hover:rotate-45 transition-all"
               >
