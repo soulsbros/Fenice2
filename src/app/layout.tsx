@@ -1,10 +1,9 @@
 import MenuButton from "@/components/menuButton";
 import { Sidebar, Topbar } from "@/components/navigation";
 import UserIndicator from "@/components/userIndicator";
-import icon from "@/img/icon.png";
 import contactLogo from "@/img/icon_contact.png";
 import githubLogo from "@/img/icon_github.png";
-import { baseDesc, baseTitle, baseUrl } from "@/lib/utils";
+import { baseDesc, baseTitle, baseUrl, getLogo } from "@/lib/utils";
 import type { Metadata, Viewport } from "next";
 import { ThemeProvider } from "next-themes";
 import { Inter } from "next/font/google";
@@ -60,8 +59,8 @@ export default function RootLayout({ children }: Readonly<Props>) {
 
                 <Link href={"/"} className="flex items-center">
                   <Image
-                    src={icon}
-                    width={32}
+                    src={getLogo().icon}
+                    width={40}
                     alt="Image of a dice"
                     className="mx-2"
                   />

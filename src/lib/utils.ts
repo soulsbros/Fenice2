@@ -1,3 +1,13 @@
+import icon from "@/img/icon.png";
+import iconPride from "@/img/iconPride.png";
+import iconSummer from "@/img/iconSummer.png";
+import iconXmas from "@/img/iconXmas.png";
+import {
+  default as loading,
+  default as loadingPride,
+  default as loadingSummer,
+  default as loadingXmas,
+} from "@/img/loading.gif";
 import Swal, { SweetAlertOptions } from "sweetalert2";
 
 export async function showAlert(options: SweetAlertOptions) {
@@ -40,6 +50,23 @@ export function cleanDocTitle(title: string) {
     category: name.split("_")[0],
     edition: title.split("/")[1],
   };
+}
+
+export function getLogo() {
+  const now = new Date();
+  if (now.getMonth() == 5) {
+    // june
+    return { icon: iconPride, loading: loadingPride };
+  }
+  if (now.getMonth() == 6 || now.getMonth() == 7) {
+    // july, august
+    return { icon: iconSummer, loading: loadingSummer };
+  }
+  if (now.getMonth() == 11 || now.getMonth() == 0) {
+    // december, january
+    return { icon: iconXmas, loading: loadingXmas };
+  }
+  return { icon: icon, loading: loading };
 }
 
 // Default values e.g. for navigation pane and redirects
