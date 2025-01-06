@@ -117,6 +117,22 @@ export const EVENTS_AVALOR = [
   {
     title: "Neketaka",
     start: "2024-08-27",
-    end: "2024-08-29",
+    end: "2024-09-14",
+  },
+  {
+    title: "Arrival at Neketaka, visit at Leoniors house",
+    start: "2024-08-29",
+  },
+  {
+    title: "Stolen wallets, Abyss",
+    start: "2024-08-30",
+  },
+  {
+    title: "Return from the Abyss, encounter with Grimmjow",
+    start: "2024-08-31",
+  },
+  {
+    title: "Timekiller case",
+    start: "2024-09-16",
   },
 ];
