@@ -13,7 +13,7 @@ export const markers = [
     position: [37.147965, -18.759155],
     description: "A small port city where we started our journey",
     marker: "Blue",
-    dateVisited: "18th of Desnus 4722",
+    dateVisited: "18th Desnus 4722",
   },
   {
     name: "Hermea",
@@ -21,28 +21,28 @@ export const markers = [
     description:
       "A peculiar little island, hideout of the Corvi. Don't stay for dinner!",
     marker: "Blue",
-    dateVisited: "2nd - 11th of Sarenith",
+    dateVisited: "2nd - 11th Sarenith",
   },
   {
     name: "Nisroch",
     position: [44.504486, -21.470032],
     description: "Kaboom!",
     marker: "Blue",
-    dateVisited: "16th - 22nd of Sarenith",
+    dateVisited: "16th - 22nd Sarenith",
   },
   {
     name: "Taggun Hold",
     position: [41.605021, -17.281494],
     description: "A lizardfolk-inhabited small village, where we found Yvonne",
     marker: "Blue",
-    dateVisited: "6th of Erastus",
+    dateVisited: "6th Erastus",
   },
   {
     name: "Longacre",
     position: [39.189552, -16.040039],
     description: "A big, spider-protected city, complete with a dwarven forge",
     marker: "Blue",
-    dateVisited: "11th - 15th of Erastus",
+    dateVisited: "11th - 15th Erastus and 31th Lamashan",
   },
   {
     name: "Senara", // 5
@@ -50,14 +50,14 @@ export const markers = [
     description:
       "A small gracious town, filled with halflings. For the love of everything, play dice with them...",
     marker: "Blue",
-    dateVisited: "8th of Erastus",
+    dateVisited: "8th Erastus",
   },
   {
     name: "Misarias",
     position: [40.61308617898251, -11.005554199218752],
     description: "A fortified city where we met Alkest, Kurbas, and Nok Nok",
     marker: "Blue",
-    dateVisited: "18th - 19th of Erastus",
+    dateVisited: "18th - 19th Erastus",
   },
   {
     name: `Haugin's Ear`,
@@ -65,149 +65,162 @@ export const markers = [
     description:
       "A small cursed village, where everyone has been turned into a fox",
     marker: "Blue",
-    dateVisited: "19th of Erastus",
+    dateVisited: "19th Erastus",
   },
   {
     name: `Goblin City`,
     position: [40.36771970021672, -8.041992187500002],
     description: `An underground goblin city that we kinda failed to reclaim`,
     marker: "Blue",
-    dateVisited: "19th - 21st of Erastus",
+    dateVisited: "19th - 21st Erastus",
   },
   {
     name: `Piren's Bluff`,
     position: [40.07611648280531, -7.012023925781251],
     description: `Small village of farmers that have never seen giant spiders before`,
     marker: "Blue",
-    dateVisited: "24th - 25th of Erastus",
+    dateVisited: "24th - 25th Erastus",
   },
   {
     name: `Oregent`, // 10
     position: [39.77557811645709, -4.724121093750001],
     description: `Big ass fancy city, lawful good - naked elves on rooftops included!`,
     marker: "Blue",
-    dateVisited: "26th - 28th of Erastus",
+    dateVisited: "26th - 28th Erastus",
   },
   {
     name: "Yleste",
     position: [35.424698, 0.002747],
     description: "The city where we found the stars! And a civil war.",
     marker: "Blue",
-    dateVisited: "28th of Erastus - 3rd of Arodus",
+    dateVisited: "28th Erastus - 3rd Arodus",
   },
   {
     name: "Almas",
     position: [38.39891804079242, -2.9333496093750004],
     description: "A small portuary city very keen on freeing slaves",
     marker: "Blue",
-    dateVisited: "6th - 7th of Arodus",
+    dateVisited: "6th - 7th Arodus",
   },
   {
     name: `Oregent`,
     position: [39.77557811645709, -4.724121093750001],
     description: `Back to where we met Kienzou, to deliver 890 gnomes`,
     marker: "Blue",
-    dateVisited: "26th - 28th of Erastus and 9th of Arodus",
+    dateVisited: "26th - 28th Erastus and 9th Arodus",
   },
   {
     name: `Sauerton`,
     position: [41.52082596645194, -2.3538208007812504],
     description: `Wine!`,
     marker: "Blue",
-    dateVisited: "10th - 11th of Arodus",
+    dateVisited: "10th - 11th Arodus",
   },
   {
     name: `Caldamin`, // 15
     position: [43.14717317571153, -1.7111206054687502],
     description: `Golem fight!`,
     marker: "Blue",
-    dateVisited: "12th of Arodus",
+    dateVisited: "12th Arodus",
   },
   {
     name: `Voluse`,
     position: [46.78106814715621, -1.7935180664062502],
     description: `The River Kingdoms capital, very well hidden`,
     marker: "Blue",
-    dateVisited: "17th - 25th of Arodus",
+    dateVisited: "17th - 25th Arodus",
   },
   {
     name: `Novoboro`,
     position: [48.10896394246189, 0.5163574218750001],
     description: `A small trader outpost`,
     marker: "Blue",
-    dateVisited: "28th of Arodus",
+    dateVisited: "28th Arodus",
   },
   {
     name: "Surana Mansion",
     position: [49.174501046221586, 3.6968994140625004],
     description: "A small castle, now home for Alan'divir's family",
     marker: "Red",
-    dateVisited: "31th of Arodus - 2nd of Rova and 19th of Lamashan - now",
+    dateVisited:
+      "31th Arodus - 2nd Rova, 29th - 30th Lamashan, 31th Lamashan - 7th Neth, 9th - 10th Neth, 16th - 18th Neth",
   },
   {
     name: `Heibarr`,
     position: [51.36312191813004, 0.6591796875000001],
     description: `A ghost town - don't fall in the river...`,
     marker: "Blue",
-    dateVisited: "10th - 11th of Rova",
+    dateVisited: "10th - 11th Rova",
   },
   {
     name: `Hajoth Hakados`, // 20
     position: [52.50344835343625, 1.1645507812500002],
     description: `An android-welcoming city with shiny metals`,
     marker: "Blue",
-    dateVisited: "14th - 17th of Rova",
+    dateVisited: "14th - 17th Rova",
   },
   {
     name: "Torch",
     position: [53.97, -0.4556],
     description: "Rok's birthplace, somewhere in the Numerian region",
     marker: "Red",
-    dateVisited: "22th - 23rd of Rova",
+    dateVisited: "22th - 23rd Rova",
   },
   {
     name: "Algamat",
     position: [57.810164, 1.604004],
     description: "A dwarven city, home of Agna Ironbreaker",
     marker: "Red",
-    dateVisited: "4th - 5th and 16th - 18th of Lamashan",
+    dateVisited: "4th - 5th and 16th - 18th Lamashan",
   },
   {
     name: "Krygandom",
     position: [61.03701223240189, 3.4635874521207333],
     description: "An isolated and unknown dwarven mountain city",
     marker: "Blue",
-    dateVisited: "13th - 15th of Lamashan",
+    dateVisited: "13th - 15th Lamashan",
   },
   {
     name: "Canorate",
     position: [44.147225937906384, -10.920410156250002],
     description: "The fortified center of Jathras' imperium",
     marker: "Blue",
+    dateVisited: "18th Neth - 4th Kuthona, 16th Kuthona",
   },
   {
     name: "Kerse", // 25
     position: [45.16300456190904, -6.130371093750001],
     description: "A city that we almost blew up",
     marker: "Blue",
+    dateVisited: "5th - 8th Kuthona",
   },
   {
     name: "Isle of Terror",
     position: [47.4588075782003, -7.498168945312501],
     description: "",
     marker: "Blue",
+    dateVisited: "16th Neth",
   },
   {
     name: "Three Pines fort",
     position: [48.197420104256224, -12.227783203125002],
     description: "",
     marker: "Blue",
+    dateVisited: "13 - 14th Neth",
   },
   {
     name: "Urgir",
     position: [51.69476034802203, -13.991088867187502],
-    description: "",
+    description: "The home of the Open Palm orc tribe",
     marker: "Blue",
+    dateVisited: "8th - 9th Neth",
+  },
+  {
+    name: "Tamran",
+    position: [46.717157176216645, -12.216796875000002],
+    description: "10 Neth",
+    marker: "Blue",
+    dateVisited: "10th Neth",
   },
   // -- not visited --
   {
@@ -391,13 +404,39 @@ export const itineraryPoints = [
   ],
   // teleportPoints
   [
-    [47.59349194071775, -13.452758789062502], // bosco
+    markers[29].position, // tamran
+    [47.59349194071775, -13.452758789062502], // hellknights camp
     markers[27].position, // forte tre pini
+    [48.03007389168568, -12.095947265625],
+    [48.006179886611264, -11.911926269531252],
+    [48.01353306763047, -11.653747558593752],
+    [47.934391797253056, -11.513671875000002],
+    [47.82773693474541, -11.464233398437502],
+    [47.653844698722445, -11.18682861328125],
     markers[26].position, // isola del terrore
   ],
   // teleportPoints
-
-  // marcia verso Jathras, TP a
+  [
+    markers[18].position, // surana mansion
+    [49.166494282002404, 1.7358398437500002], // pianura
+  ],
+  // teleportPoints
+  [
+    markers[24].position, // canorate
+    [44.60923752463263, -10.997314453125002],
+    [44.99138798052413, -10.78857421875],
+    [45.28600691130468, -10.437011718750002],
+    [45.517525526514625, -10.288696289062502],
+    [46.32361002214403, -9.173583984375002],
+    [46.7658463304163, -7.959594726562501],
+    [46.60373373671746, -7.547607421875001],
+    [46.18300756274616, -7.267456054687501],
+    [45.6285225935818, -6.624755859375001],
+    markers[25].position, // kerse
+    [44.98597620353964, -7.679443359375001],
+    [44.36122237999734, -9.195556640625002],
+    markers[24].position, // canorate
+  ],
 ];
 
 // Those are the red lines of when we teleported from a place to another
@@ -432,11 +471,15 @@ export const teleportPoints = [
   ],
   [
     markers[18].position, // surana mansion
-    [47.59349194071775, -13.452758789062502], // bosco
+    markers[29].position, // tamran
   ],
   [
-    [47.4588075782003, -7.498168945312501], // isola del terrore
+    markers[26].position, // isola del terrore
     markers[18].position, // surana mansion
+  ],
+  [
+    [49.166494282002404, 1.7358398437500002], // pianura
+    markers[24].position, // canorate
   ],
 ];
 

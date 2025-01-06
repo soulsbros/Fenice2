@@ -11,6 +11,10 @@ The frontend is exposed at <https://fenice2.soulsbros.ch>.
 
 404 and 500 error logos by [SAWARATSUKI](https://github.com/SAWARATSUKI/KawaiiLogos)
 
+404 and 500 art by [rui](https://twitter.com/namelessakikaze)
+
+Dice logos by [Zegno](https://twitter.com/LazzariZeno)
+
 ### Dependencies
 
 The website has a few integrations with some external services (100% self-hosted),
