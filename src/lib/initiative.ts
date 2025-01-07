@@ -1,9 +1,6 @@
 import { playTTS } from "@/actions/initiative";
 import { Character } from "@/types/Initiative";
 
-// we have to fully write out all the classes
-// that we want Tailwind to bundle
-
 export const healthColors = [
   "text-green-700",
   "text-green-600",
@@ -13,6 +10,8 @@ export const healthColors = [
   "text-red-700",
 ];
 
+// we have to fully write out all the classes
+// that we want Tailwind to bundle
 const pgColors = [
   "bg-player",
   "bg-ally",
@@ -137,8 +136,42 @@ export function getRandomValue(min: number, max: number) {
 
 export function getCharacterType(character: Character) {
   if (character.isEnemy) return "enemy";
-
   if (!character.isPlayer && !character.isEnemy) return "ally";
-
   return "player";
+}
+
+export function countCharacters(order: Character[]) {
+  let enemies = 0;
+  let allies = 0;
+  for (let character of order) {
+    let chars = 0;
+    // possible inputs:
+    // "Orc" (=1), "Orc 2" (=1), "Orc 4-5" (=2),
+    // "Orc 10&11" (=2), "Orc 2-3 & Orc 13-15" (=5)
+    if (character.name.includes("-")) {
+      if (/\D/g.test(character.name)) {
+        // we only have letters, e.g. "Orc - running"
+        chars = 1;
+      } else {
+        for (let chunk of character.name.split("&")) {
+          const numbers = chunk.split("-");
+          // we do the difference + 1 since: 4-6 => diff is two, but there are 3 elements
+          chars +=
+            parseInt(numbers[1].replace(/\D/g, "")) -
+            parseInt(numbers[0].replace(/\D/g, "")) +
+            1;
+        }
+      }
+    } else {
+      // we only have contiguous enemies, so number of elements is number of enemies
+      // e.g. "Orc 1&2" (=2), "Orc 4&7&9" (=3)
+      chars += character.name.split("&").length;
+    }
+    if (character.isEnemy) {
+      enemies += chars;
+    } else {
+      allies += chars;
+    }
+  }
+  return { enemies, allies };
 }
