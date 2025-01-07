@@ -1,6 +1,8 @@
 import InitiativeTracker from "@/components/initiativeTracker";
+import { authOptions } from "@/lib/authConfig";
 import { healthColors } from "@/lib/initiative";
 import { Metadata } from "next";
+import { getServerSession } from "next-auth";
 
 export const metadata: Metadata = {
   title: "Initiative",
@@ -9,12 +11,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function InitiativePage() {
+export default async function InitiativePage() {
+  const session = await getServerSession(authOptions);
+
   return (
     <>
       <p className="title">Initiative tracker</p>
 
-      <InitiativeTracker />
+      <InitiativeTracker session={session!} />
 
       <div>
         <span className="inline-block align-top mr-4">

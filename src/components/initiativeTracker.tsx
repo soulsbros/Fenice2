@@ -15,7 +15,7 @@ import {
 } from "@/lib/initiative";
 import { showAlert } from "@/lib/utils";
 import { Character, GameData, Player } from "@/types/Initiative";
-import { useSession } from "next-auth/react";
+import { Session } from "next-auth";
 import { useEffect, useState } from "react";
 import {
   Check,
@@ -35,8 +35,12 @@ import io from "socket.io-client";
 
 let socket: any;
 
-export default function InitiativeTracker() {
-  const { data: session } = useSession();
+interface Props {
+  session: Session;
+}
+
+export default function InitiativeTracker(props: Readonly<Props>) {
+  const { session } = props;
   const isAdmin = session?.user.roles.includes("admin");
   const isPlayer = session?.user.roles.includes("player");
   const isDM = session?.user.roles.includes("dm") ?? false;
@@ -46,7 +50,6 @@ export default function InitiativeTracker() {
   const [turn, setTurn] = useState(1);
 
   const [isEditing, setIsEditing] = useState(false);
-  const [shouldScroll, setShouldScroll] = useState(true);
   const [shouldTTS, setShouldTTS] = useState(false);
   const [isEnemy, setIsEnemy] = useState(isDM);
   const [shouldPersist, setShouldPersist] = useState(isDM);
@@ -214,10 +217,6 @@ export default function InitiativeTracker() {
     setIsEnemy(character.isEnemy);
 
     notes.value = character.notes;
-
-    document
-      .querySelector("#newCharacterName")
-      ?.scrollIntoView({ behavior: "smooth" });
   };
 
   const deleteCharacter = (currentCharacter: string) => {
@@ -303,6 +302,17 @@ export default function InitiativeTracker() {
   const next = () => {
     const { newOrder, newTurn } = advanceCharacter(order, turn, shouldTTS);
     save({ order: newOrder, turn: newTurn, shouldTTS });
+
+    // auto-scroll only if not logged in (kiosk)
+    if (!isPlayer) {
+      if (newOrder[0]?.active) {
+        document.body.scrollIntoView({ behavior: "smooth" });
+      } else {
+        document
+          .querySelector("div .font-semibold")
+          ?.scrollIntoView({ behavior: "smooth" });
+      }
+    }
   };
 
   // we're never updating the players with this method, hence the Partial
@@ -312,15 +322,6 @@ export default function InitiativeTracker() {
     setShouldTTS(newData.shouldTTS!);
     if (sendUpdate) {
       socket.emit("characters-change", newData);
-    }
-    if (shouldScroll) {
-      if (newData.order![0]?.active) {
-        document.body.scrollIntoView({ behavior: "smooth" });
-      } else {
-        document
-          .querySelector("div .font-semibold")
-          ?.scrollIntoView({ behavior: "smooth" });
-      }
     }
   };
 
@@ -665,12 +666,6 @@ export default function InitiativeTracker() {
               />
             </>
           ) : null}
-
-          <Checkbox
-            label="Auto-scroll"
-            checked={shouldScroll}
-            onChange={(e) => setShouldScroll(e.target.checked)}
-          />
 
           <div className="mt-4">
             <p className="subtitle">Connected players</p>
