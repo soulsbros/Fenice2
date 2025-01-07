@@ -2,12 +2,10 @@ import icon from "@/img/icon.png";
 import iconPride from "@/img/iconPride.png";
 import iconSummer from "@/img/iconSummer.png";
 import iconXmas from "@/img/iconXmas.png";
-import {
-  default as loading,
-  default as loadingPride,
-  default as loadingSummer,
-  default as loadingXmas,
-} from "@/img/loading.gif";
+import loading from "@/img/loading.gif";
+import loadingPride from "@/img/loadingPride.gif";
+import loadingSummer from "@/img/loadingSummer.gif";
+import loadingXmas from "@/img/loadingXmas.gif";
 import Swal, { SweetAlertOptions } from "sweetalert2";
 
 export async function showAlert(options: SweetAlertOptions) {
