@@ -508,7 +508,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
       return;
     }
 
-    const parsedText = parseBlock(text, session?.user.email!);
+    const parsedText = parseBlock(text, session?.user.email);
 
     // validate that there are no duplicate names
     for (let character of parsedText) {
@@ -649,8 +649,6 @@ export default function InitiativeTracker(props: Readonly<Props>) {
                     onClick={restart}
                   />
                 ) : null}
-              </div>
-              <div className="mb-2">
                 <Button label="Load" icon={<Upload />} onClick={loadOrder} />
                 <Button label="Save" icon={<Save />} onClick={saveOrder} />
                 <Button
@@ -658,19 +656,22 @@ export default function InitiativeTracker(props: Readonly<Props>) {
                   icon={<Loader />}
                   onClick={forceReload}
                 />
+                <Checkbox
+                  label="TTS"
+                  checked={shouldTTS}
+                  onChange={(e) => setShouldTTS(e.target.checked)}
+                />
               </div>
-              <Checkbox
-                label="TTS"
-                checked={shouldTTS}
-                onChange={(e) => setShouldTTS(e.target.checked)}
-              />
             </>
           ) : null}
 
           <div className="mt-4">
             <p className="subtitle">Connected players</p>
             {players.map((player) => (
-              <div key={player.email}>{player.nickname}</div>
+              <div key={player.email}>
+                {player.nickname}
+                {player.email == session.user.email ? " (you)" : null}
+              </div>
             ))}
           </div>
         </>

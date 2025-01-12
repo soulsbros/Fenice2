@@ -14,11 +14,17 @@ export default function SocketHandler(req: Request, res: any) {
     res.socket.server.io = io;
 
     io.on("connection", (socket) => {
+      // setup
       console.info(
         `Connection accepted (${socket.id}), user ${socket.handshake.auth.email}`
       );
-      initiativeData.players.push(socket.handshake.auth as Player);
+      initiativeData.players = [
+        ...initiativeData.players,
+        socket.handshake.auth as Player,
+      ].toSorted((a, b) => b.nickname.localeCompare(a.nickname));
       socket.emit("update-characters", initiativeData);
+
+      // -- handlers --
 
       socket.on("characters-change", (data: GameData) => {
         console.info(`Received update request from ${socket.id}`);
@@ -38,6 +44,7 @@ export default function SocketHandler(req: Request, res: any) {
         initiativeData.players = initiativeData.players.filter(
           (player) => player.email != socket.handshake.auth.email
         );
+        socket.broadcast.emit("update-characters", initiativeData);
       });
     });
   }
