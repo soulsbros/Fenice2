@@ -1,8 +1,8 @@
 {
   "name": "fenice2",
-  "version": "2.1.26",
+  "version": "2.1.27",
   "private": true,
-  "description": "The site of La Compagnia della Fenice",
+  "description": "Our D&D website with manuals, characters, and much more!",
   "author": "soulsbros",
   "license": "GPL-3.0-only",
   "scripts": {
@@ -18,8 +18,7 @@
     "node": "^22.0.0"
   },
   "dependencies": {
-    "@3d-dice/dice-box": "1.0.14",
-    "@3d-dice/dice-parser-interface": "^0.2.1",
+    "@3d-dice/dice-box": "^1.0.14",
     "@3d-dice/dice-ui": "^0.4.3",
     "@fullcalendar/core": "^6.1.10",
     "@fullcalendar/daygrid": "^6.1.10",
