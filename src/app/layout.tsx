@@ -1,8 +1,7 @@
 import MenuButton from "@/components/menuButton";
 import { Sidebar, Topbar } from "@/components/navigation";
 import UserIndicator from "@/components/userIndicator";
-import contactLogo from "@/img/icon_contact.png";
-import githubLogo from "@/img/icon_github.png";
+import githubLogo from "@/img/githubLogo.png";
 import { baseDesc, baseTitle, baseUrl, getLogo } from "@/lib/utils";
 import type { Metadata, Viewport } from "next";
 import { ThemeProvider } from "next-themes";
@@ -82,7 +81,12 @@ export default function RootLayout({ children }: Readonly<Props>) {
             <footer className="flex space-x-2 p-4 items-center justify-center">
               <p>
                 &copy;{new Date().getFullYear()}{" "}
-                <Link href="https://soulsbros.ch">Soulsbros</Link>
+                <Link
+                  href="https://soulsbros.ch"
+                  className="hover:text-blue-600"
+                >
+                  Soulsbros
+                </Link>
               </p>
               <Link
                 href="https://github.com/soulsbros"
@@ -90,13 +94,6 @@ export default function RootLayout({ children }: Readonly<Props>) {
                 className="hover:rotate-45 transition-all"
               >
                 <Image src={githubLogo} width={32} alt="GitHub logo" />
-              </Link>
-              <Link
-                href="https://soulsbros.ch#contact"
-                target="_blank"
-                className="hover:rotate-45 transition-all"
-              >
-                <Image src={contactLogo} width={32} alt="Contact logo" />
               </Link>
             </footer>
           </NextAuthProvider>

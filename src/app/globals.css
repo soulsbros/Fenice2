@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@tailwind variants;
 
 body {
   color: rgba(0, 0, 0, 0.87);
@@ -31,10 +32,7 @@ header a svg {
 }
 
 .adv-roller--clear {
-  @apply secondary;
-  @apply text-text-white;
-  cursor: pointer;
-  border-radius: 5px;
+  @apply cursor-pointer button secondary;
 }
 
 .displayResults .hidden {
@@ -46,6 +44,10 @@ header a svg {
 .swal2-input-label {
   margin: 1em 1.6em 0.3em;
   text-align: center;
+}
+
+.swal2-cancel {
+  @apply secondary bg-transparent;
 }
 
 /* Fullcalendar fixes */
@@ -65,11 +67,11 @@ header a svg {
 /* Custom classes */
 
 .primary {
-  @apply bg-fenice-red hover:bg-red-700;
+  @apply bg-fenice-red hover:bg-red-800;
 }
 
 .secondary {
-  @apply bg-blue-600 hover:bg-blue-700;
+  @apply border border-fenice-red hover:border-red-800 text-fenice-red;
 }
 
 .disabled {
@@ -81,7 +83,7 @@ header a svg {
 }
 
 .button {
-  @apply text-text-white font-bold py-[10px] px-4 rounded inline-flex align-middle space-x-3 mr-2 my-2 border-2 border-transparent;
+  @apply text-text-white font-bold py-[10px] px-4 rounded inline-flex align-middle space-x-3 mr-2 my-2;
 }
 
 .link {
