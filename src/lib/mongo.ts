@@ -14,6 +14,11 @@ const dbName = process.env.DB_NAME ?? "fenice2";
 let client: MongoClient;
 let database: Db;
 
+export interface SortingParam {
+  field: string;
+  direction: "ASC" | "DESC";
+}
+
 export async function ourMongo(collection: string) {
   if (database) {
     return database.collection(collection);
@@ -35,7 +40,7 @@ export async function ourMongo(collection: string) {
 
 export async function getWithFilter(
   collection: string,
-  sortingParam?: { field: string; direction: string },
+  sortingParam?: SortingParam,
   filter = {} as Filter<Document>
 ) {
   try {

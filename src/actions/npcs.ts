@@ -6,6 +6,7 @@ import {
   getWithFilter,
   insertDocs,
   parseImageFiles,
+  SortingParam,
   updateDoc,
 } from "@/lib/mongo";
 import { parseFormData } from "@/lib/utils";
@@ -16,7 +17,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function getNpcs(
-  sortingParam?: { field: string; direction: string },
+  sortingParam?: SortingParam,
   filter = {} as Filter<Document>
 ) {
   return await getWithFilter("npcs", sortingParam, filter);

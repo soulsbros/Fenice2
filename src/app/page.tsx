@@ -8,7 +8,10 @@ import Link from "next/link";
 export default async function Home() {
   const countdownDate = await fetchNextSession();
 
-  let result = await getCampaigns(undefined, { status: "Ongoing" });
+  let result = await getCampaigns(
+    { field: "name", direction: "DESC" },
+    { status: "Ongoing" }
+  );
   const campaigns = (result.data.reverse() as Campaign[]) ?? [];
 
   return (
@@ -18,7 +21,7 @@ export default async function Home() {
         This is the website for our D&D group. Feel free to start exploring by
         browsing the tabs in the menu! More features to come ＼(＾O＾)／
         <br />
-        Pictures and audio recording are still hosted on the{" "}
+        Pictures and audio recordings are still hosted on the{" "}
         <Link href="https://lafenice.soulsbros.ch" className="link">
           old website
         </Link>{" "}
@@ -27,17 +30,18 @@ export default async function Home() {
 
       <div className="subtitle">Active campaigns</div>
       <div className="mb-4">
-        {campaigns.length == 0 ? "None for now :(" : null}
-        {campaigns.map((campaign) => (
-          <div key={campaign._id?.toString()}>
-            <Link
-              href={`/characters/by-campaign/${campaign._id}`}
-              className="link"
-            >
-              {campaign.name}
-            </Link>
-          </div>
-        ))}
+        {campaigns.length == 0
+          ? "None for now :("
+          : campaigns.map((campaign) => (
+              <div key={campaign._id?.toString()}>
+                <Link
+                  href={`/characters/by-campaign/${campaign._id}`}
+                  className="link"
+                >
+                  {campaign.name}
+                </Link>
+              </div>
+            ))}
       </div>
 
       {countdownDate && new Date(countdownDate) >= new Date() ? ( // show only if in the future
