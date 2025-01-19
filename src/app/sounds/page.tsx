@@ -1,37 +1,31 @@
-"use client";
+import { getFiles, getSignedURL } from "@/actions/storage";
+import SoundsPlayer from "@/components/soundsPlayer";
+import { Metadata } from "next";
 
-import { sounds } from "@/lib/sounds";
-import { baseTitle } from "@/lib/utils";
-import { useEffect, useState } from "react";
+export const metadata: Metadata = {
+  title: "Soundboard",
+  openGraph: {
+    title: "Soundboard",
+  },
+};
 
-export default function SoundsPage() {
-  const [audio, setAudio] = useState<HTMLAudioElement>();
+export default async function SoundsPage() {
+  const sounds = await getFiles(`sounds`);
+  const parsedSounds: { name: string; URL: string }[] = [];
 
-  function playSound(src: string) {
-    audio!.src = src;
-    audio!.play();
-  }
-
-  useEffect(() => {
-    setAudio(document.getElementById("player")! as HTMLAudioElement);
-    document.title = `Soundboard - ${baseTitle}`;
-  }, []);
+  sounds.forEach(async (sound) => {
+    const url = await getSignedURL(sound);
+    parsedSounds.push({ name: sound, URL: url });
+  });
 
   return (
     <>
       <div className="title">Soundboard</div>
-      <div className="text-center">
-        {sounds.map((sound) => (
-          <button
-            className="button primary"
-            key={sound.name}
-            onClick={() => playSound(sound.url)}
-          >
-            {sound.name}
-          </button>
-        ))}
-      </div>
-      <audio id="player" controls className="hidden" />
+      {sounds.length == 0 ? (
+        "No sounds found."
+      ) : (
+        <SoundsPlayer sounds={parsedSounds} />
+      )}
     </>
   );
 }

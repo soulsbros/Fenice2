@@ -50,6 +50,14 @@ export function cleanDocTitle(title: string) {
   };
 }
 
+// Extracts metadata from filename (e.g. sounds/Yeet.mp3)
+export function cleanSoundTitle(title: string) {
+  const name = title.split("/")[1];
+  return {
+    title: name.slice(0, -4).replaceAll(/([a-z]+)([A-Z]+)/g, "$1 $2"),
+  };
+}
+
 export function getLogo() {
   const now = new Date();
   if (now.getMonth() == 5) {
