@@ -1,5 +1,5 @@
 import MenuButton from "@/components/menuButton";
-import { Sidebar, Topbar } from "@/components/navigation";
+import { Sidebar } from "@/components/navigation";
 import UserIndicator from "@/components/userIndicator";
 import githubLogo from "@/img/githubLogo.png";
 import { baseDesc, baseTitle, baseUrl, getLogo } from "@/lib/utils";
@@ -67,12 +67,10 @@ export default function RootLayout({ children }: Readonly<Props>) {
                 </Link>
               </div>
 
-              <Topbar />
-
               <UserIndicator />
             </header>
 
-            <main className="flex flex-1 mx-2 md:mx-20">
+            <main className="flex flex-1 mx-2 md:mx-10">
               <Sidebar />
 
               <div className="flex-grow p-3 max-w-full">{children}</div>
