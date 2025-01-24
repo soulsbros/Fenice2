@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function SoundsPage() {
-  const sounds = await getFiles(`sounds`);
+  const sounds = await getFiles("sounds");
   const parsedSounds: { name: string; URL: string }[] = [];
 
   sounds.forEach(async (sound) => {
@@ -29,3 +29,6 @@ export default async function SoundsPage() {
     </>
   );
 }
+
+// disable pre-render at build time
+export const dynamic = "force-dynamic";

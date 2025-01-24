@@ -9,12 +9,6 @@ This is a website for our D&D group where we handle maps, character data and muc
 
 The frontend is exposed at <https://fenice2.soulsbros.ch>.
 
-404 and 500 error logos by [SAWARATSUKI](https://github.com/SAWARATSUKI/KawaiiLogos)
-
-404 and 500 art by [rui](https://twitter.com/namelessakikaze)
-
-Dice logos by [Zegno](https://twitter.com/LazzariZeno)
-
 ### Dependencies
 
 The website has a few integrations with some external services (100% self-hosted),
@@ -24,7 +18,7 @@ which are not strictly required to run the website but might be needed for some 
 Required to browse, create, and edit characters and campaigns
 - **Keycloak** OIDC identity provider to allow users to login and store their characters.
 Required to create and edit characters
-- **S3 storage** to store the documents (we use MinIO, optional)
+- **MinIO S3 storage** to store files such as documents and sounds (optional)
 - **Gcal-API** to easily fetch the date of our next session from our shared calendar
 (see [steeven9/Gcal-API](https://github.com/Steeven9/Gcal-API), optional)
 - **Home Assistant** with the Alexa integration to announce whose turn it is in combat (optional)
@@ -88,3 +82,19 @@ Before submitting a pull request, please check that the build is still passing e
 ```bash
 yarn build
 ```
+
+## Credits
+
+Error logos by [SAWARATSUKI](https://github.com/SAWARATSUKI/KawaiiLogos)
+
+Art by [rui](https://twitter.com/namelessakikaze)
+
+Dice logos by [Zeno](https://twitter.com/LazzariZeno)
+
+And all our contributors here on GitHub:
+
+<a href="https://github.com/Steeven9/Fenice2/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Steeven9/Fenice2" />
+</a>
+
+(made with [contributors-img](https://contrib.rocks))
