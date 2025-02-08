@@ -24,7 +24,8 @@ export default function DiceRoller() {
   const diceString = searchParams!.get("d");
 
   useEffect(() => {
-    diceBox = new DiceBox("#dice-box", {
+    diceBox = new DiceBox({
+      id: "#dice-box",
       assetPath: "/assets/",
       settleTimeout: 2000,
       themeColor: "#1e7098",

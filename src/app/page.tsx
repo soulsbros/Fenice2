@@ -1,9 +1,13 @@
 import { getCampaigns } from "@/actions/characters";
 import Countdown from "@/components/countdown";
-import DiceRoller from "@/components/diceRoller";
 import { fetchNextSession } from "@/lib/calendarEvents";
 import { Campaign } from "@/types/API";
+import dynamic from "next/dynamic";
 import Link from "next/link";
+
+const DiceRoller = dynamic(() => import("@/components/diceRoller"), {
+  ssr: false,
+});
 
 export default async function Home() {
   const countdownDate = await fetchNextSession();
@@ -58,4 +62,4 @@ export default async function Home() {
 }
 
 // disable pre-render at build time
-export const dynamic = "force-dynamic";
+// export const dynamic = "force-dynamic";

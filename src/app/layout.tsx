@@ -81,13 +81,14 @@ export default function RootLayout({ children }: Readonly<Props>) {
                 &copy;{new Date().getFullYear()}{" "}
                 <Link
                   href="https://soulsbros.ch"
+                  target="_blank"
                   className="hover:text-blue-600"
                 >
                   Soulsbros
                 </Link>
               </p>
               <Link
-                href="https://github.com/soulsbros"
+                href="https://github.com/soulsbros/Fenice2"
                 target="_blank"
                 className="hover:rotate-45 transition-all"
               >

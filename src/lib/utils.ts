@@ -60,6 +60,7 @@ export function cleanSoundTitle(title: string) {
 
 export function getLogo() {
   const now = new Date();
+  console.log(now);
   if (now.getMonth() == 5) {
     // june
     return { icon: iconPride, loading: loadingPride };

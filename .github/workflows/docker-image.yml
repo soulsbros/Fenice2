@@ -10,7 +10,7 @@ on:
 jobs:
   build-tags:
     # Build and push the image with the tag name
-    uses: steeven9/CICD-template/.github/workflows/docker-build.yml@main
+    uses: soulsbros/CICD-template/.github/workflows/docker-build.yml@main
     if: github.ref_type == 'tag'
     with:
       image-name: steeven9/fenice2:${{ github.ref_name }}
@@ -22,7 +22,7 @@ jobs:
 
   build-branches:
     # Build all branches but push only in main
-    uses: steeven9/CICD-template/.github/workflows/docker-build.yml@main
+    uses: soulsbros/CICD-template/.github/workflows/docker-build.yml@main
     if: github.ref_type == 'branch'
     with:
       image-name: steeven9/fenice2:latest
