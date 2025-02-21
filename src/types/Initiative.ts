@@ -13,6 +13,7 @@ export interface Character {
 export interface Player {
   nickname: string;
   email: string;
+  socketId: string;
 }
 
 export interface GameData {

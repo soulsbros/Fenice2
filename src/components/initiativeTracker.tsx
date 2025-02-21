@@ -19,7 +19,9 @@ import { Session } from "next-auth";
 import { useEffect, useState } from "react";
 import {
   Check,
+  ChevronDown,
   ChevronsRight,
+  ChevronUp,
   Crosshair,
   FastForward,
   Heart,
@@ -53,6 +55,13 @@ export default function InitiativeTracker(props: Readonly<Props>) {
   const [shouldTTS, setShouldTTS] = useState(false);
   const [isEnemy, setIsEnemy] = useState(isDM);
   const [shouldPersist, setShouldPersist] = useState(isDM);
+  // show the form by default only to DM.
+  // if you don't have a character in the order it opens (useEffect)
+  const [shouldShowAddForm, setShouldShowAddForm] = useState(isDM);
+
+  const { enemies, allies } = countCharacters(order);
+  const isCombatOngoing =
+    order.findIndex((character) => character.active) !== -1;
 
   const comparator = (characterA: Character, characterB: Character) =>
     characterB.score - characterA.score;
@@ -189,6 +198,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
 
     save({ order: newOrder, turn: turn, shouldTTS });
     setIsEditing(false);
+    setShouldShowAddForm(isDM);
   };
 
   const removeCharacter = (name: string) => {
@@ -264,10 +274,11 @@ export default function InitiativeTracker(props: Readonly<Props>) {
         newOrder[pos].currentHealth -= parsedDamage;
         if (newOrder[pos].currentHealth <= 0 && newOrder[pos].isEnemy) {
           deleteCharacter(currentCharacter);
+          return;
         } else if (newOrder[pos].currentHealth < 0) {
           newOrder[pos].currentHealth = 0;
-          save({ order: newOrder, turn: turn, shouldTTS });
         }
+        save({ order: newOrder, turn: turn, shouldTTS });
       }
     }
   };
@@ -448,7 +459,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
     socket = io({
       auth: {
         nickname: session?.user.nickname ?? session?.user.firstName,
-        email: session?.user.email,
+        email: session?.user.email ?? "unknown",
       },
     });
 
@@ -531,7 +542,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
 
   useEffect(() => {
     // we want to do this after we loaded the auth data, but only once
-    if (!session?.user || socket) {
+    if (socket) {
       return;
     }
     initializeSocket();
@@ -546,9 +557,17 @@ export default function InitiativeTracker(props: Readonly<Props>) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
-  const { enemies, allies } = countCharacters(order);
-  const isCombatOngoing =
-    order.findIndex((character) => character.active) !== -1;
+  useEffect(() => {
+    // if you don't have a character in the order, open the add form
+    if (!isDM) {
+      setShouldShowAddForm(
+        order.findIndex(
+          (character) => character.player === session?.user.email
+        ) == -1
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [order]);
 
   return (
     <>
@@ -556,36 +575,21 @@ export default function InitiativeTracker(props: Readonly<Props>) {
         {isCombatOngoing ? `⚔️ Turn ${turn}` : "⏳ Preparing..."}
       </p>
 
-      <div className="mt-4" id="order">
-        {renderOrder()}
-      </div>
-
-      <div className="sticky bottom-0 py-2 items-center bg-main-bg dark:bg-main-bg-dark flex justify-between">
-        <div>
-          {enemies} enemies vs {allies} allies
-          {isEditing ? " (editing...)" : ""}
-        </div>
-        {isPlayer ? (
-          <Button
-            label={isCombatOngoing ? "Next" : "Start"}
-            icon={isCombatOngoing ? <FastForward /> : <Play />}
-            disabled={order.length === 0 || (!isDM && !isCombatOngoing)}
-            onClick={next}
-          />
-        ) : null}
-      </div>
-
-      {isPlayer ? (
-        <>
-          <p className="subtitle mt-4">
+      <div className="my-4 p-2 border rounded border-slate-600">
+        <div className="flex justify-between items-center">
+          <span className="subtitle !mb-0">
             {isEditing ? "Edit" : "Add"} character
-          </p>
-          <div className="my-4">
-            <Textfield
-              id="newCharacterName"
-              placeholder="Character name"
-              required
-            />
+          </span>
+          {shouldShowAddForm ? (
+            <ChevronUp onClick={() => setShouldShowAddForm(false)} />
+          ) : (
+            <ChevronDown onClick={() => setShouldShowAddForm(true)} />
+          )}
+        </div>
+
+        {isPlayer && shouldShowAddForm ? (
+          <div className="mt-2">
+            <Textfield id="newCharacterName" placeholder="Name" required />
             <Textfield
               id="newCharacterScore"
               placeholder={
@@ -596,12 +600,12 @@ export default function InitiativeTracker(props: Readonly<Props>) {
             />
             <Textfield
               id="newCharacterCurrentHealth"
-              placeholder="Current health"
+              placeholder="Current HP"
               type="number"
             />
             <Textfield
               id="newCharacterTotalHealth"
-              placeholder="Total health"
+              placeholder="Total HP"
               type="number"
             />
             <Textfield
@@ -638,47 +642,59 @@ export default function InitiativeTracker(props: Readonly<Props>) {
               />
             </div>
           </div>
+        ) : null}
+      </div>
 
-          {isDM || isAdmin ? (
-            <>
-              <p className="subtitle">DM controls</p>
-              <div>
-                <Button label="Bulk add" icon={<Plus />} onClick={bulkAdd} />
-                <Button label="Clear" icon={<Trash2 />} onClick={clear} />
-                {isCombatOngoing ? (
-                  <Button
-                    label="Restart"
-                    icon={<RefreshCw />}
-                    onClick={restart}
-                  />
-                ) : null}
-                <Button label="Load" icon={<Upload />} onClick={loadOrder} />
-                <Button label="Save" icon={<Save />} onClick={saveOrder} />
-                <Button
-                  label="Resync"
-                  icon={<Loader />}
-                  onClick={forceReload}
-                />
-                <Checkbox
-                  label="TTS"
-                  checked={shouldTTS}
-                  onChange={(e) => setShouldTTS(e.target.checked)}
-                />
-              </div>
-            </>
-          ) : null}
+      <div className="mt-4" id="order">
+        {renderOrder()}
+      </div>
 
-          <div className="mt-4">
-            <p className="subtitle">Connected players</p>
-            {players.map((player) => (
-              <div key={player.email}>
-                {player.nickname}
-                {player.email == session.user.email ? " (you)" : null}
-              </div>
-            ))}
+      <div className="sticky bottom-0 py-2 items-center bg-main-bg dark:bg-main-bg-dark flex justify-between">
+        <div>
+          {enemies} enemies vs {allies} allies
+          {isEditing ? " (editing...)" : ""}
+        </div>
+        {isPlayer ? (
+          <Button
+            label={isCombatOngoing ? "Next" : "Start"}
+            icon={isCombatOngoing ? <FastForward /> : <Play />}
+            disabled={order.length === 0 || (!isDM && !isCombatOngoing)}
+            onClick={next}
+          />
+        ) : null}
+      </div>
+
+      {isDM || isAdmin ? (
+        <>
+          <p className="subtitle">DM controls</p>
+          <div>
+            <Button label="Bulk add" icon={<Plus />} onClick={bulkAdd} />
+            <Button label="Clear" icon={<Trash2 />} onClick={clear} />
+            {isCombatOngoing ? (
+              <Button label="Restart" icon={<RefreshCw />} onClick={restart} />
+            ) : null}
+            <Button label="Load" icon={<Upload />} onClick={loadOrder} />
+            <Button label="Save" icon={<Save />} onClick={saveOrder} />
+            <Button label="Resync" icon={<Loader />} onClick={forceReload} />
+            <Checkbox
+              label="TTS"
+              checked={shouldTTS}
+              onChange={(e) => setShouldTTS(e.target.checked)}
+            />
           </div>
         </>
       ) : null}
+
+      <span className="inline-block align-top mr-4">
+        <p className="subtitle mt-4">Connected players</p>
+        {players.length == 0 ? "None for now :(" : null}
+        {players.map((player) => (
+          <div key={player.email + player.socketId}>
+            {player.nickname}
+            {player.email == session?.user.email ? " (you)" : null}
+          </div>
+        ))}
+      </span>
     </>
   );
 }
