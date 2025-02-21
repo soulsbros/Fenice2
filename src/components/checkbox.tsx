@@ -1,6 +1,6 @@
 interface Props {
   id?: string;
-  label: string;
+  label?: string;
   onChange?: (e: any) => void;
   checked?: boolean;
 }
@@ -12,13 +12,13 @@ export default function Checkbox({
   checked,
 }: Readonly<Props>) {
   return (
-    <label className="mr-4">
+    <label className="mr-4 ">
       <input
         type="checkbox"
         id={id}
         checked={checked}
         onChange={onChange}
-        className="align-middle"
+        className="align-middle accent-red-600"
       />
       <span className="align-middle"> {label}</span>
     </label>

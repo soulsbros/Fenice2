@@ -262,10 +262,12 @@ export default function InitiativeTracker(props: Readonly<Props>) {
         save({ order: newOrder, turn: turn, shouldTTS });
       } else if (Number.isInteger(parsedDamage)) {
         newOrder[pos].currentHealth -= parsedDamage;
-        if (newOrder[pos].currentHealth < 0) {
+        if (newOrder[pos].currentHealth <= 0 && newOrder[pos].isEnemy) {
+          deleteCharacter(currentCharacter);
+        } else if (newOrder[pos].currentHealth < 0) {
           newOrder[pos].currentHealth = 0;
+          save({ order: newOrder, turn: turn, shouldTTS });
         }
-        save({ order: newOrder, turn: turn, shouldTTS });
       }
     }
   };
@@ -412,6 +414,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
           </div>
 
           <div className="flex">
+            <Checkbox />
             {isPlayer ? (
               <Button
                 onClick={() => damageCharacter(character.name)}
