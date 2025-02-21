@@ -25,7 +25,7 @@ export default function DiceRoller() {
 
   useEffect(() => {
     diceBox = new DiceBox({
-      id: "#dice-box",
+      container: "#dice-box",
       assetPath: "/assets/",
       settleTimeout: 2000,
       themeColor: "#1e7098",
