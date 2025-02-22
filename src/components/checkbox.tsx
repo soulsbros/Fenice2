@@ -12,7 +12,7 @@ export default function Checkbox({
   checked,
 }: Readonly<Props>) {
   return (
-    <label>
+    <label className="p-2">
       <input
         type="checkbox"
         id={id}
