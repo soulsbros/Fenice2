@@ -3,7 +3,6 @@
 import { loadInitiative, saveInitiative } from "@/actions/initiative";
 import Button from "@/components/button";
 import Checkbox from "@/components/checkbox";
-import Dropdown from "@/components/dropdown";
 import Textfield from "@/components/textfield";
 import {
   advanceCharacter,
@@ -23,6 +22,7 @@ import {
   ChevronsRight,
   ChevronUp,
   Crosshair,
+  Edit,
   FastForward,
   Heart,
   Loader,
@@ -215,6 +215,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
   };
 
   const editCharacter = (currentCharacter: string) => {
+    setShouldShowAddForm(true); // TODO remove when we switch to modal
     setIsEditing(true);
     const { name, score, currentHealth, totalHealth, notes } = getFields();
 
@@ -424,30 +425,26 @@ export default function InitiativeTracker(props: Readonly<Props>) {
             </div>
           </div>
 
-          <div className="flex">
-            <Checkbox />
+          <div className="flex items-center">
             {isPlayer ? (
+              <>
+                <Checkbox />
+                <Button
+                  onClick={() => damageCharacter(character.name)}
+                  tooltip="Damage"
+                  icon={<Crosshair />}
+                  className="!my-0 !mx-2 !p-2"
+                />
+              </>
+            ) : null}
+            {isPlayer && (isDM || character.isPlayer) ? (
               <Button
-                onClick={() => damageCharacter(character.name)}
-                tooltip="Damage character"
-                icon={<Crosshair />}
-                className="!mb-0"
+                onClick={() => editCharacter(character.name)}
+                tooltip="Edit"
+                icon={<Edit />}
+                className="!m-0 !p-2"
               />
             ) : null}
-            <Dropdown
-              links={[
-                {
-                  title: "Edit",
-                  onClick: () => editCharacter(character.name),
-                },
-                {
-                  title: "Remove",
-                  onClick: () => removeCharacter(character.name),
-                },
-              ]}
-              className="absolute right-0 mt-16 mr-3"
-              disabled={!isPlayer || !(isDM || character.isPlayer)}
-            />
           </div>
         </div>
       );

@@ -12,15 +12,15 @@ export default function Checkbox({
   checked,
 }: Readonly<Props>) {
   return (
-    <label className="mr-4 ">
+    <label>
       <input
         type="checkbox"
         id={id}
         checked={checked}
         onChange={onChange}
-        className="align-middle accent-red-600"
+        className="align-middle accent-fenice-red"
       />
-      <span className="align-middle"> {label}</span>
+      {label ? <span className="align-middle"> {label}</span> : null}
     </label>
   );
 }
