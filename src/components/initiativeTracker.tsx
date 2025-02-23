@@ -80,125 +80,138 @@ export default function InitiativeTracker(props: Readonly<Props>) {
     let notes = document.querySelector(
       "#newCharacterNotes"
     ) as HTMLInputElement;
-    let amount = document.querySelector(
-      "#newCharacterAmount"
-    ) as HTMLInputElement;
+    let amount =
+      parseInt(
+        (document.querySelector("#newCharacterAmount") as HTMLInputElement)
+          .value
+      ) || 1;
 
     return { name, score, currentHealth, totalHealth, notes, amount };
   };
 
   const addCharacter = async () => {
-    const { name, score, currentHealth, totalHealth, notes } = getFields();
+    const { name, score, currentHealth, totalHealth, notes, amount } =
+      getFields();
 
-    // we roll the dice for the DM
-    let parsedScore =
-      isDM && !isEditing
-        ? getRandomValue(1, 20) + parseFloat(score.value)
-        : parseFloat(score.value);
-
-    // WIP
-    // let parsedAmount = amount?.value || 1;
-
-    const oldValue = order.find((character) => character.name === name.value);
-    if (!isEditing && oldValue) {
+    if (amount < 1) {
       showAlert({
         title: "Invalid input",
-        text: `Character ${name.value} already exists`,
+        text: "Amount has to be positive",
         icon: "error",
         showCancelButton: false,
       });
-      console.error("Character already exists", name.value, score.value);
+      console.error("Invalid input", name.value, amount);
       return;
     }
 
-    if (!name.value || !score.value) {
-      showAlert({
-        title: "Invalid input",
-        text: "Name or initiative value are missing or invalid",
-        icon: "error",
-        showCancelButton: false,
-      });
-      console.error("Invalid input", name.value, score.value);
-      return;
-    }
+    for (let i = 0; i < amount; i++) {
+      // we roll the dice for the DM
+      let parsedScore =
+        isDM && !isEditing
+          ? getRandomValue(1, 20) + parseFloat(score.value)
+          : parseFloat(score.value);
 
-    if (
-      !isEditing &&
-      order.find((character) => character.score == parsedScore)
-    ) {
-      const oldIndex = order.findIndex(
-        (character) => character.score == parsedScore
-      );
-
-      // we decide randomly who goes first
-      const result = getRandomValue(0, 1);
-
-      let modifier: number;
-      if (result == 1) {
-        // the new one goes first -> put them higher
-        modifier = 0.01;
-      } else {
-        // the already present one goes first -> put the new one lower
-        modifier = -0.01;
+      const oldValue = order.find((character) => character.name === name.value);
+      if (!isEditing && oldValue) {
+        showAlert({
+          title: "Invalid input",
+          text: `Character ${name.value} already exists`,
+          icon: "error",
+          showCancelButton: false,
+        });
+        console.error("Character already exists", name.value, score.value);
+        return;
       }
 
-      // increase or decrease modifier until they have a unique value
-      while (
-        order.findIndex(
-          (character) => character.score == parsedScore + modifier
-        ) !== -1
+      if (!name.value || !score.value) {
+        showAlert({
+          title: "Invalid input",
+          text: "Name or initiative value are missing or invalid",
+          icon: "error",
+          showCancelButton: false,
+        });
+        console.error("Invalid input", name.value, score.value);
+        return;
+      }
+
+      if (
+        !isEditing &&
+        order.find((character) => character.score == parsedScore)
       ) {
-        modifier += modifier;
+        const oldIndex = order.findIndex(
+          (character) => character.score == parsedScore
+        );
+
+        // we decide randomly who goes first
+        const result = getRandomValue(0, 1);
+
+        let modifier: number;
+        if (result == 1) {
+          // the new one goes first -> put them higher
+          modifier = 0.01;
+        } else {
+          // the already present one goes first -> put the new one lower
+          modifier = -0.01;
+        }
+
+        // increase or decrease modifier until they have a unique value
+        while (
+          order.findIndex(
+            (character) => character.score == parsedScore + modifier
+          ) !== -1
+        ) {
+          modifier += modifier;
+        }
+
+        parsedScore = order[oldIndex].score + modifier;
       }
 
-      parsedScore = order[oldIndex].score + modifier;
-    }
+      const newCharacter: Character = {
+        name: name.value,
+        score: parsedScore,
+        active: oldValue?.active ?? false,
+        player: oldValue?.player ?? session?.user.email ?? "",
+        isPlayer: oldValue?.isPlayer ?? !isDM,
+        isEnemy: isEnemy,
+        currentHealth: parseInt(currentHealth.value) || 0,
+        totalHealth: parseInt(totalHealth.value) || 0,
+        notes: notes.value,
+      };
 
-    const newCharacter: Character = {
-      name: name.value,
-      score: parsedScore,
-      active: oldValue?.active ?? false,
-      player: oldValue?.player ?? session?.user.email ?? "",
-      isPlayer: oldValue?.isPlayer ?? !isDM,
-      isEnemy: isEnemy,
-      currentHealth: parseInt(currentHealth.value) || 0,
-      totalHealth: parseInt(totalHealth.value) || 0,
-      notes: notes.value,
-    };
+      const oldIndex = order.findIndex(
+        (character) => character.name == name.value
+      );
+      if (oldIndex == -1) {
+        order.push(newCharacter);
+      } else {
+        order[oldIndex] = newCharacter;
+      }
+      const newOrder = [...order].toSorted(comparator);
 
-    const oldIndex = order.findIndex(
-      (character) => character.name == name.value
-    );
-    if (oldIndex == -1) {
-      order.push(newCharacter);
-    } else {
-      order[oldIndex] = newCharacter;
-    }
-    const newOrder = [...order].toSorted(comparator);
-
-    if (shouldPersist) {
-      if (/\d/.test(name.value)) {
-        const digit = RegExp(/\d+/).exec(name.value);
-        if (digit != null && !name.value.includes("-")) {
-          name.value = name.value.replace(
-            digit[0],
-            (Number.parseInt(digit[0]) + 1).toString()
-          );
+      if (shouldPersist) {
+        if (/\d/.test(name.value)) {
+          const digit = RegExp(/\d+/).exec(name.value);
+          if (digit != null && !name.value.includes("-")) {
+            name.value = name.value.replace(
+              digit[0],
+              (Number.parseInt(digit[0]) + 1).toString()
+            );
+          }
+        } else {
+          name.value += " 1";
         }
       } else {
-        name.value += " 1";
+        name.value = "";
+        currentHealth.value = "";
+        totalHealth.value = "";
+        notes.value = "";
+        score.value = "";
       }
-    } else {
-      name.value = "";
-      currentHealth.value = "";
-      totalHealth.value = "";
-      notes.value = "";
-      score.value = "";
-    }
 
-    save({ order: newOrder, turn: turn, shouldTTS });
-    setIsEditing(false);
-    setShouldShowAddForm(isDM);
+      save({ order: newOrder, turn: turn, shouldTTS });
+      setIsEditing(false);
+      setShouldShowAddForm(isDM);
+    }
   };
 
   const removeCharacter = (name: string) => {
