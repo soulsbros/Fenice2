@@ -604,15 +604,14 @@ export default function InitiativeTracker(props: Readonly<Props>) {
       </p>
 
       <div className="my-4 p-2 border rounded border-slate-600">
-        <div className="flex justify-between items-center">
+        <div
+          className="flex justify-between items-center cursor-pointer"
+          onClick={() => setShouldShowAddForm(!shouldShowAddForm)}
+        >
           <span className="subtitle !mb-0">
             {isEditing ? "Edit" : "Add"} character
           </span>
-          {shouldShowAddForm ? (
-            <ChevronUp onClick={() => setShouldShowAddForm(false)} />
-          ) : (
-            <ChevronDown onClick={() => setShouldShowAddForm(true)} />
-          )}
+          {shouldShowAddForm ? <ChevronUp /> : <ChevronDown />}
         </div>
 
         {isPlayer && shouldShowAddForm ? (
