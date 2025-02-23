@@ -433,7 +433,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
                   onClick={() => damageCharacter(character.name)}
                   tooltip="Damage"
                   icon={<Crosshair />}
-                  className="!my-0 !mx-2 !p-2"
+                  className="!m-0 !ml-2 !p-2"
                 />
               </>
             ) : null}
@@ -442,6 +442,14 @@ export default function InitiativeTracker(props: Readonly<Props>) {
                 onClick={() => editCharacter(character.name)}
                 tooltip="Edit"
                 icon={<Edit />}
+                className="!m-0 !mx-2 !p-2"
+              />
+            ) : null}
+            {isDM ? (
+              <Button
+                onClick={() => removeCharacter(character.name)}
+                tooltip="Remove"
+                icon={<Trash2 />}
                 className="!m-0 !p-2"
               />
             ) : null}
@@ -648,7 +656,8 @@ export default function InitiativeTracker(props: Readonly<Props>) {
 
       <div className="sticky bottom-0 py-2 items-center bg-main-bg dark:bg-main-bg-dark flex justify-between">
         <div>
-          {enemies} enemies vs {allies} allies
+          {enemies} {enemies == 1 ? "enemy" : "enemies"} vs {allies}{" "}
+          {allies == 1 ? "ally" : "allies"}
           {isEditing ? " (editing...)" : ""}
         </div>
         {isPlayer ? (
