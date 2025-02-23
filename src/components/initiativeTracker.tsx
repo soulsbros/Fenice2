@@ -22,6 +22,7 @@ import {
   ChevronsRight,
   ChevronUp,
   Crosshair,
+  Delete,
   Edit,
   FastForward,
   Heart,
@@ -54,7 +55,6 @@ export default function InitiativeTracker(props: Readonly<Props>) {
   const [isEditing, setIsEditing] = useState(false);
   const [shouldTTS, setShouldTTS] = useState(false);
   const [isEnemy, setIsEnemy] = useState(isDM);
-  const [shouldPersist, setShouldPersist] = useState(isDM);
   // show the form by default only to DM.
   // if you don't have a character in the order it opens (useEffect)
   const [shouldShowAddForm, setShouldShowAddForm] = useState(isDM);
@@ -83,10 +83,24 @@ export default function InitiativeTracker(props: Readonly<Props>) {
     let amount =
       parseInt(
         (document.querySelector("#newCharacterAmount") as HTMLInputElement)
-          .value
+          ?.value
       ) || 1;
 
     return { name, score, currentHealth, totalHealth, notes, amount };
+  };
+
+  const clearFields = () => {
+    const { name, score, currentHealth, totalHealth, notes } = getFields();
+    name.value = "";
+    currentHealth.value = "";
+    totalHealth.value = "";
+    notes.value = "";
+    score.value = "";
+    if (isDM) {
+      (
+        document.querySelector("#newCharacterAmount") as HTMLInputElement
+      ).value = "";
+    }
   };
 
   const addCharacter = async () => {
@@ -160,7 +174,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
             (character) => character.score == parsedScore + modifier
           ) !== -1
         ) {
-          modifier += modifier;
+          modifier += 0.01;
         }
 
         parsedScore = order[oldIndex].score + modifier;
@@ -188,7 +202,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
       }
       const newOrder = [...order].toSorted(comparator);
 
-      if (shouldPersist) {
+      if (isDM) {
         if (/\d/.test(name.value)) {
           const digit = RegExp(/\d+/).exec(name.value);
           if (digit != null && !name.value.includes("-")) {
@@ -201,11 +215,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
           name.value += " 1";
         }
       } else {
-        name.value = "";
-        currentHealth.value = "";
-        totalHealth.value = "";
-        notes.value = "";
-        score.value = "";
+        clearFields();
       }
 
       save({ order: newOrder, turn: turn, shouldTTS });
@@ -632,24 +642,20 @@ export default function InitiativeTracker(props: Readonly<Props>) {
             ) : null}
             <div className="text-center">
               {isDM ? (
-                <>
-                  <Checkbox
-                    label="Enemy"
-                    checked={isEnemy}
-                    onChange={(e) => setIsEnemy(e.target.checked)}
-                  />
-                  <Checkbox
-                    label="Persist"
-                    checked={shouldPersist}
-                    onChange={(e) => setShouldPersist(e.target.checked)}
-                  />
-                </>
+                <Checkbox
+                  label="Enemy"
+                  checked={isEnemy}
+                  onChange={(e) => setIsEnemy(e.target.checked)}
+                />
               ) : null}
               <Button
                 label={isEditing ? "Update" : "Add"}
                 icon={isEditing ? <Check /> : <Plus />}
                 onClick={addCharacter}
               />
+              {isDM ? (
+                <Button label="Clear" icon={<Delete />} onClick={clearFields} />
+              ) : null}
             </div>
           </div>
         ) : null}
