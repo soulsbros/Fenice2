@@ -180,6 +180,11 @@ export default function InitiativeTracker(props: Readonly<Props>) {
         parsedScore = order[oldIndex].score + modifier;
       }
 
+      // if we're inserting multiple characters and the first character doesn't have a number we add " 1" to the name
+      if (amount > 1 && !/\d/.test(name.value)) {
+        name.value = name.value + " 1";
+      }
+
       const newCharacter: Character = {
         name: name.value,
         score: parsedScore,
@@ -211,8 +216,6 @@ export default function InitiativeTracker(props: Readonly<Props>) {
               (Number.parseInt(digit[0]) + 1).toString()
             );
           }
-        } else {
-          name.value += " 1";
         }
       } else {
         clearFields();
@@ -661,7 +664,11 @@ export default function InitiativeTracker(props: Readonly<Props>) {
                 onClick={addCharacter}
               />
               {isDM ? (
-                <Button label="Clear" icon={<Delete />} onClick={clearFields} />
+                <Button
+                  label="Empty fields"
+                  icon={<Delete />}
+                  onClick={clearFields}
+                />
               ) : null}
             </div>
           </div>
