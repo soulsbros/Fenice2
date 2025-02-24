@@ -454,7 +454,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
           <div className="flex items-center">
             {isPlayer ? (
               <>
-                <Checkbox />
+                <Checkbox beeg={true} />
                 <Button
                   onClick={() => damageCharacter(character.name)}
                   tooltip="Damage"
