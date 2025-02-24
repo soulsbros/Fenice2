@@ -424,13 +424,14 @@ export default function InitiativeTracker(props: Readonly<Props>) {
 
       const health = getHealthValue(character);
       return (
-        <div
+        <label
           key={character.name}
           className={`my-2 p-2 pl-0.5 flex justify-between items-center ${
             character.active
               ? `border-${getCharacterType(character)} font-semibold`
               : "border-slate-600"
           } transition-all duration-500 border-solid border-2`}
+          htmlFor={character.name}
         >
           <div className="flex">
             <div className={`bg-${getCharacterType(character)} mr-2`}>
@@ -454,7 +455,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
           <div className="flex items-center">
             {isPlayer ? (
               <>
-                <Checkbox beeg={true} />
+                <Checkbox id={character.name} beeg={true} />
                 <Button
                   onClick={() => damageCharacter(character.name)}
                   tooltip="Damage"
@@ -480,7 +481,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
               />
             ) : null}
           </div>
-        </div>
+        </label>
       );
     });
   };
