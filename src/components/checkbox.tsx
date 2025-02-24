@@ -3,6 +3,8 @@ interface Props {
   label?: string;
   onChange?: (e: any) => void;
   checked?: boolean;
+  // funny name for bigger checkboxes eheheheheh
+  beeg?: boolean;
 }
 
 export default function Checkbox({
@@ -10,6 +12,7 @@ export default function Checkbox({
   label,
   onChange,
   checked,
+  beeg,
 }: Readonly<Props>) {
   return (
     <label className="p-2">
@@ -18,7 +21,7 @@ export default function Checkbox({
         id={id}
         checked={checked}
         onChange={onChange}
-        className="align-middle accent-fenice-red"
+        className={`align-middle accent-fenice-red ${beeg ? "h-5 w-5" : ""}`}
       />
       {label ? <span className="align-middle"> {label}</span> : null}
     </label>
