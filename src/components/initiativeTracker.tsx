@@ -240,6 +240,30 @@ export default function InitiativeTracker(props: Readonly<Props>) {
     });
   };
 
+  const removeMultipleCharacters = () => {
+    const checkedCharacters = order.filter((character) => {
+      const checkbox = document.getElementById(
+        character.name
+      ) as HTMLInputElement;
+      return checkbox?.checked;
+    });
+
+    const characterNames = checkedCharacters
+      .map((character) => character.name)
+      .join("<br>");
+
+    showAlert({
+      title: "Remove selected characters?",
+      html: `Do you want to remove the selected characters from the initiative?<br><br>${characterNames}`,
+      icon: "warning",
+      confirmButtonText: "Remove",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteMultipleCharacters();
+      }
+    });
+  };
+
   const editCharacter = (currentCharacter: string) => {
     setShouldShowAddForm(true); // TODO remove when we switch to modal
     setIsEditing(true);
@@ -275,6 +299,21 @@ export default function InitiativeTracker(props: Readonly<Props>) {
       turn: newTurn,
       shouldTTS,
     });
+  };
+
+  const deleteMultipleCharacters = () => {
+    const checkedCharacters = order.filter((character) => {
+      const checkbox = document.getElementById(
+        character.name
+      ) as HTMLInputElement;
+      return checkbox?.checked;
+    });
+
+    const newOrder = order.filter(
+      (character) => !checkedCharacters.includes(character)
+    );
+
+    save({ order: newOrder, turn: turn, shouldTTS });
   };
 
   const damageCharacter = async (currentCharacter: string) => {
@@ -675,6 +714,14 @@ export default function InitiativeTracker(props: Readonly<Props>) {
           </div>
         ) : null}
       </div>
+
+      {isDM ? (
+        <Button
+          label="Delete Selected"
+          icon={<Trash2 />}
+          onClick={removeMultipleCharacters}
+        />
+      ) : null}
 
       <div className="mt-4" id="order">
         {renderOrder()}
