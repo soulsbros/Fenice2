@@ -55,6 +55,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
   const [isEditing, setIsEditing] = useState(false);
   const [shouldTTS, setShouldTTS] = useState(false);
   const [isEnemy, setIsEnemy] = useState(isDM);
+  const [hasChecked, setHasChecked] = useState(false);
   // show the form by default only to DM.
   // if you don't have a character in the order it opens (useEffect)
   const [shouldShowAddForm, setShouldShowAddForm] = useState(isDM);
@@ -328,7 +329,18 @@ export default function InitiativeTracker(props: Readonly<Props>) {
       }
     }
 
+    setHasChecked(false);
+
     save({ order: newOrder, turn: turn, shouldTTS });
+  };
+
+  const areThereCheckedCharacters = () => {
+    return order.filter((character) => {
+      const checkbox = document.getElementById(
+        character.name
+      ) as HTMLInputElement;
+      return checkbox?.checked;
+    });
   };
 
   const damageCharacter = async (currentCharacter: string) => {
@@ -509,7 +521,14 @@ export default function InitiativeTracker(props: Readonly<Props>) {
           <div className="flex items-center">
             {isPlayer ? (
               <>
-                <Checkbox id={character.name} beeg={true} />
+                <Checkbox
+                  id={character.name}
+                  beeg={true}
+                  onChange={() => {
+                    const checkedCharacters = areThereCheckedCharacters();
+                    setHasChecked(checkedCharacters.length > 0);
+                  }}
+                />
                 <Button
                   onClick={() => damageCharacter(character.name)}
                   tooltip="Damage"
@@ -735,6 +754,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
           label="Delete Selected"
           icon={<Trash2 />}
           onClick={removeMultipleCharacters}
+          disabled={!hasChecked}
         />
       ) : null}
 
