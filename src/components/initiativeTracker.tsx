@@ -376,6 +376,56 @@ export default function InitiativeTracker(props: Readonly<Props>) {
     }
   };
 
+  const damageMultipleCharacters = async () => {
+    const checkedCharacters = order.filter((character) => {
+      const checkbox = document.getElementById(
+        character.name
+      ) as HTMLInputElement;
+      return checkbox?.checked;
+    });
+
+    const characterNames = checkedCharacters
+      .map((character) => character.name)
+      .join("<br>");
+
+    const { value: damage } = await showAlert({
+      title: "Enter damage",
+      html: `You are about to damage the following characters:<br><br>${characterNames}`,
+      inputLabel: "How much damage? Tip: enter a negative value for healing",
+      input: "text",
+      inputValidator: (value) => {
+        if (!value) {
+          return "Please provide a healing value";
+        }
+      },
+    });
+
+    let newOrder = [...order];
+    let killCounter = 0;
+
+    checkedCharacters.forEach((character) => {
+      if (damage) {
+        let parsedDamage = Number.parseInt(damage);
+
+        if (Number.isInteger(parsedDamage)) {
+          character.currentHealth -= parsedDamage;
+          if (character.currentHealth <= 0 && character.isEnemy) {
+            killCounter++;
+            if (character.active) {
+              const res = advanceCharacter(newOrder, turn);
+              newOrder = res.newOrder;
+            }
+            newOrder = newOrder.filter((char) => char.name !== character.name);
+          }
+        }
+      }
+    });
+    save({ order: newOrder, turn: turn, shouldTTS });
+    if (killCounter == checkedCharacters.length) {
+      setHasChecked(false);
+    }
+  };
+
   const clear = () => {
     showAlert({
       title: "Clear initiative?",
@@ -386,6 +436,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
       if (result.isConfirmed) {
         save({ order: [], turn: 1, shouldTTS });
       }
+      setHasChecked(false);
     });
   };
 
@@ -464,6 +515,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
           });
         }
       }
+      setHasChecked(false);
     });
   };
 
@@ -757,6 +809,13 @@ export default function InitiativeTracker(props: Readonly<Props>) {
           disabled={!hasChecked}
         />
       ) : null}
+
+      <Button
+        label="Damage Selected"
+        icon={<Crosshair />}
+        onClick={damageMultipleCharacters}
+        disabled={!hasChecked}
+      />
 
       <div className="mt-4" id="order">
         {renderOrder()}
