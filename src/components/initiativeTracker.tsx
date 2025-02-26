@@ -302,16 +302,31 @@ export default function InitiativeTracker(props: Readonly<Props>) {
   };
 
   const deleteMultipleCharacters = () => {
-    const checkedCharacters = order.filter((character) => {
+    const currentCharacter = order.find((character) => character.active);
+
+    const currentInitiative = currentCharacter?.score;
+
+    const newOrder = order.filter((character) => {
       const checkbox = document.getElementById(
         character.name
       ) as HTMLInputElement;
-      return checkbox?.checked;
+      return !checkbox?.checked;
     });
 
-    const newOrder = order.filter(
-      (character) => !checkedCharacters.includes(character)
-    );
+    let flag = false;
+
+    if (currentInitiative && newOrder.length != 0) {
+      for (const character of newOrder) {
+        if (character.score <= currentInitiative) {
+          flag = true;
+          character.active = true;
+          break;
+        }
+      }
+      if (!flag) {
+        newOrder[0].active = true;
+      }
+    }
 
     save({ order: newOrder, turn: turn, shouldTTS });
   };
