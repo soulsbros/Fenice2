@@ -229,43 +229,6 @@ export default function InitiativeTracker(props: Readonly<Props>) {
     }
   };
 
-  const removeCharacter = (name: string) => {
-    showAlert({
-      title: "Remove character?",
-      text: `Do you want to remove ${name} from the initiative?`,
-      icon: "warning",
-      confirmButtonText: "Remove",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        deleteCharacter(name);
-      }
-    });
-  };
-
-  const removeMultipleCharacters = () => {
-    const checkedCharacters = order.filter((character) => {
-      const checkbox = document.getElementById(
-        character.name
-      ) as HTMLInputElement;
-      return checkbox?.checked;
-    });
-
-    const characterNames = checkedCharacters
-      .map((character) => character.name)
-      .join("<br>");
-
-    showAlert({
-      title: "Remove selected characters?",
-      html: `Do you want to remove the selected characters from the initiative?<br><br>${characterNames}`,
-      icon: "warning",
-      confirmButtonText: "Remove",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        deleteMultipleCharacters();
-      }
-    });
-  };
-
   const editCharacter = (currentCharacter: string) => {
     setShouldShowAddForm(true); // TODO remove when we switch to modal
     setIsEditing(true);
@@ -281,38 +244,30 @@ export default function InitiativeTracker(props: Readonly<Props>) {
     notes.value = character.notes;
   };
 
-  const deleteCharacter = (currentCharacter: string) => {
-    const isActive =
-      order.find((character) => character.active)?.name === currentCharacter;
-    let newOrder = order;
-    let newRound = round;
-
-    setCheckedEntities(
-      checkedEntities.filter((entity) => entity !== currentCharacter)
-    );
-
-    if (isActive) {
-      const res = advanceCharacter(order, round);
-      newOrder = res.newOrder;
-      newRound = res.newRound;
+  const deleteMultipleCharacters = async (
+    namesList: string[],
+    shouldPrompt: boolean
+  ) => {
+    let result;
+    if (shouldPrompt) {
+      result = await showAlert({
+        title: "Remove selected characters?",
+        html: `Do you want to remove the selected characters from the initiative?<br><br>${namesList.join("<br>")}`,
+        icon: "warning",
+        confirmButtonText: "Remove",
+      });
     }
 
-    save({
-      order: newOrder.filter(
-        (character) => character.name !== currentCharacter
-      ),
-      round: newRound,
-      shouldTTS,
-    });
-  };
+    if (shouldPrompt && !result?.isConfirmed) {
+      return;
+    }
+    console.info("Delete", namesList);
 
-  const deleteMultipleCharacters = () => {
     const currentCharacter = order.find((character) => character.active);
-
     const currentInitiative = currentCharacter?.score;
 
     const newOrder = order.filter(
-      (character) => !checkedEntities.includes(character.name)
+      (character) => !namesList.includes(character.name)
     );
 
     let wasLast = true;
@@ -333,53 +288,17 @@ export default function InitiativeTracker(props: Readonly<Props>) {
     }
 
     setCheckedEntities([]);
-
     save({ order: newOrder, round: newRound, shouldTTS });
   };
 
-  const damageCharacter = async (currentCharacter: string) => {
-    const { value: damage } = await showAlert({
-      title: "Enter damage",
-      inputLabel: "How much damage? Tip: enter a negative value for healing",
-      input: "number",
-      inputValidator: (value) => {
-        if (!value) {
-          return "Please provide a number";
-        }
-      },
-    });
-    if (damage) {
-      const newOrder = [...order];
-      const pos = newOrder.findIndex(
-        (character) => character.name === currentCharacter
-      );
-      let parsedDamage = Number.parseInt(damage);
-      if (Number.isInteger(parsedDamage)) {
-        newOrder[pos].currentHealth -= parsedDamage;
-        if (newOrder[pos].currentHealth <= 0 && newOrder[pos].isEnemy) {
-          deleteCharacter(currentCharacter);
-          return;
-        } else if (newOrder[pos].currentHealth < 0) {
-          newOrder[pos].currentHealth = 0;
-          //TODO Add handle on being moved
-        }
-        save({ order: newOrder, round: round, shouldTTS });
-      }
-    }
-  };
-
-  const damageMultipleCharacters = async () => {
+  const damageMultipleCharacters = async (namesList: string[]) => {
     const checkedCharacters = order.filter((character) =>
-      checkedEntities.includes(character.name)
+      namesList.includes(character.name)
     );
 
-    const characterNames = checkedCharacters
-      .map((character) => character.name)
-      .join("<br>");
-
     const { value: damage } = await showAlert({
       title: "Enter damage",
-      html: `You are about to damage the following characters:<br><br>${characterNames}`,
+      html: `You are about to damage the following characters:<br><br>${namesList.join("<br>")}`,
       inputLabel: "How much damage? Tip: enter a negative value for healing",
       input: "number",
       inputValidator: (value) => {
@@ -390,22 +309,30 @@ export default function InitiativeTracker(props: Readonly<Props>) {
     });
 
     if (damage) {
+      console.info("Damage", namesList);
       let newOrder = [...order];
-      checkedCharacters.forEach((character) => {
+      let killList: string[] = [];
+
+      checkedCharacters.forEach(async (character) => {
         let parsedDamage = Number.parseInt(damage);
 
         if (Number.isInteger(parsedDamage)) {
           character.currentHealth -= parsedDamage;
           if (character.currentHealth <= 0 && character.isEnemy) {
-            if (character.active) {
-              const res = advanceCharacter(newOrder, round);
-              newOrder = res.newOrder;
-            }
-            newOrder = newOrder.filter((char) => char.name !== character.name);
+            // enemies get removed directly when they die
+            killList.push(character.name);
+          } else if (character.currentHealth < 0) {
+            character.currentHealth = 0;
+            // everyone else gets moved before the active character
+            //TODO...
           }
         }
       });
-      save({ order: newOrder, round: round, shouldTTS });
+
+      // we don't send the update to the server with save
+      // because the delete will take care of it
+      save({ order: newOrder, round: round, shouldTTS }, false);
+      await deleteMultipleCharacters(killList, false);
     }
   };
 
@@ -570,7 +497,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
                   }}
                 />
                 <Button
-                  onClick={() => damageCharacter(character.name)}
+                  onClick={() => damageMultipleCharacters([character.name])}
                   tooltip="Damage"
                   icon={<Crosshair />}
                   className="!m-0 !ml-2 !p-2"
@@ -588,7 +515,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
             ) : null}
             {isDM ? (
               <Button
-                onClick={() => removeCharacter(character.name)}
+                onClick={() => deleteMultipleCharacters([character.name], true)}
                 tooltip="Remove"
                 icon={<Trash2 />}
                 className="!m-0 !ml-2 !p-2"
@@ -794,7 +721,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
         <Button
           label="Delete Selected"
           icon={<Trash2 />}
-          onClick={removeMultipleCharacters}
+          onClick={() => deleteMultipleCharacters(checkedEntities, true)}
           disabled={checkedEntities.length == 0}
         />
       ) : null}
@@ -803,7 +730,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
         <Button
           label="Damage Selected"
           icon={<Crosshair />}
-          onClick={damageMultipleCharacters}
+          onClick={() => damageMultipleCharacters(checkedEntities)}
           disabled={checkedEntities.length == 0}
         />
       ) : null}
