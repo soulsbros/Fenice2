@@ -244,7 +244,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
     notes.value = character.notes;
   };
 
-  const deleteMultipleCharacters = async (
+  const deleteCharacters = async (
     namesList: string[],
     shouldPrompt: boolean
   ) => {
@@ -291,7 +291,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
     save({ order: newOrder, round: newRound, shouldTTS });
   };
 
-  const damageMultipleCharacters = async (namesList: string[]) => {
+  const damageCharacters = async (namesList: string[]) => {
     const checkedCharacters = order.filter((character) =>
       namesList.includes(character.name)
     );
@@ -309,7 +309,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
     });
 
     if (damage) {
-      console.info("Damage", namesList);
+      console.info("Damage", damage, namesList);
       let newOrder = [...order];
       let killList: string[] = [];
 
@@ -332,7 +332,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
       // we don't send the update to the server with save
       // because the delete will take care of it
       save({ order: newOrder, round: round, shouldTTS }, false);
-      await deleteMultipleCharacters(killList, false);
+      await deleteCharacters(killList, false);
     }
   };
 
@@ -497,25 +497,24 @@ export default function InitiativeTracker(props: Readonly<Props>) {
                   }}
                 />
                 <Button
-                  onClick={() => damageMultipleCharacters([character.name])}
+                  onClick={() => damageCharacters([character.name])}
                   tooltip="Damage"
                   icon={<Crosshair />}
                   className="!m-0 !ml-2 !p-2"
                 />
               </>
             ) : null}
-            {isPlayer ? (
+            {isDM ? (
               <Button
                 onClick={() => editCharacter(character.name)}
                 tooltip="Edit"
                 icon={<Edit />}
                 className="!m-0 !ml-2 !p-2"
-                disabled={!(isDM || character.isPlayer)}
               />
             ) : null}
             {isDM ? (
               <Button
-                onClick={() => deleteMultipleCharacters([character.name], true)}
+                onClick={() => deleteCharacters([character.name], true)}
                 tooltip="Remove"
                 icon={<Trash2 />}
                 className="!m-0 !ml-2 !p-2"
@@ -721,7 +720,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
         <Button
           label="Delete Selected"
           icon={<Trash2 />}
-          onClick={() => deleteMultipleCharacters(checkedEntities, true)}
+          onClick={() => deleteCharacters(checkedEntities, true)}
           disabled={checkedEntities.length == 0}
         />
       ) : null}
@@ -730,8 +729,22 @@ export default function InitiativeTracker(props: Readonly<Props>) {
         <Button
           label="Damage Selected"
           icon={<Crosshair />}
-          onClick={() => damageMultipleCharacters(checkedEntities)}
+          onClick={() => damageCharacters(checkedEntities)}
           disabled={checkedEntities.length == 0}
+        />
+      ) : null}
+
+      {!isDM &&
+      order.find((character) => character.player === session.user.email) ? (
+        <Button
+          onClick={() =>
+            editCharacter(
+              order.find((character) => character.player === session.user.email)
+                ?.name!
+            )
+          }
+          label="Edit"
+          icon={<Edit />}
         />
       ) : null}
 
