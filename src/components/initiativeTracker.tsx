@@ -303,7 +303,8 @@ export default function InitiativeTracker(props: Readonly<Props>) {
 
     const { value: damage } = await showAlert({
       title: "Enter damage",
-      html: `You are about to damage the following characters:<br><br>${namesList.join("<br>")}`,
+      html: `You targeting the following ${namesList.length == 1 ? "character" : "characters"}:
+        <br><br>${namesList.join("<br>")}`,
       inputLabel: "How much damage? Tip: enter a negative value for healing",
       input: "number",
       inputValidator: (value) => {
@@ -625,14 +626,16 @@ export default function InitiativeTracker(props: Readonly<Props>) {
                 type="number"
               />
             ) : null}
-            <div className="text-center">
-              {isDM ? (
+            {isDM ? (
+              <div className="inline-block">
                 <Checkbox
                   label="Enemy"
                   checked={isEnemy}
                   onChange={(e) => setIsEnemy(e.target.checked)}
                 />
-              ) : null}
+              </div>
+            ) : null}
+            <div className="text-center">
               <Button
                 label={isEditing ? "Update" : "Add"}
                 icon={isEditing ? <Check /> : <Plus />}
@@ -650,51 +653,62 @@ export default function InitiativeTracker(props: Readonly<Props>) {
         ) : null}
       </div>
 
-      {isDM ? (
-        <Button
-          label="Delete selected"
-          icon={<Trash2 />}
-          onClick={() => deleteCharacters(checkedEntities, true)}
-          disabled={checkedEntities.length == 0}
-        />
-      ) : null}
+      <div className="flex justify-between items-center">
+        <div>
+          {isDM ? (
+            <Button
+              label="Delete selected"
+              icon={<Trash2 />}
+              onClick={() => deleteCharacters(checkedEntities, true)}
+              disabled={checkedEntities.length == 0}
+            />
+          ) : null}
 
-      {isPlayer ? (
-        <Button
-          label="Damage selected"
-          icon={<Crosshair />}
-          onClick={() => damageCharacters(checkedEntities)}
-          disabled={checkedEntities.length == 0}
-        />
-      ) : null}
+          {isPlayer ? (
+            <Button
+              label="Damage selected"
+              icon={<Crosshair />}
+              onClick={() => damageCharacters(checkedEntities)}
+              disabled={checkedEntities.length == 0}
+            />
+          ) : null}
 
-      {!isDM &&
-      order.find((character) => character.player === session.user.email) ? (
-        <Button
-          onClick={() =>
-            editCharacter(
-              order.find((character) => character.player === session.user.email)
-                ?.name!
-            )
-          }
-          tooltip="Edit"
-          icon={<Edit />}
-        />
-      ) : null}
+          {!isDM &&
+          order.find(
+            (character) => character.player === session?.user.email
+          ) ? (
+            <Button
+              onClick={() =>
+                editCharacter(
+                  order.find(
+                    (character) => character.player === session?.user.email
+                  )?.name!
+                )
+              }
+              tooltip="Edit"
+              icon={<Edit />}
+            />
+          ) : null}
+        </div>
 
-      <Checkbox
-        beeg={true}
-        checked={
-          checkedEntities.length > 0 && checkedEntities.length == order.length
-        }
-        onChange={() => {
-          if (checkedEntities.length == 0) {
-            setCheckedEntities(order.map((character) => character.name));
-          } else {
-            setCheckedEntities([]);
-          }
-        }}
-      />
+        {isPlayer ? (
+          <Checkbox
+            beeg={true}
+            checked={
+              checkedEntities.length > 0 &&
+              checkedEntities.length == order.length
+            }
+            className="mr-2.5"
+            onChange={() => {
+              if (checkedEntities.length == 0) {
+                setCheckedEntities(order.map((character) => character.name));
+              } else {
+                setCheckedEntities([]);
+              }
+            }}
+          />
+        ) : null}
+      </div>
 
       <div className="mt-4" id="order">
         {order.length === 0 ? (
@@ -740,48 +754,49 @@ export default function InitiativeTracker(props: Readonly<Props>) {
 
               <div className="flex items-center">
                 {isPlayer ? (
+                  <Button
+                    onClick={() => damageCharacters([character.name])}
+                    tooltip="Damage"
+                    icon={<Crosshair />}
+                    className="!m-0 !p-2"
+                  />
+                ) : null}
+                {isDM ? (
                   <>
-                    <Checkbox
-                      id={character.name}
-                      beeg={true}
-                      checked={checkedEntities.includes(character.name)}
-                      onChange={() => {
-                        if (checkedEntities.includes(character.name)) {
-                          setCheckedEntities(
-                            checkedEntities.filter(
-                              (entity) => entity !== character.name
-                            )
-                          );
-                        } else {
-                          setCheckedEntities([
-                            ...checkedEntities,
-                            character.name,
-                          ]);
-                        }
-                      }}
+                    <Button
+                      onClick={() => editCharacter(character.name)}
+                      tooltip="Edit"
+                      icon={<Edit />}
+                      className="!m-0 !ml-2 !p-2"
                     />
                     <Button
-                      onClick={() => damageCharacters([character.name])}
-                      tooltip="Damage"
-                      icon={<Crosshair />}
+                      onClick={() => deleteCharacters([character.name], true)}
+                      tooltip="Remove"
+                      icon={<Trash2 />}
                       className="!m-0 !ml-2 !p-2"
                     />
                   </>
                 ) : null}
-                {isDM ? (
-                  <Button
-                    onClick={() => editCharacter(character.name)}
-                    tooltip="Edit"
-                    icon={<Edit />}
-                    className="!m-0 !ml-2 !p-2"
-                  />
-                ) : null}
-                {isDM ? (
-                  <Button
-                    onClick={() => deleteCharacters([character.name], true)}
-                    tooltip="Remove"
-                    icon={<Trash2 />}
-                    className="!m-0 !ml-2 !p-2"
+                {isPlayer ? (
+                  <Checkbox
+                    id={character.name}
+                    beeg={true}
+                    checked={checkedEntities.includes(character.name)}
+                    className="ml-2"
+                    onChange={() => {
+                      if (checkedEntities.includes(character.name)) {
+                        setCheckedEntities(
+                          checkedEntities.filter(
+                            (entity) => entity !== character.name
+                          )
+                        );
+                      } else {
+                        setCheckedEntities([
+                          ...checkedEntities,
+                          character.name,
+                        ]);
+                      }
+                    }}
                   />
                 ) : null}
               </div>
