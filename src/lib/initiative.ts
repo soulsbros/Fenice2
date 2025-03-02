@@ -44,21 +44,21 @@ const lowHealthLines = [
 
 export function advanceCharacter(
   order: Character[],
-  turn: number,
+  round: number,
   tts = false
 ) {
   const newOrder = [...order];
-  let newTurn = turn;
+  let newRound = round;
   const currentCharacter = newOrder.findIndex((character) => character.active);
-  if (currentCharacter != -1) {
-    newOrder[currentCharacter].active = false;
-  }
   const newChar = newOrder[(currentCharacter + 1) % newOrder.length];
+
+  newOrder[currentCharacter].active = false;
   newChar.active = true;
 
   if (currentCharacter === newOrder.length - 1) {
-    newTurn = turn + 1;
+    newRound++;
   }
+
   if (tts) {
     let line: string;
     if (newChar.currentHealth / newChar.totalHealth > 0.5) {
@@ -68,7 +68,7 @@ export function advanceCharacter(
     }
     playTTS(line.replaceAll("CHARACTER", newChar.name));
   }
-  return { newOrder, newTurn };
+  return { newOrder, newRound };
 }
 
 export function getHealthDescription(character: Character) {

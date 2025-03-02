@@ -3,7 +3,7 @@ import { Server, Socket } from "socket.io";
 
 let initiativeData: GameData = {
   order: [],
-  turn: 1,
+  round: 1,
   shouldTTS: false,
   players: [],
 };
@@ -13,6 +13,9 @@ function log(message: string, socket: Socket) {
     `[Init] ${message} (${socket.id}) | ${socket.handshake.auth.email}`
   );
 }
+
+// NOTE: you need to restart the server if you change this file.
+// there's no hot reload (don't ask)
 
 export default function SocketHandler(req: Request, res: any) {
   if (!res.socket.server.io) {
