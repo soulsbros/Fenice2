@@ -50,7 +50,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
 
   const [order, setOrder] = useState<Character[]>([]);
   const [players, setPlayers] = useState<Player[]>([]);
-  const [turn, setTurn] = useState(1);
+  const [round, setRound] = useState(1);
 
   const [isEditing, setIsEditing] = useState(false);
   const [shouldTTS, setShouldTTS] = useState(false);
@@ -223,7 +223,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
         clearFields();
       }
 
-      save({ order: newOrder, turn: turn, shouldTTS });
+      save({ order: newOrder, round: round, shouldTTS });
       setIsEditing(false);
       setShouldShowAddForm(isDM);
     }
@@ -278,7 +278,6 @@ export default function InitiativeTracker(props: Readonly<Props>) {
     currentHealth.value = character.currentHealth.toString();
     totalHealth.value = character.totalHealth.toString();
     setIsEnemy(character.isEnemy);
-
     notes.value = character.notes;
   };
 
@@ -286,23 +285,23 @@ export default function InitiativeTracker(props: Readonly<Props>) {
     const isActive =
       order.find((character) => character.active)?.name === currentCharacter;
     let newOrder = order;
-    let newTurn = turn;
+    let newRound = round;
 
     setCheckedEntities(
       checkedEntities.filter((entity) => entity !== currentCharacter)
     );
 
     if (isActive) {
-      const res = advanceCharacter(order, turn);
+      const res = advanceCharacter(order, round);
       newOrder = res.newOrder;
-      newTurn = res.newTurn;
+      newRound = res.newRound;
     }
 
     save({
       order: newOrder.filter(
         (character) => character.name !== currentCharacter
       ),
-      turn: newTurn,
+      round: newRound,
       shouldTTS,
     });
   };
@@ -317,7 +316,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
     );
 
     let wasLast = true;
-    let newTurn = turn;
+    let newRound = round;
 
     if (currentInitiative && newOrder.length != 0) {
       for (const character of newOrder) {
@@ -329,13 +328,13 @@ export default function InitiativeTracker(props: Readonly<Props>) {
       }
       if (wasLast) {
         newOrder[0].active = true;
-        newTurn++;
+        newRound++;
       }
     }
 
     setCheckedEntities([]);
 
-    save({ order: newOrder, turn: newTurn, shouldTTS });
+    save({ order: newOrder, round: newRound, shouldTTS });
   };
 
   const damageCharacter = async (currentCharacter: string) => {
@@ -364,7 +363,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
           newOrder[pos].currentHealth = 0;
           //TODO Add handle on being moved
         }
-        save({ order: newOrder, turn: turn, shouldTTS });
+        save({ order: newOrder, round: round, shouldTTS });
       }
     }
   };
@@ -399,14 +398,14 @@ export default function InitiativeTracker(props: Readonly<Props>) {
           character.currentHealth -= parsedDamage;
           if (character.currentHealth <= 0 && character.isEnemy) {
             if (character.active) {
-              const res = advanceCharacter(newOrder, turn);
+              const res = advanceCharacter(newOrder, round);
               newOrder = res.newOrder;
             }
             newOrder = newOrder.filter((char) => char.name !== character.name);
           }
         }
       });
-      save({ order: newOrder, turn: turn, shouldTTS });
+      save({ order: newOrder, round: round, shouldTTS });
     }
   };
 
@@ -418,7 +417,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
       confirmButtonText: "Clear",
     }).then((result) => {
       if (result.isConfirmed) {
-        save({ order: [], turn: 1, shouldTTS });
+        save({ order: [], round: 1, shouldTTS });
       }
     });
   };
@@ -434,14 +433,14 @@ export default function InitiativeTracker(props: Readonly<Props>) {
         const newOrder = [...order];
         newOrder[newOrder.findIndex((character) => character.active)].active =
           false;
-        save({ order: newOrder, turn: 1, shouldTTS });
+        save({ order: newOrder, round: 1, shouldTTS });
       }
     });
   };
 
   const next = () => {
-    const { newOrder, newTurn } = advanceCharacter(order, turn, shouldTTS);
-    save({ order: newOrder, turn: newTurn, shouldTTS });
+    const { newOrder, newRound } = advanceCharacter(order, round, shouldTTS);
+    save({ order: newOrder, round: newRound, shouldTTS });
 
     // auto-scroll only if not logged in (kiosk)
     if (!isPlayer) {
@@ -458,7 +457,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
   // we're never updating the players with this method, hence the Partial
   const save = (newData: Partial<GameData>, sendUpdate = true) => {
     setOrder(newData.order!);
-    setTurn(newData.turn!);
+    setRound(newData.round!);
     setShouldTTS(newData.shouldTTS!);
     if (sendUpdate) {
       socket.emit("characters-change", newData);
@@ -488,7 +487,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
       if (result.isConfirmed) {
         const newOrder = await loadInitiative();
         if (newOrder.success) {
-          save({ order: newOrder.data[0].order, turn: 1, shouldTTS });
+          save({ order: newOrder.data[0].order, round: 1, shouldTTS });
         } else {
           console.error(newOrder.message);
           showAlert({
@@ -578,12 +577,13 @@ export default function InitiativeTracker(props: Readonly<Props>) {
                 />
               </>
             ) : null}
-            {isPlayer && (isDM || character.isPlayer) ? (
+            {isPlayer ? (
               <Button
                 onClick={() => editCharacter(character.name)}
                 tooltip="Edit"
                 icon={<Edit />}
-                className="!m-0 !mx-2 !p-2"
+                className="!m-0 !ml-2 !p-2"
+                disabled={!(isDM || character.isPlayer)}
               />
             ) : null}
             {isDM ? (
@@ -591,7 +591,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
                 onClick={() => removeCharacter(character.name)}
                 tooltip="Remove"
                 icon={<Trash2 />}
-                className="!m-0 !p-2"
+                className="!m-0 !ml-2 !p-2"
               />
             ) : null}
           </div>
@@ -683,7 +683,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
       }
     }
     const newOrder = [...order, ...parsedText].toSorted(comparator);
-    save({ order: newOrder, turn: turn, shouldTTS });
+    save({ order: newOrder, round: round, shouldTTS });
   };
 
   useEffect(() => {
@@ -718,7 +718,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
   return (
     <>
       <p className="text-lg">
-        {isCombatOngoing ? `⚔️ Turn ${turn}` : "⏳ Preparing..."}
+        {isCombatOngoing ? `⚔️ Round ${round}` : "⏳ Preparing..."}
       </p>
 
       <div className="my-4 p-2 border rounded border-slate-600">

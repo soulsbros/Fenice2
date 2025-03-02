@@ -18,7 +18,7 @@ export interface Player {
 
 export interface GameData {
   order: Character[];
-  turn: number;
+  round: number;
   shouldTTS: boolean;
   players: Player[];
 }
