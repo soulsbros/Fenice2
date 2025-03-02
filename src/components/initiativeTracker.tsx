@@ -321,10 +321,26 @@ export default function InitiativeTracker(props: Readonly<Props>) {
           if (character.currentHealth <= 0 && character.isEnemy) {
             // enemies get removed directly when they die
             killList.push(character.name);
-          } else if (character.currentHealth < 0) {
+          } else if (character.currentHealth <= 0) {
             character.currentHealth = 0;
-            // everyone else gets moved before the active character
-            //TODO...
+            // otherwise the entity gets moved before the active character
+            const activeIndex = newOrder.findIndex((char) => char.active);
+            const characterIndex = newOrder.findIndex(
+              (char) => char.name === character.name
+            );
+            if (activeIndex == 0) {
+              // if the active character (the one who damages) is the first one, set it above it
+              character.score = newOrder[0].score + 0.01;
+            } else {
+              // otherwise set it to the initiative score between the active character and the one before it
+              character.score =
+                newOrder[activeIndex].score +
+                (newOrder[activeIndex - 1].score -
+                  newOrder[activeIndex].score) /
+                  2;
+
+              // known bug: due to some float underflow, it's possible that upon iterating multiple times (50+), the character will be set to the same initiative as the active character
+            }
           }
         }
       });
@@ -383,7 +399,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
 
   // we're never updating the players with this method, hence the Partial
   const save = (newData: Partial<GameData>, sendUpdate = true) => {
-    setOrder(newData.order!);
+    setOrder(newData.order!.toSorted(comparator));
     setRound(newData.round!);
     setShouldTTS(newData.shouldTTS!);
     if (sendUpdate) {
@@ -749,7 +765,92 @@ export default function InitiativeTracker(props: Readonly<Props>) {
       ) : null}
 
       <div className="mt-4" id="order">
-        {renderOrder()}
+        {order.length === 0 ? (
+          <p className="p-2">The party seems a little empty...</p>
+        ) : null}
+        {order.map((character) => {
+          // we don't want to show enemies to players before the fight starts
+          if (character.isEnemy && !isCombatOngoing && !isDM) return;
+
+          const health = getHealthValue(character);
+          return (
+            <label
+              key={character.name}
+              className={`my-2 p-2 pl-0.5 flex justify-between items-center ${
+                character.active
+                  ? `border-${getCharacterType(character)} font-semibold`
+                  : "border-slate-600"
+              } transition-all duration-500 border-solid border-2`}
+              htmlFor={character.name}
+            >
+              <div className="flex">
+                <div className={`bg-${getCharacterType(character)} mr-2`}>
+                  &nbsp;
+                </div>
+                <div>
+                  <p className="text-lg">
+                    {character.name}{" "}
+                    {character.notes && (isDM || character.isPlayer)
+                      ? `(${character.notes})`
+                      : ""}
+                  </p>
+                  <p className="text-sm italic flex space-x-2">
+                    <ChevronsRight /> {character.score}
+                    <Heart />
+                    <span className={health.color}>{health.text}</span>
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center">
+                {isPlayer ? (
+                  <>
+                    <Checkbox
+                      id={character.name}
+                      beeg={true}
+                      onChange={() => {
+                        if (checkedEntities.includes(character.name)) {
+                          setCheckedEntities(
+                            checkedEntities.filter(
+                              (entity) => entity !== character.name
+                            )
+                          );
+                        } else {
+                          setCheckedEntities([
+                            ...checkedEntities,
+                            character.name,
+                          ]);
+                        }
+                      }}
+                    />
+                    <Button
+                      onClick={() => damageCharacters([character.name])}
+                      tooltip="Damage"
+                      icon={<Crosshair />}
+                      className="!m-0 !ml-2 !p-2"
+                    />
+                  </>
+                ) : null}
+                {isDM ? (
+                  <Button
+                    onClick={() => editCharacter(character.name)}
+                    tooltip="Edit"
+                    icon={<Edit />}
+                    className="!m-0 !ml-2 !p-2"
+                  />
+                ) : null}
+                {isDM ? (
+                  <Button
+                    onClick={() => deleteCharacters([character.name], true)}
+                    tooltip="Remove"
+                    icon={<Trash2 />}
+                    className="!m-0 !ml-2 !p-2"
+                  />
+                ) : null}
+              </div>
+            </label>
+          );
+        })}
       </div>
 
       <div className="sticky bottom-0 py-2 items-center bg-main-bg dark:bg-main-bg-dark flex justify-between">
