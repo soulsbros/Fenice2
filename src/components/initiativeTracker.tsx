@@ -55,10 +55,11 @@ export default function InitiativeTracker(props: Readonly<Props>) {
   const [isEditing, setIsEditing] = useState(false);
   const [shouldTTS, setShouldTTS] = useState(false);
   const [isEnemy, setIsEnemy] = useState(isDM);
-  const [hasChecked, setHasChecked] = useState(false);
   // show the form by default only to DM.
   // if you don't have a character in the order it opens (useEffect)
   const [shouldShowAddForm, setShouldShowAddForm] = useState(isDM);
+
+  const [checkedEntities, setCheckedEntities] = useState<string[]>([]);
 
   const { enemies, allies } = countCharacters(order);
   const isCombatOngoing =
@@ -287,6 +288,10 @@ export default function InitiativeTracker(props: Readonly<Props>) {
     let newOrder = order;
     let newTurn = turn;
 
+    setCheckedEntities(
+      checkedEntities.filter((entity) => entity !== currentCharacter)
+    );
+
     if (isActive) {
       const res = advanceCharacter(order, turn);
       newOrder = res.newOrder;
@@ -307,50 +312,40 @@ export default function InitiativeTracker(props: Readonly<Props>) {
 
     const currentInitiative = currentCharacter?.score;
 
-    const newOrder = order.filter((character) => {
-      const checkbox = document.getElementById(
-        character.name
-      ) as HTMLInputElement;
-      return !checkbox?.checked;
-    });
+    const newOrder = order.filter(
+      (character) => !checkedEntities.includes(character.name)
+    );
 
-    let flag = false;
+    let wasLast = true;
+    let newTurn = turn;
 
     if (currentInitiative && newOrder.length != 0) {
       for (const character of newOrder) {
         if (character.score <= currentInitiative) {
-          flag = true;
+          wasLast = false;
           character.active = true;
           break;
         }
       }
-      if (!flag) {
+      if (wasLast) {
         newOrder[0].active = true;
+        newTurn++;
       }
     }
 
-    setHasChecked(false);
+    setCheckedEntities([]);
 
-    save({ order: newOrder, turn: turn, shouldTTS });
-  };
-
-  const areThereCheckedCharacters = () => {
-    return order.filter((character) => {
-      const checkbox = document.getElementById(
-        character.name
-      ) as HTMLInputElement;
-      return checkbox?.checked;
-    });
+    save({ order: newOrder, turn: newTurn, shouldTTS });
   };
 
   const damageCharacter = async (currentCharacter: string) => {
     const { value: damage } = await showAlert({
       title: "Enter damage",
       inputLabel: "How much damage? Tip: enter a negative value for healing",
-      input: "text",
+      input: "number",
       inputValidator: (value) => {
         if (!value) {
-          return "Please provide a healing value";
+          return "Please provide a number";
         }
       },
     });
@@ -360,16 +355,14 @@ export default function InitiativeTracker(props: Readonly<Props>) {
         (character) => character.name === currentCharacter
       );
       let parsedDamage = Number.parseInt(damage);
-      if (damage.toLowerCase() === "full") {
-        newOrder[pos].currentHealth = newOrder[pos].totalHealth;
-        save({ order: newOrder, turn: turn, shouldTTS });
-      } else if (Number.isInteger(parsedDamage)) {
+      if (Number.isInteger(parsedDamage)) {
         newOrder[pos].currentHealth -= parsedDamage;
         if (newOrder[pos].currentHealth <= 0 && newOrder[pos].isEnemy) {
           deleteCharacter(currentCharacter);
           return;
         } else if (newOrder[pos].currentHealth < 0) {
           newOrder[pos].currentHealth = 0;
+          //TODO Add handle on being moved
         }
         save({ order: newOrder, turn: turn, shouldTTS });
       }
@@ -377,12 +370,9 @@ export default function InitiativeTracker(props: Readonly<Props>) {
   };
 
   const damageMultipleCharacters = async () => {
-    const checkedCharacters = order.filter((character) => {
-      const checkbox = document.getElementById(
-        character.name
-      ) as HTMLInputElement;
-      return checkbox?.checked;
-    });
+    const checkedCharacters = order.filter((character) =>
+      checkedEntities.includes(character.name)
+    );
 
     const characterNames = checkedCharacters
       .map((character) => character.name)
@@ -392,25 +382,22 @@ export default function InitiativeTracker(props: Readonly<Props>) {
       title: "Enter damage",
       html: `You are about to damage the following characters:<br><br>${characterNames}`,
       inputLabel: "How much damage? Tip: enter a negative value for healing",
-      input: "text",
+      input: "number",
       inputValidator: (value) => {
         if (!value) {
-          return "Please provide a healing value";
+          return "Please provide a number";
         }
       },
     });
 
-    let newOrder = [...order];
-    let killCounter = 0;
-
-    checkedCharacters.forEach((character) => {
-      if (damage) {
+    if (damage) {
+      let newOrder = [...order];
+      checkedCharacters.forEach((character) => {
         let parsedDamage = Number.parseInt(damage);
 
         if (Number.isInteger(parsedDamage)) {
           character.currentHealth -= parsedDamage;
           if (character.currentHealth <= 0 && character.isEnemy) {
-            killCounter++;
             if (character.active) {
               const res = advanceCharacter(newOrder, turn);
               newOrder = res.newOrder;
@@ -418,11 +405,8 @@ export default function InitiativeTracker(props: Readonly<Props>) {
             newOrder = newOrder.filter((char) => char.name !== character.name);
           }
         }
-      }
-    });
-    save({ order: newOrder, turn: turn, shouldTTS });
-    if (killCounter == checkedCharacters.length) {
-      setHasChecked(false);
+      });
+      save({ order: newOrder, turn: turn, shouldTTS });
     }
   };
 
@@ -436,7 +420,6 @@ export default function InitiativeTracker(props: Readonly<Props>) {
       if (result.isConfirmed) {
         save({ order: [], turn: 1, shouldTTS });
       }
-      setHasChecked(false);
     });
   };
 
@@ -515,7 +498,6 @@ export default function InitiativeTracker(props: Readonly<Props>) {
           });
         }
       }
-      setHasChecked(false);
     });
   };
 
@@ -577,8 +559,15 @@ export default function InitiativeTracker(props: Readonly<Props>) {
                   id={character.name}
                   beeg={true}
                   onChange={() => {
-                    const checkedCharacters = areThereCheckedCharacters();
-                    setHasChecked(checkedCharacters.length > 0);
+                    if (checkedEntities.includes(character.name)) {
+                      setCheckedEntities(
+                        checkedEntities.filter(
+                          (entity) => entity !== character.name
+                        )
+                      );
+                    } else {
+                      setCheckedEntities([...checkedEntities, character.name]);
+                    }
                   }}
                 />
                 <Button
@@ -806,16 +795,18 @@ export default function InitiativeTracker(props: Readonly<Props>) {
           label="Delete Selected"
           icon={<Trash2 />}
           onClick={removeMultipleCharacters}
-          disabled={!hasChecked}
+          disabled={checkedEntities.length == 0}
         />
       ) : null}
 
-      <Button
-        label="Damage Selected"
-        icon={<Crosshair />}
-        onClick={damageMultipleCharacters}
-        disabled={!hasChecked}
-      />
+      {isPlayer ? (
+        <Button
+          label="Damage Selected"
+          icon={<Crosshair />}
+          onClick={damageMultipleCharacters}
+          disabled={checkedEntities.length == 0}
+        />
+      ) : null}
 
       <div className="mt-4" id="order">
         {renderOrder()}
