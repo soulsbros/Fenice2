@@ -38,7 +38,7 @@ export default function SocketHandler(req: Request, res: any) {
 
       // -- handlers --
       socket.on("characters-change", (data: GameData) => {
-        log(`Received update request`, socket);
+        log(`Received update`, socket);
         initiativeData = { ...initiativeData, ...data };
         socket.broadcast.emit("update-characters", initiativeData);
       });
