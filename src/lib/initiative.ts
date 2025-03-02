@@ -52,7 +52,10 @@ export function advanceCharacter(
   const currentCharacter = newOrder.findIndex((character) => character.active);
   const newChar = newOrder[(currentCharacter + 1) % newOrder.length];
 
-  newOrder[currentCharacter].active = false;
+  // when we start, we don't have an already active one
+  if (currentCharacter != -1) {
+    newOrder[currentCharacter].active = false;
+  }
   newChar.active = true;
 
   if (currentCharacter === newOrder.length - 1) {
