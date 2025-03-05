@@ -13,7 +13,7 @@ import {
   parseBlock,
 } from "@/lib/initiative";
 import { showAlert } from "@/lib/utils";
-import { Character, GameData, Player } from "@/types/Initiative";
+import { Character, GameData, LogData, Player } from "@/types/Initiative";
 import { Session } from "next-auth";
 import { useEffect, useState } from "react";
 import {
@@ -226,6 +226,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
       save({ order: newOrder, round: round, shouldTTS });
       setIsEditing(false);
       setShouldShowAddForm(isDM);
+      sendLog(`added ${name.value}`);
     }
   };
 
@@ -265,7 +266,9 @@ export default function InitiativeTracker(props: Readonly<Props>) {
     // useless to log if no deletion happens. We might still need to save
     // if we're called from damageCharacters tho, so we continue anyway
     if (namesList.length > 0) {
-      console.info("Delete", namesList);
+      sendLog(
+        `removed ${namesList.join(", ")} ${!shouldPrompt ? "due to damage" : ""}`
+      );
     }
 
     const currentCharacter = order.find((character) => character.active);
@@ -315,7 +318,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
     });
 
     if (damage) {
-      console.info("Damage", damage, namesList);
+      sendLog(`damaged ${namesList.join(", ")} for ${damage}`);
       let newOrder = [...order];
       let killList: string[] = [];
 
@@ -366,6 +369,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
     }).then((result) => {
       if (result.isConfirmed) {
         save({ order: [], round: 1, shouldTTS });
+        sendLog(`cleared the order`);
       }
     });
   };
@@ -382,6 +386,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
         newOrder[newOrder.findIndex((character) => character.active)].active =
           false;
         save({ order: newOrder, round: 1, shouldTTS });
+        sendLog(`restarted the fight`);
       }
     });
   };
@@ -389,6 +394,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
   const next = () => {
     const { newOrder, newRound } = advanceCharacter(order, round, shouldTTS);
     save({ order: newOrder, round: newRound, shouldTTS });
+    sendLog("advanced to next");
 
     // auto-scroll only if not logged in (kiosk)
     if (!isPlayer) {
@@ -436,6 +442,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
         const newOrder = await loadInitiative();
         if (newOrder.success) {
           save({ order: newOrder.data[0].order, round: 1, shouldTTS });
+          sendLog(`loaded order`);
         } else {
           console.error(newOrder.message);
           showAlert({
@@ -457,6 +464,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
     }).then(async (result) => {
       if (result.isConfirmed) {
         await saveInitiative(order);
+        sendLog(`saved order`);
       }
     });
   };
@@ -478,6 +486,12 @@ export default function InitiativeTracker(props: Readonly<Props>) {
       console.info("Received update");
       setPlayers(data.players);
       save(data, false);
+    });
+
+    // a new log entry is received from the server
+    socket.on("new-log", (message: LogData) => {
+      console.info(`${message.author} ${message.message}`);
+      //TODO add to state/component
     });
 
     socket.on("reload", () => {
@@ -506,16 +520,20 @@ export default function InitiativeTracker(props: Readonly<Props>) {
     }
 
     try {
-      const wakeLock = await navigator.wakeLock.request();
-      console.info("Screen Wake Lock acquired", wakeLock);
+      await navigator.wakeLock.request();
     } catch (err) {
       console.error("Cannot acquire Wake Lock", err);
     }
   };
 
   const forceReload = () => {
+    sendLog(`force-reloaded`);
     socket.emit("force-refresh");
     location.reload();
+  };
+
+  const sendLog = (message: string) => {
+    socket.emit("update-logs", message);
   };
 
   const bulkAdd = async () => {

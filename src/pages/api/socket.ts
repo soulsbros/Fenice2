@@ -10,7 +10,7 @@ let initiativeData: GameData = {
 
 function log(message: string, socket: Socket) {
   console.info(
-    `[Init] ${message} (${socket.id}) | ${socket.handshake.auth.email}`
+    `[Init] ${message} (${socket.id} | ${socket.handshake.auth.email})`
   );
 }
 
@@ -25,8 +25,9 @@ export default function SocketHandler(req: Request, res: any) {
     io.on("connection", (socket) => {
       // -- setup --
       log(`Connection accepted`, socket);
+      const nickname = socket.handshake.auth.nickname ?? "Spectator";
       const newPlayer: Player = {
-        nickname: socket.handshake.auth.nickname ?? "Spectator",
+        nickname: nickname,
         email: socket.handshake.auth.email,
         socketId: socket.id,
       };
@@ -46,6 +47,14 @@ export default function SocketHandler(req: Request, res: any) {
       socket.on("force-refresh", () => {
         log(`Force refresh`, socket);
         socket.broadcast.emit("reload");
+      });
+
+      socket.on("update-logs", (message: string) => {
+        log(`${nickname} ${message}`, socket);
+        socket.emit("new-log", {
+          message: message,
+          author: nickname,
+        });
       });
 
       socket.on("disconnect", () => {

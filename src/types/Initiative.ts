@@ -22,3 +22,8 @@ export interface GameData {
   shouldTTS: boolean;
   players: Player[];
 }
+
+export interface LogData {
+  author: string;
+  message: string;
+}
