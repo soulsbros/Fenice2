@@ -58,8 +58,8 @@ export default function InitiativeTracker(props: Readonly<Props>) {
   // show the form by default only to DM.
   // if you don't have a character in the order it opens (useEffect)
   const [shouldShowAddForm, setShouldShowAddForm] = useState(isDM);
-
   const [checkedEntities, setCheckedEntities] = useState<string[]>([]);
+  const [logs, setLogs] = useState<string[]>([]);
 
   const { enemies, allies } = countCharacters(order);
   const isCombatOngoing =
@@ -490,8 +490,10 @@ export default function InitiativeTracker(props: Readonly<Props>) {
 
     // a new log entry is received from the server
     socket.on("new-log", (message: LogData) => {
-      console.info(`${message.author} ${message.message}`);
-      //TODO add to state/component
+      setLogs((prevLogs) => [
+        ...prevLogs,
+        `${message.author} ${message.message}`,
+      ]);
     });
 
     socket.on("reload", () => {
@@ -687,7 +689,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
               label="Damage selected"
               icon={<Crosshair />}
               onClick={() => damageCharacters(checkedEntities)}
-              disabled={checkedEntities.length == 0}
+              disabled={!isCombatOngoing || checkedEntities.length == 0}
             />
           ) : null}
 
@@ -771,7 +773,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
               </div>
 
               <div className="flex items-center">
-                {isPlayer ? (
+                {isPlayer && isCombatOngoing ? (
                   <Button
                     onClick={() => damageCharacters([character.name])}
                     tooltip="Damage"
@@ -859,6 +861,16 @@ export default function InitiativeTracker(props: Readonly<Props>) {
           </div>
         </>
       ) : null}
+
+      <span className="inline-block align-top mr-4">
+        <p className="subtitle mt-4">Logs</p>
+        <div>
+          {logs.length == 0 ? "Nothing interesting so far..." : null}
+          {logs.toReversed().map((log, index) => (
+            <div key={index}>{log}</div>
+          ))}
+        </div>
+      </span>
 
       <span className="inline-block align-top mr-4">
         <p className="subtitle mt-4">Connected players</p>
