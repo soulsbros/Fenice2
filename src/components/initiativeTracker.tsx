@@ -335,6 +335,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
             // enemies get removed directly when they die
             killList.push(character.name);
           } else if (character.currentHealth <= 0) {
+            sendLog(`downed ${character.name}`);
             character.currentHealth = 0;
             // otherwise the entity gets moved before the active character
             const activeIndex = newOrder.findIndex((char) => char.active);
@@ -398,7 +399,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
   const next = () => {
     const { newOrder, newRound } = advanceCharacter(order, round, shouldTTS);
     save({ order: newOrder, round: newRound, shouldTTS });
-    sendLog("advanced to next");
+    sendLog(isCombatOngoing ? "advanced to next" : "started the fight");
 
     // auto-scroll only if not logged in (kiosk)
     if (!isPlayer) {
@@ -490,6 +491,11 @@ export default function InitiativeTracker(props: Readonly<Props>) {
       console.info("Received update");
       setPlayers(data.players);
       save(data, false);
+    });
+
+    socket.on("update-players", (data: Player[]) => {
+      console.info("Received players update");
+      setPlayers(data);
     });
 
     // a new log entry is received from the server
@@ -767,7 +773,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
                   <p className="text-sm italic flex space-x-2 items-center">
                     {isDM ? (
                       <>
-                        <ChevronsRight /> {character.score}
+                        <ChevronsRight /> {character.score.toFixed(3)}
                       </>
                     ) : null}
                     <Heart className="size-5" />
@@ -879,14 +885,12 @@ export default function InitiativeTracker(props: Readonly<Props>) {
       <span className="inline-block align-top mr-4">
         <p className="subtitle mt-4">Connected players</p>
         {players.length == 0 ? "None for now :(" : null}
-        {players
-          .toSorted((a, b) => a.nickname.localeCompare(b.nickname))
-          .map((player) => (
-            <div key={player.email + player.socketId}>
-              {player.nickname}
-              {player.email == session?.user.email ? " (you)" : null}
-            </div>
-          ))}
+        {players.map((player) => (
+          <div key={player.email + player.socketId}>
+            {player.nickname}
+            {player.email == session?.user.email ? " (you)" : null}
+          </div>
+        ))}
       </span>
     </>
   );
