@@ -219,14 +219,16 @@ export default function InitiativeTracker(props: Readonly<Props>) {
             );
           }
         }
-      } else {
-        clearFields();
       }
 
       save({ order: newOrder, round: round, shouldTTS });
       setIsEditing(false);
       setShouldShowAddForm(isDM);
       sendLog(`added ${name.value}`);
+
+      if (!isDM) {
+        clearFields();
+      }
     }
   };
 
@@ -252,8 +254,8 @@ export default function InitiativeTracker(props: Readonly<Props>) {
     let result;
     if (shouldPrompt) {
       result = await showAlert({
-        title: "Remove selected characters?",
-        html: `Do you want to remove the selected characters from the initiative?<br><br>${namesList.join("<br>")}`,
+        title: `Remove selected character${namesList.length > 1 ? "s" : ""}?`,
+        html: `Do you want to remove the following character${namesList.length > 1 ? "s" : ""} from the initiative?<br><br>${namesList.join("<br>")}`,
         icon: "warning",
         confirmButtonText: "Remove",
       });
@@ -306,7 +308,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
 
     const { value: damage } = await showAlert({
       title: "Enter damage",
-      html: `You targeting the following ${namesList.length == 1 ? "character" : "characters"}:
+      html: `You're targeting the following character${namesList.length > 1 ? "s" : ""}:
         <br><br>${namesList.join("<br>")}`,
       inputLabel: "How much damage? Tip: enter a negative value for healing",
       input: "number",
@@ -318,7 +320,9 @@ export default function InitiativeTracker(props: Readonly<Props>) {
     });
 
     if (damage) {
-      sendLog(`damaged ${namesList.join(", ")} for ${damage}`);
+      sendLog(
+        `${damage > 0 ? "damaged" : "healed"} ${namesList.join(", ")} for ${Math.abs(damage)}`
+      );
       let newOrder = [...order];
       let killList: string[] = [];
 
@@ -677,7 +681,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
         <div>
           {isDM ? (
             <Button
-              label="Delete selected"
+              label="Delete"
               icon={<Trash2 />}
               onClick={() => deleteCharacters(checkedEntities, true)}
               disabled={checkedEntities.length == 0}
@@ -686,7 +690,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
 
           {isPlayer ? (
             <Button
-              label="Damage selected"
+              label="Damage"
               icon={<Crosshair />}
               onClick={() => damageCharacters(checkedEntities)}
               disabled={!isCombatOngoing || checkedEntities.length == 0}
@@ -720,10 +724,10 @@ export default function InitiativeTracker(props: Readonly<Props>) {
             }
             className="mr-2.5"
             onChange={() => {
-              if (checkedEntities.length == 0) {
-                setCheckedEntities(order.map((character) => character.name));
-              } else {
+              if (checkedEntities.length == order.length) {
                 setCheckedEntities([]);
+              } else {
+                setCheckedEntities(order.map((character) => character.name));
               }
             }}
           />
@@ -865,7 +869,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
       <span className="inline-block align-top mr-4">
         <p className="subtitle mt-4">Logs</p>
         <div>
-          {logs.length == 0 ? "Nothing interesting so far..." : null}
+          {logs.length == 0 ? "Nothing interesting thus far..." : null}
           {logs.toReversed().map((log, index) => (
             <div key={index}>{log}</div>
           ))}
@@ -875,12 +879,14 @@ export default function InitiativeTracker(props: Readonly<Props>) {
       <span className="inline-block align-top mr-4">
         <p className="subtitle mt-4">Connected players</p>
         {players.length == 0 ? "None for now :(" : null}
-        {players.map((player) => (
-          <div key={player.email + player.socketId}>
-            {player.nickname}
-            {player.email == session?.user.email ? " (you)" : null}
-          </div>
-        ))}
+        {players
+          .toSorted((a, b) => a.nickname.localeCompare(b.nickname))
+          .map((player) => (
+            <div key={player.email + player.socketId}>
+              {player.nickname}
+              {player.email == session?.user.email ? " (you)" : null}
+            </div>
+          ))}
       </span>
     </>
   );
