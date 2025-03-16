@@ -35,7 +35,7 @@ export default function SocketHandler(req: Request, res: any) {
       initiativeData.players = [...initiativeData.players, newPlayer].toSorted(
         (a, b) => a.nickname.localeCompare(b.nickname)
       );
-      socket.emit("update-players", initiativeData.players);
+      socket.emit("update-characters", initiativeData);
 
       // -- handlers --
       socket.on("characters-change", (data: GameData) => {

@@ -545,6 +545,10 @@ export default function InitiativeTracker(props: Readonly<Props>) {
   };
 
   const sendLog = (message: string) => {
+    setLogs((prevLogs) => [
+      ...prevLogs,
+      `${session?.user.nickname ?? session?.user.firstName} ${message}`,
+    ]);
     socket.emit("update-logs", message);
   };
 
