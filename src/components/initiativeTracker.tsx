@@ -268,9 +268,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
     // useless to log if no deletion happens. We might still need to save
     // if we're called from damageCharacters tho, so we continue anyway
     if (namesList.length > 0) {
-      sendLog(
-        `removed ${namesList.join(", ")} ${!shouldPrompt ? "due to damage" : ""}`
-      );
+      sendLog(`${shouldPrompt ? "removed" : "killed"} ${namesList.join(", ")}`);
     }
 
     const currentCharacter = order.find((character) => character.active);
