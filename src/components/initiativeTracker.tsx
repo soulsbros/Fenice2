@@ -775,7 +775,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
                   <p className="text-sm italic flex space-x-2 items-center">
                     {isDM ? (
                       <>
-                        <ChevronsRight /> {character.score.toFixed(3)}
+                        <ChevronsRight /> {character.score}
                       </>
                     ) : null}
                     <Heart className="size-5" />
@@ -874,15 +874,17 @@ export default function InitiativeTracker(props: Readonly<Props>) {
         </>
       ) : null}
 
-      <span className="inline-block align-top mr-4">
-        <p className="subtitle mt-4">Logs</p>
-        <div>
-          {logs.length == 0 ? "Nothing interesting thus far..." : null}
-          {logs.toReversed().map((log, index) => (
-            <div key={index}>{log}</div>
-          ))}
-        </div>
-      </span>
+      {isDM ? (
+        <span className="inline-block align-top mr-4">
+          <p className="subtitle mt-4">Logs</p>
+          <div>
+            {logs.length == 0 ? "Nothing interesting thus far..." : null}
+            {logs.toReversed().map((log, index) => (
+              <div key={index}>{log}</div>
+            ))}
+          </div>
+        </span>
+      ) : null}
 
       <span className="inline-block align-top mr-4">
         <p className="subtitle mt-4">Connected players</p>
