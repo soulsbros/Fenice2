@@ -775,7 +775,8 @@ export default function InitiativeTracker(props: Readonly<Props>) {
                   <p className="text-sm italic flex space-x-2 items-center">
                     {isDM ? (
                       <>
-                        <ChevronsRight /> {character.score}
+                        <ChevronsRight />{" "}
+                        {character.score.toFixed(3).replace(/\.?0+$/, "")}
                       </>
                     ) : null}
                     <Heart className="size-5" />
