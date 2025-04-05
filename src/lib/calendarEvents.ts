@@ -76,7 +76,7 @@ export const EVENTS_DA = [
 
 // Avalor
 
-export const CURRENT_DATE_AVALOR = "2024-08-28T00:00:00";
+export const CURRENT_DATE_AVALOR = "2024-09-07T00:00:00";
 
 // note: end should be day + 1 (exclusive)
 export const EVENTS_AVALOR = [
@@ -121,7 +121,7 @@ export const EVENTS_AVALOR = [
     end: "2024-09-14",
   },
   {
-    title: "Arrival at Neketaka, visit at Leoniors house",
+    title: "Arrival at Neketaka, visit at Lenior's house",
     start: "2024-08-29",
   },
   {
@@ -133,7 +133,11 @@ export const EVENTS_AVALOR = [
     start: "2024-08-31",
   },
   {
-    title: "Timekiller case",
+    title: "Time-killer case",
     start: "2024-09-16",
+  },
+  {
+    title: "Medea's date with Fen",
+    start: "2024-09-07",
   },
 ];
