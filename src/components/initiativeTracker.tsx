@@ -35,6 +35,7 @@ import {
   Upload,
 } from "react-feather";
 import io from "socket.io-client";
+import Select from "./select";
 
 let socket: any;
 
@@ -786,6 +787,25 @@ export default function InitiativeTracker(props: Readonly<Props>) {
               </div>
 
               <div className="flex items-center">
+                {isDM ? (
+                  <Select
+                    options={[
+                      { name: "Ally", value: "ally" },
+                      { name: "Enemy", value: "enemy" },
+                      { name: "Player", value: "player" },
+                    ]}
+                    selectedItem={getCharacterType(character)}
+                    onChange={(event) => {
+                      const newOrder = [...order];
+                      const index = newOrder.findIndex(
+                        (char) => char.name === character.name
+                      );
+                      newOrder[index].isEnemy = event.target.value == "enemy";
+                      newOrder[index].isPlayer = event.target.value == "player";
+                      save({ order: newOrder, round: round, shouldTTS });
+                    }}
+                  />
+                ) : null}
                 {isPlayer && isCombatOngoing ? (
                   <Button
                     onClick={() => damageCharacters([character.name])}

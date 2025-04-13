@@ -33,8 +33,8 @@ export default async function InitiativePage() {
 
       <span className="inline-block align-top">
         <p className="subtitle mt-4">Characters legend</p>
-        <p className="text-enemy">Enemy</p>
         <p className="text-ally">Ally</p>
+        <p className="text-enemy">Enemy</p>
         <p className="text-player">Player</p>
       </span>
     </>
