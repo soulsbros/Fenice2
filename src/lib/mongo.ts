@@ -50,6 +50,13 @@ export async function getWithFilter(
     if (sortingParam && docs.length > 0) {
       if (typeof docs[0][sortingParam.field] === "number") {
         docs.sort((a, b) => a[sortingParam.field] - b[sortingParam.field]);
+      } else if (typeof docs[0][sortingParam.field] === "object") {
+        // probably a Date
+        docs.sort(
+          (a, b) =>
+            new Date(a[sortingParam.field]).getTime() -
+            new Date(b[sortingParam.field]).getTime()
+        );
       } else {
         docs.sort((a, b) =>
           a[sortingParam.field]

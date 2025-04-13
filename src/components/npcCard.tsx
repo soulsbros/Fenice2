@@ -28,6 +28,7 @@ export default function NpcCard({ npc }: Readonly<Props>) {
           <Activity />
           &nbsp; {npc.status || "Unknown"}
         </p>
+        <p className="mt-2">{npc.backstory}</p>
       </Link>
     </div>
   );

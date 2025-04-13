@@ -45,8 +45,8 @@ export default async function CampaignNpcsPage({ params }: Readonly<Props>) {
 
   const result = await getNpcs(
     {
-      field: "name",
-      direction: "ASC",
+      field: "createdAt",
+      direction: "DESC",
     },
     { campaignId: parsedId }
   );
