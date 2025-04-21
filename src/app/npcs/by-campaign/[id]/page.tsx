@@ -62,16 +62,7 @@ export default async function CampaignNpcsPage({ params }: Readonly<Props>) {
   return (
     <>
       <div className="flex justify-between items-center">
-        <div className="title !mb-0">
-          NPCs{" "}
-          <Select
-            redirectPath="/npcs/by-campaign"
-            selectedItem={parsedId.toString()}
-            options={campaigns.data.reverse().map((el) => {
-              return { name: el.name, value: el._id.toString() };
-            })}
-          />
-        </div>
+        <div className="title !mb-0">NPCs</div>
         <Link
           href={`/npcs/new?c=${campaign._id}`}
           className="primary button mb-4"
@@ -79,6 +70,14 @@ export default async function CampaignNpcsPage({ params }: Readonly<Props>) {
           <Plus />
         </Link>
       </div>
+
+      <Select
+        redirectPath="/npcs/by-campaign"
+        selectedItem={parsedId.toString()}
+        options={campaigns.data.reverse().map((el) => {
+          return { name: el.name, value: el._id.toString() };
+        })}
+      />
 
       <CampaignInfo campaign={campaign} isCharacterPage={false} />
 
