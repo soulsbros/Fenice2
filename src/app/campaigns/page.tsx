@@ -41,7 +41,7 @@ export default async function CampaignsPage() {
       <div className="mb-6">
         <div className="subtitle">Stats</div>
         {Object.entries(statusCounts).map(([status, count]) => (
-          <span key={status} className="mr-2">
+          <span key={status} className="mr-4">
             {status}: {count}
           </span>
         ))}

@@ -21,10 +21,10 @@ export default function NpcCard({ npc }: Readonly<Props>) {
           className="rounded-md object-cover h-[revert-layer] object-top"
         />
         <h2 className="subtitle mt-4">{npc.name}</h2>
-        <p>
+        <p title="Race and class">
           {npc.race} {npc.class}
         </p>
-        <p className="flex mt-2">
+        <p className="flex mt-2" title="Status">
           <Activity />
           &nbsp; {npc.status || "Unknown"}
         </p>

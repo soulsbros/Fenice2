@@ -1,8 +1,8 @@
 import { authOptions } from "@/lib/authConfig";
 import { Campaign } from "@/types/API";
 import { getServerSession } from "next-auth";
-import Link from "next/link";
-import { LevelUpButton } from "./button";
+import { Edit3, Octagon, Users } from "react-feather";
+import { IconLink, LevelUpButton } from "./button";
 
 interface Props {
   campaign: Campaign;
@@ -34,44 +34,38 @@ export default async function CampaignInfo({
 
   return (
     <div className="my-2">
-      DM: {campaign.dm} - Type: {campaign.type}
-      {campaign.ruleset != "" ? ` - Ruleset: ${campaign.ruleset}` : null}
-      {formatDateString(campaign)} ({campaign.status}
-      {campaign.level ? `, level ${campaign.level}` : null})
+      <div>
+        DM: {campaign.dm} - Type: {campaign.type}
+        <br />
+        {campaign.ruleset != "" ? `Ruleset: ${campaign.ruleset}` : null}
+        {formatDateString(campaign)} ({campaign.status}
+        {campaign.level ? `, level ${campaign.level}` : null})
+      </div>
+
       <div className="mt-2">
-        <Link
+        <IconLink
           href={`/alignment/by-campaign/${campaign._id}`}
-          className="primary button"
-        >
-          Alignment
-        </Link>
-        {isCharacterPage ? (
-          <Link
-            href={`/npcs/by-campaign/${campaign._id}`}
-            className="primary button"
-          >
-            NPCs
-          </Link>
-        ) : (
-          <Link
-            href={`/characters/by-campaign/${campaign._id}`}
-            className="primary button"
-          >
-            Characters
-          </Link>
-        )}
+          icon={<Octagon />}
+          label="Alignment"
+        />
+
+        <IconLink
+          href={`/${isCharacterPage ? "npcs" : "characters"}/by-campaign/${campaign._id}`}
+          icon={<Users />}
+          label={isCharacterPage ? "NPCs" : "Characters"}
+        />
 
         {campaign.wikiLink ? (
-          <Link
+          <IconLink
             href={campaign.wikiLink}
-            className="primary button"
+            icon={<Edit3 />}
+            label="Wiki"
             target="_blank"
-          >
-            Wiki page
-          </Link>
+          />
         ) : null}
 
-        {userData?.user.roles.includes("admin") ? (
+        {userData?.user.roles.includes("admin") &&
+        campaign.status == "Ongoing" ? (
           <LevelUpButton campaignId={campaign._id!} />
         ) : null}
       </div>

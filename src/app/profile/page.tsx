@@ -78,7 +78,7 @@ export default async function ProfilePage() {
       </div>
 
       <div className="flex justify-between items-center">
-        <span className="title">Your characters</span>
+        <span className="title !mb-0">Your characters</span>
         <Link href={`/characters/new`} className="primary button mb-4">
           <Plus />
         </Link>

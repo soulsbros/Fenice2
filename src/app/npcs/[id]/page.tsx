@@ -46,7 +46,7 @@ export default async function SingleNpcPage({ params }: Readonly<Props>) {
   return (
     <>
       <div className="flex justify-between items-center">
-        <span className="title">{npc.name}</span>
+        <span className="title !mb-0">{npc.name}</span>
         <CharacterButtons id={id} name={npc.name} isNpc />
       </div>
 

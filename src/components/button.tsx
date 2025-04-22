@@ -6,6 +6,7 @@ import { signOut } from "next-auth/react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { ReactElement } from "react";
+import { ArrowUp } from "react-feather";
 
 interface ButtonProps {
   icon?: ReactElement;
@@ -79,5 +80,38 @@ interface LevelUpButtonProps {
 }
 
 export function LevelUpButton({ campaignId }: Readonly<LevelUpButtonProps>) {
-  return <Button onClick={() => levelUp(campaignId)} label="Level up" />;
+  return (
+    <Button
+      onClick={() => levelUp(campaignId)}
+      label="Level up"
+      icon={<ArrowUp />}
+    />
+  );
+}
+
+interface IconLinkProps extends ButtonProps {
+  href: string;
+  target?: string;
+}
+
+export function IconLink({
+  label,
+  icon,
+  tooltip,
+  className,
+  href,
+  target,
+  disabled = false,
+}: Readonly<IconLinkProps>) {
+  return (
+    <Link
+      className={`${disabled ? "disabled" : "primary"} button ${className ?? ""}`}
+      href={disabled ? "" : href}
+      title={tooltip}
+      target={target}
+    >
+      {icon}
+      {label ? <span>{label}</span> : null}
+    </Link>
+  );
 }
