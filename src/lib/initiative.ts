@@ -137,6 +137,11 @@ export function getRandomValue(min: number, max: number) {
   return Math.floor((randomValue / 0xffffffff) * (max - min + 1) + min);
 }
 
+// enemy player
+//   T      T    enemy (red)
+//   T      F    enemy (red)
+//   F      F    ally (green)
+//   F      T    player (blue)
 export function getCharacterType(character: Character) {
   if (character.isEnemy) return "enemy";
   if (!character.isPlayer && !character.isEnemy) return "ally";

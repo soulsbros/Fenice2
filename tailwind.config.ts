@@ -17,6 +17,7 @@ const config: Config = {
         enemy: "rgb(255, 73, 73)",
         ally: "rgb(101 163 13)",
         player: "rgb(0, 168, 255)",
+        unknown: "rgb(255, 203, 0)",
       },
     },
   },

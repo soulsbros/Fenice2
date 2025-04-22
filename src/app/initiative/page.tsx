@@ -20,7 +20,7 @@ export default async function InitiativePage() {
 
       <InitiativeTracker session={session!} />
 
-      <span className="inline-block align-top mr-4">
+      <span className="inline-block align-top mr-8">
         <p className="subtitle mt-4">HP color scale</p>
         <p className={healthColors[0]}>100% - Untouched</p>
         <p className={healthColors[1]}>81-99% - Barely injured</p>
@@ -36,6 +36,7 @@ export default async function InitiativePage() {
         <p className="text-ally">Ally</p>
         <p className="text-enemy">Enemy</p>
         <p className="text-player">Player</p>
+        <p className="text-unknown">Unknown</p>
       </span>
     </>
   );

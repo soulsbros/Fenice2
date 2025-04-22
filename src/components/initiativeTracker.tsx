@@ -52,6 +52,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
   const [order, setOrder] = useState<Character[]>([]);
   const [players, setPlayers] = useState<Player[]>([]);
   const [round, setRound] = useState(1);
+  const [lastUpdate, setLastUpdate] = useState<Date>();
 
   const [isEditing, setIsEditing] = useState(false);
   const [shouldTTS, setShouldTTS] = useState(false);
@@ -399,17 +400,6 @@ export default function InitiativeTracker(props: Readonly<Props>) {
     const { newOrder, newRound } = advanceCharacter(order, round, shouldTTS);
     save({ order: newOrder, round: newRound, shouldTTS });
     sendLog(isCombatOngoing ? "advanced to next" : "started the fight");
-
-    // auto-scroll only if not logged in (kiosk)
-    if (!isPlayer) {
-      if (newOrder[0]?.active) {
-        document.body.scrollIntoView({ behavior: "smooth" });
-      } else {
-        document
-          .querySelector("div .font-semibold")
-          ?.scrollIntoView({ behavior: "smooth" });
-      }
-    }
   };
 
   // we're never updating the players with this method, hence the Partial
@@ -488,8 +478,18 @@ export default function InitiativeTracker(props: Readonly<Props>) {
 
     socket.on("update-characters", (data: GameData) => {
       console.info("Received update");
+      setLastUpdate(new Date());
       setPlayers(data.players);
       save(data, false);
+
+      // auto-scroll
+      if (order[0]?.active) {
+        document.body.scrollIntoView({ behavior: "smooth" });
+      } else {
+        document
+          .querySelector("div .font-semibold")
+          ?.scrollIntoView({ block: "center", behavior: "smooth" });
+      }
     });
 
     socket.on("update-players", (data: Player[]) => {
@@ -705,23 +705,6 @@ export default function InitiativeTracker(props: Readonly<Props>) {
               disabled={!isCombatOngoing || checkedEntities.length == 0}
             />
           ) : null}
-
-          {!isDM &&
-          order.find(
-            (character) => character.player === session?.user.email
-          ) ? (
-            <Button
-              onClick={() =>
-                editCharacter(
-                  order.find(
-                    (character) => character.player === session?.user.email
-                  )?.name!
-                )
-              }
-              tooltip="Edit"
-              icon={<Edit />}
-            />
-          ) : null}
         </div>
 
         {isPlayer ? (
@@ -793,6 +776,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
                       { name: "Ally", value: "ally" },
                       { name: "Enemy", value: "enemy" },
                       { name: "Player", value: "player" },
+                      { name: "Unknown", value: "unknown" },
                     ]}
                     selectedItem={getCharacterType(character)}
                     onChange={(event) => {
@@ -863,6 +847,8 @@ export default function InitiativeTracker(props: Readonly<Props>) {
           {enemies} {enemies == 1 ? "enemy" : "enemies"} vs {allies}{" "}
           {allies == 1 ? "ally" : "allies"}
           {isEditing ? " (editing...)" : ""}
+          <br />
+          Last update: {lastUpdate?.toTimeString()?.split(" ")[0]}
         </div>
         {isPlayer ? (
           <Button
@@ -907,7 +893,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
         </span>
       ) : null}
 
-      <span className="inline-block align-top mr-4">
+      <span className="inline-block align-top mr-8">
         <p className="subtitle mt-4">Connected players</p>
         {players.length == 0 ? "None for now :(" : null}
         {players.map((player) => (
