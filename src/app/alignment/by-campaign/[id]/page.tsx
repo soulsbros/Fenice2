@@ -60,16 +60,15 @@ export default async function AlignmentDetailPage({ params }: Readonly<Props>) {
 
   return (
     <>
-      <div className="title">
-        Alignment chart{" "}
-        <Select
-          redirectPath="/alignment/by-campaign"
-          selectedItem={parsedId.toString()}
-          options={campaigns.data.reverse().map((el) => {
-            return { name: el.name, value: el._id.toString() };
-          })}
-        />
-      </div>
+      <div className="title">Alignment chart</div>
+      <Select
+        redirectPath="/alignment/by-campaign"
+        selectedItem={parsedId.toString()}
+        options={campaigns.data.reverse().map((el) => {
+          return { name: el.name, value: el._id.toString() };
+        })}
+      />
+      <br />
 
       <div className="inline-block">
         {characters.length > 0 ? (

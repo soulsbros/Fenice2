@@ -96,5 +96,7 @@ export default function Canvas({ characters }: Readonly<Props>) {
     };
   }, [characters, height, width]);
 
-  return <canvas width={width} height={height} ref={canvasRef} />;
+  return (
+    <canvas className="w-full" width={width} height={height} ref={canvasRef} />
+  );
 }

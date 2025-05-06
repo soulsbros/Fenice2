@@ -10,15 +10,16 @@ interface Props {
 }
 
 const formatDateString = (campaign: Campaign) => {
-  let dateString = "";
   if (campaign.startDate == null && campaign.endDate == null) {
-    return ` - Unknown date`;
+    return `Unknown`;
   }
   if (campaign.startDate?.toISOString() == campaign.endDate?.toISOString()) {
-    return ` - The ${campaign.startDate.toLocaleDateString("en-CH")}`;
+    return `The ${campaign.startDate.toLocaleDateString("en-CH")}`;
   }
+
+  let dateString = "";
   if (campaign.startDate != null) {
-    dateString += ` - From ${campaign.startDate.toLocaleDateString("en-CH")}`;
+    dateString += `From ${campaign.startDate.toLocaleDateString("en-CH")}`;
   }
   if (campaign.endDate != null) {
     dateString += ` to ${campaign.endDate.toLocaleDateString("en-CH")}`;
@@ -35,11 +36,16 @@ export default async function CampaignInfo({
   return (
     <div className="my-2">
       <div>
-        DM: {campaign.dm} - Type: {campaign.type}
+        DM: {campaign.dm} - Type: {campaign.type}{" "}
+        {campaign.level ? `- Level ${campaign.level}` : null}
         <br />
-        {campaign.ruleset != "" ? `Ruleset: ${campaign.ruleset}` : null}
-        {formatDateString(campaign)} ({campaign.status}
-        {campaign.level ? `, level ${campaign.level}` : null})
+        {campaign.ruleset != "" ? (
+          <>
+            Ruleset: {`${campaign.ruleset}`}
+            <br />
+          </>
+        ) : null}
+        {formatDateString(campaign)} ({campaign.status})
       </div>
 
       <div className="mt-2">
