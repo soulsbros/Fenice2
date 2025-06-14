@@ -47,7 +47,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
   const { session } = props;
   const isAdmin = session?.user.roles.includes("admin");
   const isPlayer = session?.user.roles.includes("player");
-  const isDM = session?.user.roles.includes("dm") ?? false;
+  const [isDM, setIsDM] = useState(session?.user.roles.includes("dm") ?? false);
 
   const [order, setOrder] = useState<Character[]>([]);
   const [players, setPlayers] = useState<Player[]>([]);
@@ -694,6 +694,17 @@ export default function InitiativeTracker(props: Readonly<Props>) {
               icon={<Trash2 />}
               onClick={() => deleteCharacters(checkedEntities, true)}
               disabled={checkedEntities.length == 0}
+            />
+          ) : null}
+
+          {isDM ? (
+            <Button
+              label="I'm not DM"
+              icon={<Trash2 />}
+              onClick={() => {
+                setIsDM(false);
+                setIsEnemy(false);
+              }}
             />
           ) : null}
 
