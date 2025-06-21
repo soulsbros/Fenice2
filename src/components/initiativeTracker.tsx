@@ -426,6 +426,9 @@ export default function InitiativeTracker(props: Readonly<Props>) {
   const save = (newData: Partial<GameData>, sendUpdate = true) => {
     setOrder(newData.order!.toSorted(comparator));
     setRound(newData.round!);
+    if (newData.campaignId) {
+      setCampaignId(newData.campaignId);
+    }
     setShouldTTS(newData.shouldTTS!);
     if (sendUpdate) {
       socket.emit("characters-change", newData);
