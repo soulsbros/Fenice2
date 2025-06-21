@@ -632,10 +632,13 @@ export default function InitiativeTracker(props: Readonly<Props>) {
 
   useEffect(() => {
     setIsDM(
-      campaigns.some(
-        (c) =>
-          c._id?.toString() === campaignId && c.dmEmail === session?.user.email
-      )
+      campaignId
+        ? campaigns.some(
+            (c) =>
+              c._id?.toString() === campaignId &&
+              c.dmEmail === session?.user.email
+          )
+        : (session?.user.roles.includes("dm") ?? false)
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [campaignId]);
@@ -647,9 +650,12 @@ export default function InitiativeTracker(props: Readonly<Props>) {
         <div className="subtitle">Campaign selection</div>
         <div>Choose a campaign to start.</div>
         <Select
-          options={campaigns.toReversed().map((el) => {
-            return { name: el.name, value: el._id!.toString() };
-          })}
+          options={[
+            { name: "Please choose...", value: "" },
+            ...campaigns.toReversed().map((el) => {
+              return { name: el.name, value: el._id!.toString() };
+            }),
+          ]}
           onChange={(e) => {
             save({ order, round, shouldTTS, campaignId: e.target.value });
             sendLog(`chose ${e.target.selectedOptions[0].text}`);
@@ -712,13 +718,11 @@ export default function InitiativeTracker(props: Readonly<Props>) {
               />
             ) : null}
             {isDM ? (
-              <div className="inline-block">
-                <Checkbox
-                  label="Enemy"
-                  checked={isEnemy}
-                  onChange={(e) => setIsEnemy(e.target.checked)}
-                />
-              </div>
+              <Checkbox
+                label="Enemy"
+                checked={isEnemy}
+                onChange={(e) => setIsEnemy(e.target.checked)}
+              />
             ) : null}
             <div className="text-center">
               {isDM ? (
@@ -917,7 +921,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
       {isDM || isAdmin ? (
         <>
           <p className="subtitle">DM controls</p>
-          <div className="flex">
+          <div>
             <Button label="Bulk add" icon={<Plus />} onClick={bulkAdd} />
             <Button label="Clear" icon={<Trash2 />} onClick={clear} />
             {isCombatOngoing ? (
