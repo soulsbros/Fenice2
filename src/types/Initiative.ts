@@ -21,6 +21,7 @@ export interface GameData {
   round: number;
   shouldTTS: boolean;
   players: Player[];
+  campaignId?: string;
 }
 
 export interface LogData {

@@ -13,6 +13,7 @@ import {
   parseBlock,
 } from "@/lib/initiative";
 import { showAlert } from "@/lib/utils";
+import { Campaign } from "@/types/API";
 import { Character, GameData, LogData, Player } from "@/types/Initiative";
 import { Session } from "next-auth";
 import { useEffect, useState } from "react";
@@ -27,6 +28,7 @@ import {
   FastForward,
   Heart,
   Loader,
+  LogOut,
   Play,
   Plus,
   RefreshCw,
@@ -41,14 +43,17 @@ let socket: any;
 
 interface Props {
   session: Session;
+  campaigns: Campaign[];
 }
 
 export default function InitiativeTracker(props: Readonly<Props>) {
-  const { session } = props;
+  const { session, campaigns } = props;
   const isAdmin = session?.user.roles.includes("admin");
   const isPlayer = session?.user.roles.includes("player");
+  // initially no campaign is selected -> check the role
   const [isDM, setIsDM] = useState(session?.user.roles.includes("dm") ?? false);
 
+  const [campaignId, setCampaignId] = useState<string | undefined>(undefined);
   const [order, setOrder] = useState<Character[]>([]);
   const [players, setPlayers] = useState<Player[]>([]);
   const [round, setRound] = useState(1);
@@ -379,6 +384,20 @@ export default function InitiativeTracker(props: Readonly<Props>) {
     });
   };
 
+  const close = () => {
+    showAlert({
+      title: "Close initiative?",
+      text: `Do you want to close the initiative? This will remove every character from the party and bring you back to the campaign selection!`,
+      icon: "warning",
+      confirmButtonText: "Close",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        save({ order: [], round: 1, shouldTTS, campaignId: "" });
+        sendLog(`logged out`);
+      }
+    });
+  };
+
   const restart = () => {
     showAlert({
       title: "Restart combat?",
@@ -397,6 +416,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
   };
 
   const next = () => {
+    setShouldShowAddForm(false);
     const { newOrder, newRound } = advanceCharacter(order, round, shouldTTS);
     save({ order: newOrder, round: newRound, shouldTTS });
     sendLog(isCombatOngoing ? "advanced to next" : "started the fight");
@@ -480,10 +500,11 @@ export default function InitiativeTracker(props: Readonly<Props>) {
       console.info("Received update");
       setLastUpdate(new Date());
       setPlayers(data.players);
+      setCampaignId(data.campaignId);
       save(data, false);
 
       // auto-scroll
-      if (order[0]?.active) {
+      if (data.order[0]?.active) {
         document.body.scrollIntoView({ behavior: "smooth" });
       } else {
         document
@@ -609,6 +630,37 @@ export default function InitiativeTracker(props: Readonly<Props>) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [order]);
 
+  useEffect(() => {
+    setIsDM(
+      campaigns.some(
+        (c) =>
+          c._id?.toString() === campaignId && c.dmEmail === session?.user.email
+      )
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [campaignId]);
+
+  // if no campaign is selected, we show the menu to all the potential DMs (role-based)
+  if (!campaignId) {
+    return isDM || isAdmin ? (
+      <div>
+        <div className="subtitle">Campaign selection</div>
+        <div>Choose a campaign to start.</div>
+        <Select
+          options={campaigns.toReversed().map((el) => {
+            return { name: el.name, value: el._id!.toString() };
+          })}
+          onChange={(e) => {
+            save({ order, round, shouldTTS, campaignId: e.target.value });
+            sendLog(`chose ${e.target.selectedOptions[0].text}`);
+          }}
+        />
+      </div>
+    ) : (
+      <div>Please wait...</div>
+    );
+  }
+
   return (
     <>
       <p className="text-lg">
@@ -669,18 +721,18 @@ export default function InitiativeTracker(props: Readonly<Props>) {
               </div>
             ) : null}
             <div className="text-center">
+              {isDM ? (
+                <Button
+                  label="Clear fields"
+                  icon={<Delete />}
+                  onClick={clearFields}
+                />
+              ) : null}
               <Button
                 label={isEditing ? "Update" : "Add"}
                 icon={isEditing ? <Check /> : <Plus />}
                 onClick={addCharacter}
               />
-              {isDM ? (
-                <Button
-                  label="Empty fields"
-                  icon={<Delete />}
-                  onClick={clearFields}
-                />
-              ) : null}
             </div>
           </div>
         ) : null}
@@ -694,17 +746,6 @@ export default function InitiativeTracker(props: Readonly<Props>) {
               icon={<Trash2 />}
               onClick={() => deleteCharacters(checkedEntities, true)}
               disabled={checkedEntities.length == 0}
-            />
-          ) : null}
-
-          {isDM ? (
-            <Button
-              label="I'm not DM"
-              icon={<Trash2 />}
-              onClick={() => {
-                setIsDM(false);
-                setIsEnemy(false);
-              }}
             />
           ) : null}
 
@@ -859,13 +900,15 @@ export default function InitiativeTracker(props: Readonly<Props>) {
           {allies == 1 ? "ally" : "allies"}
           {isEditing ? " (editing...)" : ""}
           <br />
-          Last update: {lastUpdate?.toTimeString()?.split(" ")[0]}
+          Last updated at {lastUpdate?.toTimeString()?.split(" ")[0]}
         </div>
         {isPlayer ? (
           <Button
             label={isCombatOngoing ? "Next" : "Start"}
             icon={isCombatOngoing ? <FastForward /> : <Play />}
-            disabled={order.length === 0 || (!isDM && !isCombatOngoing)}
+            disabled={
+              order.length === 0 || (!(isDM || isAdmin) && !isCombatOngoing)
+            }
             onClick={next}
           />
         ) : null}
@@ -874,7 +917,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
       {isDM || isAdmin ? (
         <>
           <p className="subtitle">DM controls</p>
-          <div>
+          <div className="flex">
             <Button label="Bulk add" icon={<Plus />} onClick={bulkAdd} />
             <Button label="Clear" icon={<Trash2 />} onClick={clear} />
             {isCombatOngoing ? (
@@ -883,6 +926,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
             <Button label="Load" icon={<Upload />} onClick={loadOrder} />
             <Button label="Save" icon={<Save />} onClick={saveOrder} />
             <Button label="Resync" icon={<Loader />} onClick={forceReload} />
+            <Button label="Close" icon={<LogOut />} onClick={close} />
             <Checkbox
               label="TTS"
               checked={shouldTTS}

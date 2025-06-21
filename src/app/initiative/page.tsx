@@ -1,3 +1,4 @@
+import { getCampaigns } from "@/actions/characters";
 import InitiativeTracker from "@/components/initiativeTracker";
 import { authOptions } from "@/lib/authConfig";
 import { healthColors } from "@/lib/initiative";
@@ -13,12 +14,13 @@ export const metadata: Metadata = {
 
 export default async function InitiativePage() {
   const session = await getServerSession(authOptions);
+  const campaigns = await getCampaigns();
 
   return (
     <>
       <p className="title">Initiative tracker</p>
 
-      <InitiativeTracker session={session!} />
+      <InitiativeTracker session={session!} campaigns={campaigns.data} />
 
       <span className="inline-block align-top mr-8">
         <p className="subtitle mt-4">HP color scale</p>
