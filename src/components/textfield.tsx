@@ -16,12 +16,12 @@ export default function Textfield({
   required = false,
 }: Readonly<Props>) {
   return (
-    <div className="inline-block">
+    <div className="inline-block m-2">
       {placeholder}
       {required ? "*" : null}
       <br />
       <input
-        className="p-2 m-2"
+        className="p-2 mt-2"
         id={id}
         name={name}
         type={type}

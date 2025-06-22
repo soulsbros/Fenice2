@@ -1,6 +1,7 @@
 "use client";
 
 import { loadInitiative, saveInitiative } from "@/actions/initiative";
+import { scrapeMonster } from "@/actions/scrape";
 import Button from "@/components/button";
 import Checkbox from "@/components/checkbox";
 import Textfield from "@/components/textfield";
@@ -65,6 +66,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
   // show the form by default only to DM.
   // if you don't have a character in the order it opens (useEffect)
   const [shouldShowAddForm, setShouldShowAddForm] = useState(isDM);
+  const [isLoadingNethys, setIsLoadingNethys] = useState(false);
   const [checkedEntities, setCheckedEntities] = useState<string[]>([]);
   const [logs, setLogs] = useState<string[]>([]);
 
@@ -486,6 +488,43 @@ export default function InitiativeTracker(props: Readonly<Props>) {
     });
   };
 
+  const loadFromNethys = async () => {
+    let urlField = document.querySelector("#nethysUrl") as HTMLInputElement;
+    if (!urlField.value.startsWith("https://2e.aonprd.com")) {
+      showAlert({
+        title: "Invalid URL format",
+        text: "The URL must be from Archive of Nethys (https://2e.aonprd.com)",
+        icon: "error",
+        confirmButtonText: "Ok",
+        showCancelButton: false,
+      });
+      return;
+    }
+
+    setIsLoadingNethys(true);
+    const data = await scrapeMonster(urlField.value);
+
+    if (data.name) {
+      clearFields();
+      const { name, score, currentHealth, totalHealth, notes } = getFields();
+      name.value = data.name;
+      score.value = data.perception!;
+      currentHealth.value = data.HP!;
+      totalHealth.value = data.HP!;
+      notes.value = `AC: ${data.AC}`;
+      urlField.value = "";
+    } else {
+      showAlert({
+        title: "Cannot fetch data",
+        text: "Cannot get the data from the URL. Check that it's a valid monster page on Archive of Nethys and try again",
+        icon: "error",
+        confirmButtonText: "Ok",
+        showCancelButton: false,
+      });
+    }
+    setIsLoadingNethys(false);
+  };
+
   const initializeSocket = async () => {
     await fetch("/api/socket");
     socket = io({
@@ -714,18 +753,29 @@ export default function InitiativeTracker(props: Readonly<Props>) {
               type="text"
             />
             {isDM ? (
-              <Textfield
-                id="newCharacterAmount"
-                placeholder="Amount"
-                type="number"
-              />
-            ) : null}
-            {isDM ? (
-              <Checkbox
-                label="Enemy"
-                checked={isEnemy}
-                onChange={(e) => setIsEnemy(e.target.checked)}
-              />
+              <>
+                <Textfield
+                  id="newCharacterAmount"
+                  placeholder="Amount"
+                  type="number"
+                />
+                <Checkbox
+                  label="Enemy"
+                  checked={isEnemy}
+                  onChange={(e) => setIsEnemy(e.target.checked)}
+                />
+                <div>
+                  OR import from Nethys:
+                  <Textfield id="nethysUrl" placeholder="URL" type="text" />
+                  <Button
+                    label="Load"
+                    icon={<Upload />}
+                    className={isLoadingNethys ? "animate-spin" : ""}
+                    onClick={loadFromNethys}
+                    disabled={isLoadingNethys}
+                  />
+                </div>
+              </>
             ) : null}
             <div className="text-center">
               {isDM ? (

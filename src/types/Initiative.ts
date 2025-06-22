@@ -28,3 +28,10 @@ export interface LogData {
   author: string;
   message: string;
 }
+
+export interface StatResult {
+  name?: string;
+  perception?: string;
+  AC?: string;
+  HP?: string;
+}
