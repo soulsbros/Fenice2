@@ -1,5 +1,6 @@
 import { getCampaigns } from "@/actions/characters";
 import InitiativeTracker from "@/components/initiativeTracker";
+import TestScrape from "@/components/testScrape";
 import { authOptions } from "@/lib/authConfig";
 import { healthColors } from "@/lib/initiative";
 import { Metadata } from "next";
@@ -40,6 +41,8 @@ export default async function InitiativePage() {
         <p className="text-player">Player</p>
         <p className="text-unknown">Unknown</p>
       </span>
+
+      <TestScrape />
     </>
   );
 }
