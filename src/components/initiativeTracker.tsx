@@ -217,6 +217,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
         order[oldIndex] = newCharacter;
       }
       const newOrder = [...order].toSorted(comparator);
+      sendLog(`added ${name.value}`);
 
       if (isDM) {
         if (/\d/.test(name.value)) {
@@ -233,7 +234,6 @@ export default function InitiativeTracker(props: Readonly<Props>) {
       save({ order: newOrder, round: round, shouldTTS });
       setIsEditing(false);
       setShouldShowAddForm(isDM);
-      sendLog(`added ${name.value}`);
 
       if (!isDM) {
         clearFields();
