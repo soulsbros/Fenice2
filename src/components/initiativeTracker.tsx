@@ -17,6 +17,7 @@ import { showAlert } from "@/lib/utils";
 import { Campaign } from "@/types/API";
 import { Character, GameData, LogData, Player } from "@/types/Initiative";
 import { Session } from "next-auth";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import {
   Check,
@@ -34,6 +35,7 @@ import {
   Plus,
   RefreshCw,
   Save,
+  Shield,
   Trash2,
   Upload,
 } from "react-feather";
@@ -91,13 +93,24 @@ export default function InitiativeTracker(props: Readonly<Props>) {
     let notes = document.querySelector(
       "#newCharacterNotes"
     ) as HTMLInputElement;
+    let link = document.querySelector("#nethysUrl") as HTMLInputElement;
+    let AC = document.querySelector("#newCharacterAC") as HTMLInputElement;
     let amount =
       parseInt(
         (document.querySelector("#newCharacterAmount") as HTMLInputElement)
           ?.value
       ) || 1;
 
-    return { name, score, currentHealth, totalHealth, notes, amount };
+    return {
+      name,
+      score,
+      currentHealth,
+      totalHealth,
+      notes,
+      amount,
+      link,
+      AC,
+    };
   };
 
   const clearFields = () => {
@@ -115,7 +128,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
   };
 
   const addCharacter = async () => {
-    const { name, score, currentHealth, totalHealth, notes, amount } =
+    const { name, score, currentHealth, totalHealth, notes, amount, link, AC } =
       getFields();
 
     if (amount < 1) {
@@ -206,6 +219,8 @@ export default function InitiativeTracker(props: Readonly<Props>) {
         currentHealth: parseInt(currentHealth.value) || 0,
         totalHealth: parseInt(totalHealth.value) || 0,
         notes: notes.value,
+        link: link?.value,
+        AC: parseInt(AC.value),
       };
 
       const oldIndex = order.findIndex(
@@ -489,8 +504,8 @@ export default function InitiativeTracker(props: Readonly<Props>) {
   };
 
   const loadFromNethys = async () => {
-    let urlField = document.querySelector("#nethysUrl") as HTMLInputElement;
-    if (!urlField.value.startsWith("https://2e.aonprd.com")) {
+    let { link } = getFields();
+    if (!link.value.startsWith("https://2e.aonprd.com")) {
       showAlert({
         title: "Invalid URL format",
         text: "The URL must be from Archive of Nethys (https://2e.aonprd.com)",
@@ -502,17 +517,17 @@ export default function InitiativeTracker(props: Readonly<Props>) {
     }
 
     setIsLoadingNethys(true);
-    const data = await scrapeMonster(urlField.value);
+    const data = await scrapeMonster(link.value);
 
     if (data.name) {
       clearFields();
-      const { name, score, currentHealth, totalHealth, notes } = getFields();
+      const { name, score, currentHealth, totalHealth, AC } = getFields();
+      const parsedHP = data.HP!.split(" ")[0];
       name.value = data.name;
       score.value = data.perception!;
-      currentHealth.value = data.HP!;
-      totalHealth.value = data.HP!;
-      notes.value = `AC: ${data.AC}`;
-      urlField.value = "";
+      currentHealth.value = parsedHP;
+      totalHealth.value = parsedHP;
+      AC.value = data.AC!.split(" ")[0];
     } else {
       showAlert({
         title: "Cannot fetch data",
@@ -747,6 +762,7 @@ export default function InitiativeTracker(props: Readonly<Props>) {
               placeholder="Total HP"
               type="number"
             />
+            <Textfield id="newCharacterAC" placeholder="AC" type="number" />
             <Textfield
               id="newCharacterNotes"
               placeholder={`Notes${isDM ? " (hidden)" : ""}`}
@@ -860,20 +876,35 @@ export default function InitiativeTracker(props: Readonly<Props>) {
                 </div>
                 <div>
                   <p className="text-lg">
-                    {character.name}{" "}
+                    {isDM && character.link ? (
+                      <Link href={character.link} target="_blank">
+                        {character.name}
+                      </Link>
+                    ) : (
+                      character.name
+                    )}{" "}
                     {character.notes && (isDM || character.isPlayer)
                       ? `(${character.notes})`
                       : ""}
                   </p>
-                  <p className="text-sm italic flex space-x-2 items-center">
+
+                  <p className="text-sm italic flex items-center">
                     {isDM ? (
                       <>
-                        <ChevronsRight />{" "}
+                        <ChevronsRight />
                         {character.score.toFixed(3).replace(/\.?0+$/, "")}
                       </>
                     ) : null}
-                    <Heart className="size-5" />
+
+                    <Heart className="ml-2.5 mr-0.5" />
                     <span className={health.color}>{health.text}</span>
+
+                    {(isDM || character.isPlayer) && character.AC ? (
+                      <>
+                        <Shield className="ml-2.5" />
+                        {character.AC}
+                      </>
+                    ) : null}
                   </p>
                 </div>
               </div>

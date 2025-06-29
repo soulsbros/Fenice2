@@ -8,6 +8,8 @@ export interface Character {
   totalHealth: number;
   currentHealth: number;
   notes: string;
+  link?: string;
+  AC?: number;
 }
 
 export interface Player {
