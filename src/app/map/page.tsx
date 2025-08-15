@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
 
 export default async function MapRootPage() {
-  redirect(`/map/brightAge`);
+  redirect(`/map/golarion`);
 }
