@@ -22,7 +22,7 @@ export async function getSignedURL(document: string) {
     );
   } catch (error) {
     console.error(
-      `Error getting URL for ${document} from bucket ${BUCKET_NAME}`
+      `Error getting URL for ${document} from bucket ${BUCKET_NAME} (${error})`
     );
   }
 

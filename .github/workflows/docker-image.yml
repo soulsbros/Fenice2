@@ -11,25 +11,23 @@ on:
 jobs:
   build-tags:
     # Build and push the image with the tag name
-    uses: soulsbros/CICD-template/.github/workflows/docker-build.yml@main
+    uses: soulsbros/CICD-template/.github/workflows/docker-build.yml@2f687755dff9b7110e952f1d3eb2f31ccd0ec308 # 1.1.1
     if: github.ref_type == 'tag'
     with:
       image-name: steeven9/fenice2:${{ github.ref_name }}
       push: true
-      runner: self-hosted
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
   build-branches:
     # Build all branches but push only in main
-    uses: soulsbros/CICD-template/.github/workflows/docker-build.yml@main
+    uses: soulsbros/CICD-template/.github/workflows/docker-build.yml@2f687755dff9b7110e952f1d3eb2f31ccd0ec308 # 1.1.1
     if: github.ref_type == 'branch'
     with:
       image-name: steeven9/fenice2:latest
       push: ${{ github.ref_name == 'main' }}
       ping_webhook: ${{ github.ref_name == 'main' }}
-      runner: self-hosted
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
