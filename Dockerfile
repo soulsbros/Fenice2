@@ -24,6 +24,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
+COPY --from=builder --chown=node /app/public ./public
 COPY --from=builder --chown=node /app/.next/standalone ./
 COPY --from=builder --chown=node /app/.next/static ./.next/static
 
