@@ -1,7 +1,6 @@
-.git/
-.github/
-.husky/
-.next/
 node_modules/
+.next/
+.git*
+*.md
 .env*
-Dockerfile
+Docker*
