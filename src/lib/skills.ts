@@ -457,6 +457,11 @@ export const editions: Edition[] = [
       },
     ],
   },
+  {
+    id: "dw",
+    name: "Dungeon World",
+    skills: [],
+  },
 ];
 
 export function findSkill(skill: string, edition: string) {
