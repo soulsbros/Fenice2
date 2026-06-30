@@ -35,7 +35,7 @@ export function Sidebar() {
         href={`/skills/${defaultEdition}`}
         icon={<Zap />}
       />
-      <SidebarLink name="Soundboard" href="/sounds" icon={<Volume2 />} />
+      <SidebarLink name="Sounds" href="/sounds" icon={<Volume2 />} />
       <SidebarLink
         name="Old website"
         href="https://lafenice.soulsbros.ch"

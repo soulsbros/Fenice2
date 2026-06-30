@@ -1,11 +1,12 @@
 import { getFiles, getSignedURL } from "@/actions/storage";
 import SoundsPlayer from "@/components/soundsPlayer";
+import { cleanSoundTitle } from "@/lib/utils";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Soundboard",
+  title: "Sounds",
   openGraph: {
-    title: "Soundboard",
+    title: "Sounds",
   },
 };
 
@@ -18,6 +19,19 @@ export default async function SoundsPage() {
     parsedSounds.push({ name: sound, URL: url });
   });
 
+  const recordings = await getFiles("recordings");
+  const parsedRecordings: { name: string; folder: string; fullPath: string }[] =
+    [];
+
+  recordings.forEach(async (sound) => {
+    parsedRecordings.push({
+      name: cleanSoundTitle(sound).title,
+      folder: cleanSoundTitle(sound).folder,
+      fullPath: sound,
+    });
+  });
+
+  let prevCategory = "";
   return (
     <>
       <div className="title">Soundboard</div>
@@ -26,6 +40,21 @@ export default async function SoundsPage() {
       ) : (
         <SoundsPlayer sounds={parsedSounds} />
       )}
+
+      {/* <div className="title mt-4">Session recordings</div>
+      {parsedRecordings.map((sound) => {
+        if (sound.folder == prevCategory) {
+          return <p key={sound.fullPath}>{sound.name}</p>;
+        } else {
+          prevCategory = sound.folder;
+          return (
+            <>
+              <div className="subtitle mt-2">{sound.folder}</div>
+              <p key={sound.fullPath}>{sound.name}</p>
+            </>
+          );
+        }
+      })} */}
     </>
   );
 }

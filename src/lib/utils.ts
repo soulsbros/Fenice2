@@ -49,11 +49,14 @@ export function cleanDocTitle(title: string) {
   };
 }
 
-// Extracts metadata from filename (e.g. sounds/Yeet.mp3)
+// Extracts metadata from filename (e.g. sounds/Yeet.mp3 or recordings/session/session 02.mp3)
 export function cleanSoundTitle(title: string) {
-  const name = title.split("/")[1];
+  const nameParts = title.split("/");
   return {
-    title: name.slice(0, -4).replaceAll(/([a-z]+)([A-Z]+)/g, "$1 $2"),
+    title: nameParts[nameParts.length - 1]
+      .slice(0, -4)
+      .replaceAll(/([a-z]+)([A-Z]+)/g, "$1 $2"),
+    folder: nameParts[nameParts.length - 2],
   };
 }
 
