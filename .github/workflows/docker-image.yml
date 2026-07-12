@@ -9,21 +9,14 @@ on:
       - "*"
 
 jobs:
-  build-tags:
-    # Build and push the image with the tag name
-    uses: soulsbros/CICD-template/.github/workflows/docker-build.yml@2f687755dff9b7110e952f1d3eb2f31ccd0ec308 # 1.1.1
-    if: github.ref_type == 'tag'
-    with:
-      image-name: steeven9/fenice2:${{ github.ref_name }}
-      push: true
-    secrets:
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+  lint:
+    uses: soulsbros/CICD-template/.github/workflows/node.yml@158288970a760999c5e7736080e51e6fb55c29a8 # 1.1.3
 
-  build-branches:
+  build-branches-x64:
     # Build all branches but push only in main
-    uses: soulsbros/CICD-template/.github/workflows/docker-build.yml@2f687755dff9b7110e952f1d3eb2f31ccd0ec308 # 1.1.1
+    uses: soulsbros/CICD-template/.github/workflows/docker-build.yml@158288970a760999c5e7736080e51e6fb55c29a8 # 1.1.3
     if: github.ref_type == 'branch'
+    needs: lint
     with:
       image-name: steeven9/fenice2:latest
       push: ${{ github.ref_name == 'main' }}
@@ -32,3 +25,25 @@ jobs:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
       WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+
+  build-branches-arm:
+    # Build all branches but push only in main (no ping)
+    uses: soulsbros/CICD-template/.github/workflows/docker-build.yml@158288970a760999c5e7736080e51e6fb55c29a8 # 1.1.3
+    if: github.ref_type == 'branch'
+    needs: lint
+    with:
+      image-name: steeven9/fenice2:arm
+      push: ${{ github.ref_name == 'main' }}
+      ping_webhook: false
+      runner: ubuntu-26.04-arm
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+      WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+
+  sonarqube:
+    uses: soulsbros/CICD-template/.github/workflows/sonarqube.yml@158288970a760999c5e7736080e51e6fb55c29a8 # 1.1.3
+    if: github.ref_name == 'main'
+    needs: lint
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

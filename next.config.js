@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: "standalone",
+  // hides the N icon in dev mode
+  devIndicators: { buildActivity: false },
   images: {
     remotePatterns: [
       {
@@ -19,7 +21,7 @@ const nextConfig = {
         protocol: "https",
         hostname: "raw.githubusercontent.com",
         port: "",
-        pathname: "/SAWARATSUKI/KawaiiLogos/**",
+        pathname: "/SAWARATSUKI/KawaiiLogos/*/ResponseCode/*.png",
       },
     ],
   },

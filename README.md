@@ -27,7 +27,7 @@ Required to create and edit characters
 
 ### ⚙️ Prerequisites
 
-- Node.js v22
+- Node.js
 - Yarn package manager
 - Docker (if you want to run MongoDB locally)
 
