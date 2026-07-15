@@ -45,6 +45,7 @@ export default async function CampaignsPage() {
             {status}: {count}
           </span>
         ))}
+        <span className="mr-4">(Total: {campaigns.length})</span>
       </div>
 
       <div>
