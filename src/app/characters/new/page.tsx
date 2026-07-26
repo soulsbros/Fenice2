@@ -22,7 +22,7 @@ export default async function NewCharacterPage() {
       ) : (
         <div>
           You are not allowed to create characters.{" "}
-          <Link href="https://soulsbros.ch/?p=contact" className="link">
+          <Link href="https://soulsbros.ch/#contact" className="link">
             Contact us
           </Link>{" "}
           if you think it&apos;s a mistake!
