@@ -71,7 +71,8 @@ export default async function CampaignInfo({
         ) : null}
 
         {userData?.user.roles.includes("admin") &&
-        campaign.status == "Ongoing" ? (
+        campaign.status == "Ongoing" &&
+        campaign.level ? (
           <LevelUpButton campaignId={campaign._id!} />
         ) : null}
       </div>
