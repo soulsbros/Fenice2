@@ -6,7 +6,11 @@ import {
   updateCharacter,
 } from "@/actions/characters";
 import { insertNpc, updateNpc } from "@/actions/npcs";
-import { alignments, getActualAlignment } from "@/lib/alignment";
+import {
+  alignmentsDnD,
+  alignmentsDW,
+  getActualAlignment,
+} from "@/lib/alignment";
 import { showAlert } from "@/lib/utils";
 import { Campaign, Character, NPC } from "@/types/API";
 import { useSearchParams } from "next/navigation";
@@ -54,6 +58,15 @@ export default function CharacterForm({
   const campaignParam = searchParams?.get("c") ?? "";
 
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+  const [selectedCampaign, setSelectedCampaign] = useState(campaignParam);
+
+  const alignments = campaigns.find(
+    (campaign) =>
+      selectedCampaign == campaign._id?.toString() &&
+      campaign.ruleset == "Dungeon World"
+  )
+    ? alignmentsDW
+    : alignmentsDnD;
 
   useEffect(() => {
     async function fetchData() {
@@ -150,6 +163,7 @@ export default function CharacterForm({
             })}
             required
             selectedItem={previousData?.campaignId.toString() ?? campaignParam}
+            onChange={(e) => setSelectedCampaign(e.target.value)}
           />
         )}
         <Textfield

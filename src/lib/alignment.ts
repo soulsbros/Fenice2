@@ -2,7 +2,7 @@ import { Character } from "@/types/API";
 
 export const UNKNOWN_VALUE = -999;
 
-export const alignments = [
+export const alignmentsDnD = [
   "Unknown",
   "Chaotic Good",
   "Chaotic Neutral",
@@ -13,6 +13,15 @@ export const alignments = [
   "Lawful Good",
   "Lawful Neutral",
   "Lawful Evil",
+];
+
+export const alignmentsDW = [
+  "Unknown",
+  "Good",
+  "Neutral",
+  "Evil",
+  "Lawful",
+  "Chaotic",
 ];
 
 export function getValueFromAlignment(alignment: string, type: string) {
@@ -48,6 +57,12 @@ export function getActualAlignment(character: Character) {
       character.goodEvilValue == UNKNOWN_VALUE)
   ) {
     return "Unknown";
+  }
+
+  // fix for Dungeon World - if we have only one word (Good/Neutral/Evil/etc.),
+  // skip the calculations entirely
+  if (character.startAlignment.split(" ").length == 1) {
+    return character.startAlignment;
   }
 
   let result = "";
