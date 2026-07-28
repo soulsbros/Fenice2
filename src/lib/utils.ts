@@ -43,7 +43,7 @@ export function cleanDocTitle(title: string) {
     title: name
       .split("_")[1]
       .slice(0, -4)
-      .replaceAll(/([a-z]+)([A-Z]+)/g, "$1 $2"),
+      .replaceAll(/([a-z])([A-Z])/g, "$1 $2"),
     category: name.split("_")[0],
     edition: title.split("/")[1],
   };
@@ -53,10 +53,11 @@ export function cleanDocTitle(title: string) {
 export function cleanSoundTitle(title: string) {
   const nameParts = title.split("/");
   return {
-    title: nameParts[nameParts.length - 1]
+    title: nameParts
+      .at(-1)!
       .slice(0, -4)
-      .replaceAll(/([a-z]+)([A-Z]+)/g, "$1 $2"),
-    folder: nameParts[nameParts.length - 2],
+      .replaceAll(/([a-z])([A-Z])/g, "$1 $2"),
+    folder: nameParts.at(-2),
   };
 }
 
@@ -80,7 +81,7 @@ export function getLogo() {
 // Default values e.g. for navigation pane and redirects
 
 export const defaultEdition = "pf2";
-export const defaultCampaign = "6697e5deda0f1caafa40e160";
+export const defaultCampaign = "68963255f32d052cfd0db18a";
 export const baseTitle = "La Compagnia della Fenice";
 export const baseDesc =
   "Our D&D website with manuals, characters, and much more!";
