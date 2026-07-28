@@ -5,11 +5,10 @@ export default function GeneralLoading() {
   return (
     <div className="flex items-center">
       <Image
-        src={getLogo().loading}
-        unoptimized
+        src={getLogo().icon}
         alt="Loading animation"
         width={60}
-        className="mr-2"
+        className="mr-2 animate-spin"
       />
       <p>Loading...</p>
     </div>
