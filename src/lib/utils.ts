@@ -57,7 +57,7 @@ export function cleanSoundTitle(title: string) {
       .at(-1)!
       .slice(0, -4)
       .replaceAll(/([a-z])([A-Z])/g, "$1 $2"),
-    folder: nameParts.at(-2),
+    folder: nameParts.at(-2)!,
   };
 }
 
