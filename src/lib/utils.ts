@@ -81,7 +81,7 @@ export function getLogo() {
 // Default values e.g. for navigation pane and redirects
 
 export const defaultEdition = "pf2";
-export const defaultCampaign = "68963255f32d052cfd0db18a";
+export const defaultCampaign = "6a57e3631249ca44d6f1b729";
 export const baseTitle = "La Compagnia della Fenice";
 export const baseDesc =
   "Our D&D website with manuals, characters, and much more!";
