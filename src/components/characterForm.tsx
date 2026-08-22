@@ -58,7 +58,9 @@ export default function CharacterForm({
   const campaignParam = searchParams?.get("c") ?? "";
 
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
-  const [selectedCampaign, setSelectedCampaign] = useState(campaignParam);
+  const [selectedCampaign, setSelectedCampaign] = useState(
+    previousData?.campaignId.toString() ?? campaignParam
+  );
 
   const alignments = campaigns.find(
     (campaign) =>
@@ -98,7 +100,7 @@ export default function CharacterForm({
           required={!isNpc}
           defaultValue={previousData?.class}
         />
-        {!isNpc ? (
+        {!isNpc && campaigns.length !== 0 ? (
           <Select
             placeholder="Alignment"
             name="alignment"
@@ -150,9 +152,7 @@ export default function CharacterForm({
       <div>
         {campaigns.length === 0 ? (
           <div className="inline-block">
-            Campaign
-            <br />
-            Loading...
+            <Select placeholder="Campaign" options={[]} required />
           </div>
         ) : (
           <Select
@@ -162,7 +162,7 @@ export default function CharacterForm({
               return { name: campaign.name, value: campaign._id!.toString() };
             })}
             required
-            selectedItem={previousData?.campaignId.toString() ?? campaignParam}
+            selectedItem={selectedCampaign}
             onChange={(e) => setSelectedCampaign(e.target.value)}
           />
         )}
