@@ -1,7 +1,10 @@
 # Fenice2
 
-[![License](https://img.shields.io/github/license/steeven9/fenice2)](/LICENSE)
-[![Pipeline](https://github.com/steeven9/fenice2/actions/workflows/docker-image.yml/badge.svg)](https://github.com/steeven9/fenice2/actions/workflows/docker-image.yml)
+[![License](https://img.shields.io/github/license/soulsbros/fenice2)](/LICENSE)
+[![Pipeline](https://github.com/soulsbros/fenice2/actions/workflows/docker-image.yml/badge.svg)](https://github.com/soulsbros/fenice2/actions/workflows/docker-image.yml)
+[![Quality gate status](https://code.soulsbros.ch/api/project_badges/measure?project=soulsbros_Fenice2_59e4f649-e1b1-492c-8603-04a21593d84a&metric=alert_status&token=sqb_b427c37f0d76cdec4fed2269dac5a7743040002f)](https://code.soulsbros.ch/dashboard?id=soulsbros_Fenice2_59e4f649-e1b1-492c-8603-04a21593d84a)
+![GitHub repo size](https://img.shields.io/github/repo-size/soulsbros/fenice2?label=Repo%20size)
+![Lines of code](https://img.shields.io/endpoint?url=https://ghloc.vercel.app/api/Jonius7/SteamUI-OldGlory/badge&label=Lines%20of%20Code)
 
 ## ℹ️ Description
 
@@ -18,7 +21,7 @@ which are not strictly required to run the website but might be needed for some 
 Required to browse, create, and edit characters and campaigns
 - **Keycloak** OIDC identity provider to allow users to login and store their characters.
 Required to create and edit characters
-- **MinIO S3 storage** to store files such as documents and sounds (optional)
+- **S3-compatible storage** to store files such as documents and sounds (optional)
 - **Gcal-API** to easily fetch the date of our next session from our shared calendar
 (see [steeven9/Gcal-API](https://github.com/Steeven9/Gcal-API), optional)
 - **Home Assistant** with the Alexa integration to announce whose turn it is in combat (optional)
