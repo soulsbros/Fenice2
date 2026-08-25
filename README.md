@@ -4,7 +4,7 @@
 [![Pipeline](https://github.com/soulsbros/fenice2/actions/workflows/docker-image.yml/badge.svg)](https://github.com/soulsbros/fenice2/actions/workflows/docker-image.yml)
 [![Quality gate status](https://code.soulsbros.ch/api/project_badges/measure?project=soulsbros_Fenice2_59e4f649-e1b1-492c-8603-04a21593d84a&metric=alert_status&token=sqb_b427c37f0d76cdec4fed2269dac5a7743040002f)](https://code.soulsbros.ch/dashboard?id=soulsbros_Fenice2_59e4f649-e1b1-492c-8603-04a21593d84a)
 ![GitHub repo size](https://img.shields.io/github/repo-size/soulsbros/fenice2?label=Repo%20size)
-![Lines of code](https://img.shields.io/endpoint?url=https://ghloc.vercel.app/api/Jonius7/SteamUI-OldGlory/badge&label=Lines%20of%20Code)
+![Lines of code](https://img.shields.io/endpoint?url=https://ghloc.vercel.app/api/soulsbros/fenice2/badge\?filter=!.lock&label=Lines%20of%20Code)
 
 ## ℹ️ Description
 
