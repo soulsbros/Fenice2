@@ -1,7 +1,10 @@
 import { getFiles, getSignedURL } from "@/actions/storage";
 import SoundsPlayer from "@/components/soundsPlayer";
+import { authOptions } from "@/lib/authConfig";
 import { cleanSoundTitle } from "@/lib/utils";
 import { Metadata } from "next";
+import { getServerSession } from "next-auth";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Sounds",
@@ -11,6 +14,9 @@ export const metadata: Metadata = {
 };
 
 export default async function SoundsPage() {
+  const session = await getServerSession(authOptions);
+  const user = session?.user;
+
   const sounds = await getFiles("sounds");
   const parsedSounds: { name: string; URL: string }[] = [];
 
@@ -23,7 +29,7 @@ export default async function SoundsPage() {
   const parsedRecordings: { name: string; folder: string; fullPath: string }[] =
     [];
 
-  recordings.forEach(async (sound) => {
+  recordings.forEach((sound) => {
     parsedRecordings.push({
       name: cleanSoundTitle(sound).title,
       folder: cleanSoundTitle(sound).folder,
@@ -31,30 +37,31 @@ export default async function SoundsPage() {
     });
   });
 
-  let prevCategory = "";
   return (
     <>
       <div className="title">Soundboard</div>
-      {sounds.length == 0 ? (
+      {parsedSounds.length === 0 ? (
         "No sounds found."
       ) : (
         <SoundsPlayer sounds={parsedSounds} />
       )}
 
-      {/* <div className="title mt-4">Session recordings</div>
-      {parsedRecordings.map((sound) => {
-        if (sound.folder == prevCategory) {
-          return <p key={sound.fullPath}>{sound.name}</p>;
-        } else {
-          prevCategory = sound.folder;
-          return (
-            <>
-              <div className="subtitle mt-2">{sound.folder}</div>
-              <p key={sound.fullPath}>{sound.name}</p>
-            </>
-          );
-        }
-      })} */}
+      {user && parsedRecordings.length !== 0 ? (
+        <>
+          <div className="title mt-4">Session recordings</div>
+          {Array.from(new Set(parsedRecordings.map((el) => el.folder))).map(
+            (folder) => (
+              <Link
+                key={folder}
+                href={`/sounds/${folder.split(" ").slice(0, 1).join(" ")}`}
+                className="mb-1 link block"
+              >
+                {folder.split(" ").slice(1).join(" ")}
+              </Link>
+            )
+          )}
+        </>
+      ) : null}
     </>
   );
 }

@@ -8,5 +8,6 @@ export const config = {
     "/characters/:id/edit",
     "/npcs/new",
     "/npcs/:id/edit",
+    "/sounds/:id*",
   ],
 };
