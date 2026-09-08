@@ -45,10 +45,8 @@ export async function fetchNextSession(): Promise<string | undefined> {
   try {
     const res = await fetch(process.env.GCAL_API_URL!, { cache: "no-store" });
     const data = await res.json();
-    // filter out birthdays (which are in the same calendar) and return first result
-    return data.filter(
-      (event: any) => !event.title.toLowerCase().includes("compleanno")
-    )[0]?.startTime;
+    // filter out events without numbers and return first result
+    return data.find((event: any) => /\d/.test(event.title))?.startTime;
   } catch (err) {
     console.error(err);
     return undefined;
