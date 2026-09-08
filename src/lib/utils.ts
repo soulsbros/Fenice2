@@ -86,3 +86,5 @@ export const baseTitle = "La Compagnia della Fenice";
 export const baseDesc =
   "Our D&D website with manuals, characters, and much more!";
 export const baseUrl = new URL("https://fenice2.soulsbros.ch");
+export const S3_ENDPOINT_BASE = "s3.soulsbros.ch";
+export const S3_BUCKET_NAME = "fenice";

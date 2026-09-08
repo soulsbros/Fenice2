@@ -1,10 +1,10 @@
 "use server";
 
+import { S3_BUCKET_NAME, S3_ENDPOINT_BASE } from "@/lib/utils";
 import * as Minio from "minio";
 
-const BUCKET_NAME = "fenice";
 const minioClient = new Minio.Client({
-  endPoint: "s3.soulsbros.ch",
+  endPoint: S3_ENDPOINT_BASE,
   useSSL: true,
   accessKey: process.env.S3_ACCESS_KEY!,
   secretKey: process.env.S3_SECRET_KEY!,
@@ -16,13 +16,13 @@ export async function getSignedURL(document: string) {
   try {
     presignedUrl = await minioClient.presignedUrl(
       "GET",
-      BUCKET_NAME,
+      S3_BUCKET_NAME,
       document,
       24 * 60 * 60
     );
   } catch (error) {
     console.error(
-      `Error getting URL for ${document} from bucket ${BUCKET_NAME} (${error})`
+      `Error getting URL for ${document} from bucket ${S3_BUCKET_NAME} (${error})`
     );
   }
 
@@ -32,7 +32,7 @@ export async function getSignedURL(document: string) {
 // Returns the list of file names in a given path
 export async function getFiles(path: string) {
   return new Promise<string[]>((resolve, reject) => {
-    const stream = minioClient.listObjects(BUCKET_NAME, path, true);
+    const stream = minioClient.listObjects(S3_BUCKET_NAME, path, true);
     const docs: string[] = [];
 
     stream.on("data", function (obj) {

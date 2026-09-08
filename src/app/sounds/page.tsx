@@ -1,7 +1,7 @@
-import { getFiles, getSignedURL } from "@/actions/storage";
+import { getFiles } from "@/actions/storage";
 import SoundsPlayer from "@/components/soundsPlayer";
 import { authOptions } from "@/lib/authConfig";
-import { cleanSoundTitle } from "@/lib/utils";
+import { cleanSoundTitle, S3_BUCKET_NAME, S3_ENDPOINT_BASE } from "@/lib/utils";
 import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
@@ -20,20 +20,22 @@ export default async function SoundsPage() {
   const sounds = await getFiles("sounds");
   const parsedSounds: { name: string; URL: string }[] = [];
 
-  sounds.forEach(async (sound) => {
-    const url = await getSignedURL(sound);
-    parsedSounds.push({ name: sound, URL: url });
+  sounds.forEach((sound) => {
+    parsedSounds.push({
+      name: sound,
+      URL: `https://${S3_ENDPOINT_BASE}/${S3_BUCKET_NAME}/${sound}`,
+    });
   });
 
-  const recordings = await getFiles("recordings");
+  const recordings = user ? await getFiles("recordings") : [];
   const parsedRecordings: { name: string; folder: string; fullPath: string }[] =
     [];
 
-  recordings.forEach((sound) => {
+  recordings.forEach((recording) => {
     parsedRecordings.push({
-      name: cleanSoundTitle(sound).title,
-      folder: cleanSoundTitle(sound).folder,
-      fullPath: sound,
+      name: cleanSoundTitle(recording).title,
+      folder: cleanSoundTitle(recording).folder,
+      fullPath: recording,
     });
   });
 

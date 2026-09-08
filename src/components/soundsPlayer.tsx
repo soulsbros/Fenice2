@@ -3,7 +3,6 @@
 import { getSignedURL } from "@/actions/storage";
 import { cleanSoundTitle } from "@/lib/utils";
 import { useEffect, useState } from "react";
-import Button from "./button";
 
 interface Props {
   sounds: { name: string; URL: string }[];
@@ -75,7 +74,9 @@ export function RecordingsPlayer({ sounds }: Readonly<RecordingsProps>) {
       {sounds.map((sound) => {
         return (
           <div key={sound.fullPath}>
-            <Button onClick={() => playRecording(sound)} label={sound.name} />
+            <button onClick={() => playRecording(sound)} className="mb-1">
+              {sound.name}
+            </button>
           </div>
         );
       })}
