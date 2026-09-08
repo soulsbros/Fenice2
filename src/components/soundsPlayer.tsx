@@ -74,7 +74,10 @@ export function RecordingsPlayer({ sounds }: Readonly<RecordingsProps>) {
       {sounds.map((sound) => {
         return (
           <div key={sound.fullPath}>
-            <button onClick={() => playRecording(sound)} className="mb-1">
+            <button
+              onClick={() => playRecording(sound)}
+              className={`mb-1 link ${title === sound.name ? "text-fenice-red" : ""}`}
+            >
               {sound.name}
             </button>
           </div>

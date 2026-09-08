@@ -37,7 +37,7 @@ export interface NPC extends BaseCharacter {
 
 export interface Campaign {
   _id?: ObjectId;
-  legacyCampaignId?: number;
+  legacyCampaignId: number;
   name: string;
   type: string;
   dm: string;

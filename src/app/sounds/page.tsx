@@ -1,7 +1,9 @@
+import { getUserCampaigns } from "@/actions/campaigns";
 import { getFiles } from "@/actions/storage";
 import SoundsPlayer from "@/components/soundsPlayer";
 import { authOptions } from "@/lib/authConfig";
 import { cleanSoundTitle, S3_BUCKET_NAME, S3_ENDPOINT_BASE } from "@/lib/utils";
+import { Campaign } from "@/types/API";
 import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
@@ -39,6 +41,10 @@ export default async function SoundsPage() {
     });
   });
 
+  const allowedCampaigns: Campaign[] = user?.roles.includes("player")
+    ? await getUserCampaigns(user.email, true)
+    : [];
+
   return (
     <>
       <div className="title">Soundboard</div>
@@ -51,16 +57,31 @@ export default async function SoundsPage() {
       {user && parsedRecordings.length !== 0 ? (
         <>
           <div className="title mt-4">Session recordings</div>
-          {Array.from(new Set(parsedRecordings.map((el) => el.folder))).map(
-            (folder) => (
-              <Link
-                key={folder}
-                href={`/sounds/${folder.split(" ").slice(0, 1).join(" ")}`}
-                className="mb-1 link block"
-              >
-                {folder.split(" ").slice(1).join(" ")}
+          {allowedCampaigns.length === 0 ? (
+            <>
+              <div>
+                It seems you don&apos;t have any character recorded yet.
+              </div>
+              <Link href="/characters" className="primary button">
+                Create one?
               </Link>
-            )
+            </>
+          ) : null}
+          {Array.from(new Set(parsedRecordings.map((el) => el.folder))).map(
+            (folder) =>
+              allowedCampaigns.some(
+                (campaign) =>
+                  campaign.legacyCampaignId.toString() ==
+                  folder.split(" ").slice(0, 1)[0]
+              ) ? (
+                <Link
+                  key={folder}
+                  href={`/sounds/${folder.split(" ").slice(0, 1)[0]}`}
+                  className="mb-1 link block"
+                >
+                  {folder.split(" ").slice(1).join(" ")}
+                </Link>
+              ) : null
           )}
         </>
       ) : null}
